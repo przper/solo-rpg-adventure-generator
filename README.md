@@ -2,7 +2,7 @@
 
 This idea behind the project is to allow solo player to run solo RPG adventures.
 
-There is a number of free Dungeon Generators, but they don't hide their content to the player, thus they are a great tool for the Dungeon Master, not for a person who wants/needs to play alone. This application main goal is to generate a Dungeon and store it hidden in memory. The player would be presented with description of the next room only if he decides to enter it. Otherwise it will be hidden.
+There is a number of free Dungeon Generators, but they don't **hide their content to the player**. They are a great tool for the Dungeon Master, not for a person who wants/needs to play alone. This application main goal is to generate a Dungeon and store it hidden in memory. The player would be presented with description of the next room only if he decides to enter it. Otherwise it will be hidden.
 
 ## Getting Started
 
@@ -15,9 +15,3 @@ There is a number of free Dungeon Generators, but they don't hide their content 
 ## Features
 
 * WIP
-
-**Enjoy!**
-
-## Docs
-
-1. WIP
