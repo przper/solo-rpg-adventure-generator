@@ -3,16 +3,16 @@
 {% block title %}HomeController{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-</style>
+<div class="container mx-auto">
 
-<div class="example-wrapper">
-    <h1>{{ controller_name }}</h1>
+    <div class="bg-white">
+        <h1 class="text-3xl">{{ controller_name }}</h1>
 
-    Go to:
-    <ul>
-        <li><a href="/play">Play</a></li>
-    </ul>
+        <h2 class="text-2xl">Go to:</h2>
+        <ul>
+            <li><a href="/play">Play</a></li>
+        </ul>
+    </div>
+
 </div>
 {% endblock %}
