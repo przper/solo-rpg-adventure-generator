@@ -1,0 +1,17 @@
+<div class="w-full flex items-center justify-center">
+    <div class="w-2/3">
+        {% for row in range(0, map.rowsCount - 1) %}
+            <div
+                class="flex items-center justify-center w-8 h-8 text-xs {{ map.cells[row] ? 'bg-white' : 'bg-gray-900' }}"
+            >
+                {{ map.cells[row] }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="w-1/3">
+        {% for room in map.rooms %}
+            <p>{{ loop.index }}: y: {{ room.y }}</p>
+        {% endfor %}
+    </div>
+</div>

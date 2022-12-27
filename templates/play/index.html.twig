@@ -7,19 +7,7 @@
     <div class="rounded-xl bg-white">
         <h1 class="text-4xl">Hello World!</h1>
 
-        <div>
-            {% for row in range(0, rows_count - 1) %}
-                <div class="flex">
-                    {% for column in range(0, columns_count - 1) %}
-                        <div
-                            class="flex items-center justify-center w-4 h-4 text-xs {{ map[row][column] ? 'bg-white' : 'bg-gray-900' }}"
-                        >
-                            {{ map[row][column] }}
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        </div>
+        {{ include(template, {map: map}) }}
     </div>
 </div>
 
