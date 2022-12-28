@@ -12,6 +12,17 @@ There is a number of free Dungeon Generators, but they don't **hide their conten
 4. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
 5. Run `make down` to stop the Docker containers.
 
+## How To Play
+1. Select Dungeon Type at `https://localhost/`
+2. ???
+
 ## Features
 
-* WIP
+- Hide Dungeon layout, reveal with advancement (Planned)
+- Railroad Dungeon Generation **(WIP)**
+    - Room & Corridors **(DONE)**
+    - Treasure **(WIP)**
+    - Enemies (Planned)
+    - Traps (Planned)
+    - Descriptions (Planned)
+- Roguelike Dungeon Generation (Planned)
