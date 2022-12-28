@@ -32,15 +32,15 @@ class RailroadMapBuilderTest extends TestCase
     public function corridors_length_range_can_be_set()
     {
         $this->builder->setRoomsCount(2);
-        $this->builder->setMinCorridorLength(1);
-        $this->builder->setMaxCorridorLength(3);
+        $this->builder->setMinCorridorLength(2);
+        $this->builder->setMaxCorridorLength(5);
 
         /** @var Map $map */
         $map = $this->builder->create();
 
-        $this->assertGreaterThanOrEqual(1, count($map->getCorridors()));
-        $this->assertLessThanOrEqual(3, count($map->getCorridors()));
-        $this->assertGreaterThan(2, $map->getLength());
-        $this->assertLessThanOrEqual(5, $map->getLength());
+        $this->assertGreaterThanOrEqual(2, count($map->getCorridors()));
+        $this->assertLessThanOrEqual(5, count($map->getCorridors()));
+        $this->assertGreaterThanOrEqual(4, $map->getLength());
+        $this->assertLessThanOrEqual(7, $map->getLength());
     }
 }

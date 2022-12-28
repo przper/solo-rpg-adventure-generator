@@ -4,7 +4,6 @@ namespace App\Service\RailroadGenerator;
 
 use App\Service\MapGeneratorInterface;
 use App\Service\MapInterface;
-use Twig\Environment;
 
 class RailroadMapBuilder implements MapGeneratorInterface
 {
@@ -59,7 +58,7 @@ class RailroadMapBuilder implements MapGeneratorInterface
         $min = $this->minCorridorLength;
         $max = rand($this->minCorridorLength, $this->maxCorridorLength);
 
-        foreach(range($min, $max) as $i) {
+        for($i = $min; $i <= $max + 1; $i++) {
             $corridor = Corridor::fromX($map->getLength());
 
             $map->addCell($corridor);
