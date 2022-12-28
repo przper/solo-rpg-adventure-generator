@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Service\RailroadGenerator\RailroadGenerator;
-use App\Service\SimpleGenerator\SimpleMapGenerator;
+use App\Service\RailroadGenerator\RailroadMapBuilder;
+use App\Service\SimpleGenerator\SimpleMapBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,8 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class PlayController extends AbstractController
 {
     public function __construct(
-        private SimpleMapGenerator $simpleGenerator,
-        private RailroadGenerator $railroadGenerator,
+        private SimpleMapBuilder $simpleGenerator,
+        private RailroadMapBuilder $railroadGenerator,
     ) {
         //
     }
@@ -24,7 +24,11 @@ class PlayController extends AbstractController
         $columnsCount = 15;
         $roomsCount = 15;
 
-        $map = $this->simpleGenerator->create($rowsCount, $columnsCount, $roomsCount);
+        $map = $this->simpleGenerator
+            ->setRowsCount($rowsCount)
+            ->setColumnsCount($columnsCount)
+            ->setRoomsCount($roomsCount)
+            ->create();
 
         return $this->render('play/index.html.twig', [
             'heading' => 'Simple Dungeon Generator (WIP)',
@@ -38,14 +42,16 @@ class PlayController extends AbstractController
     #[Route('/play/railroad', name: 'app_play_railroad')]
     public function railroad(): Response
     {
-        $rowsCount = 10;
         $roomsCount = 4;
 
-        $map = $this->railroadGenerator->create($rowsCount, 1, $roomsCount);
+        $map = $this->railroadGenerator
+            ->setRoomsCount($roomsCount)
+            ->setMinCorridorLength(2)
+            ->setMaxCorridorLength(5)
+            ->create();
 
         return $this->render('play/index.html.twig', [
             'heading' => 'Railroad Dungeon Generator (WIP)',
-            'rows_count' => $rowsCount,
             'map' => $map,
             'template' => 'map-generator/railroad.html.twig',
         ]);
