@@ -2,10 +2,10 @@
 
 namespace App\Tests\RailroadMapGenerator;
 
-use App\Service\RailroadGenerator\Corridor;
 use PHPUnit\Framework\TestCase;
-use App\Service\RailroadGenerator\Map;
-use App\Service\RailroadGenerator\Room;
+use App\Service\Map\Railroad\Map;
+use App\Service\Map\Railroad\Room;
+use App\Service\Map\Railroad\Corridor;
 
 class MapTest extends TestCase
 {

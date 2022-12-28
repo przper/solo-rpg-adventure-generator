@@ -3,8 +3,8 @@
 namespace App\Tests\RailroadMapGenerator;
 
 use App\Interface\MapInterface;
-use App\Service\RailroadGenerator\Map;
-use App\Service\RailroadGenerator\RailroadMapBuilder;
+use App\Service\Map\Railroad\Map;
+use App\Service\Map\Railroad\RailroadMapBuilder;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class RailroadMapBuilderTest extends KernelTestCase

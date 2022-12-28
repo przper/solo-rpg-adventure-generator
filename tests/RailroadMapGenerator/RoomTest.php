@@ -2,10 +2,10 @@
 
 namespace App\Tests\RailroadMapGenerator;
 
-use App\Interface\TreasureInterface;
-use App\Service\RailroadGenerator\Room;
-use App\Service\Treasure\Treasure;
 use PHPUnit\Framework\TestCase;
+use App\Service\Map\Railroad\Room;
+use App\Service\Treasure\Treasure;
+use App\Interface\TreasureInterface;
 
 class RoomTest extends TestCase
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Service\SimpleGenerator;
+namespace App\Service\Map\Roguelike;
 
 use App\Interface\MapInterface;
 use App\Interface\MapGeneratorInterface;
 
-class SimpleMapBuilder implements MapGeneratorInterface
+class RoguelikeMapBuilder implements MapGeneratorInterface
 {
     private int $rowsCount;
     private int $columnsCount;

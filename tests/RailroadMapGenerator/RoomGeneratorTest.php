@@ -2,9 +2,9 @@
 
 namespace App\Tests\RailroadMapGenerator;
 
+use App\Service\Map\Railroad\Room;
 use App\Interface\TreasureInterface;
-use App\Service\RailroadGenerator\Room;
-use App\Service\RailroadGenerator\RoomGenerator;
+use App\Service\Map\Railroad\RoomGenerator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class RoomGeneratorTest extends KernelTestCase

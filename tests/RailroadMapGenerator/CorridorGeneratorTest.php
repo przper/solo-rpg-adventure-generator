@@ -2,8 +2,8 @@
 
 namespace App\Tests\RailroadMapGenerator;
 
-use App\Service\RailroadGenerator\Corridor;
-use App\Service\RailroadGenerator\CorridorGenerator;
+use App\Service\Map\Railroad\Corridor;
+use App\Service\Map\Railroad\CorridorGenerator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class CorridorGeneratorTest extends KernelTestCase

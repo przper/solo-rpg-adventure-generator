@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\RailroadGenerator;
+namespace App\Service\Map\Railroad;
 
 class CorridorGenerator
 {

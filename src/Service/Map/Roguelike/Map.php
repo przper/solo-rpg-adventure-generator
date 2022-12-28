@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Service\SimpleGenerator;
+namespace App\Service\Map\Roguelike;
 
 use App\Interface\MapInterface;
-
 
 class Map implements MapInterface
 {

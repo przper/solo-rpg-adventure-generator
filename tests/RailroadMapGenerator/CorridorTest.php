@@ -5,7 +5,7 @@ namespace App\Tests\RailroadMapGenerator;
 use PHPUnit\Framework\TestCase;
 use App\Service\Treasure\Treasure;
 use App\Interface\TreasureInterface;
-use App\Service\RailroadGenerator\Corridor;
+use App\Service\Map\Railroad\Corridor;
 
 class CorridorTest extends TestCase
 {

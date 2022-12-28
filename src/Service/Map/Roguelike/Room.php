@@ -1,9 +1,13 @@
 <?php
 
-namespace App\Service\SimpleGenerator;
+namespace App\Service\Map\Roguelike;
+
+use App\Interface\TreasureInterface;
 
 class Room
 {
+    private ?TreasureInterface $treasure = null;
+
     public function __construct(
         private int $x,
         private int $y
@@ -26,5 +30,10 @@ class Room
     public function getY(): int
     {
         return $this->y;
+    }
+
+    public function getTreasure(): ?TreasureInterface
+    {
+        return $this->treasure;
     }
 }
