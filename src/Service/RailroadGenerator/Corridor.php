@@ -2,9 +2,9 @@
 
 namespace App\Service\RailroadGenerator;
 
-class Room extends Cell
+class Corridor extends Cell
 {
-    final public const TYPE = 'ROOM';
+    final public const TYPE = 'CORRIDOR';
 
     public static function getType(): string
     {
@@ -13,15 +13,15 @@ class Room extends Cell
 
     public static function getTemplate(): string
     {
-        return 'map-generator/_room.html.twig';
+        return 'map-generator/_corridor.html.twig';
     }
 
     public static function fromX(int $x): self
     {
-        $room = new self();
+        $corridor = new self();
 
-        $room->setX($x);
+        $corridor->setX($x);
 
-        return $room;
+        return $corridor;
     }
 }
