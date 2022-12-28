@@ -1,14 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}PlayController{% endblock %}
+{% block title %}Railroad Dungeon{% endblock %}
 
 {% block body %}
 <div class="container mx-auto">
-    <div class="rounded-xl bg-white">
-        <h1 class="text-4xl">Hello World!</h1>
+    <h1 class="text-4xl mb-6">{{ heading }}</h1>
 
-        {{ include(template, {map: map}) }}
+    <div class="mb-6 rounded-xl shadow-sm bg-white">
+        <p>Description</p>
     </div>
+
+    {{ include(template, {map: map}) }}
 </div>
 
 {% endblock %}

@@ -27,6 +27,7 @@ class PlayController extends AbstractController
         $map = $this->simpleGenerator->create($rowsCount, $columnsCount, $roomsCount);
 
         return $this->render('play/index.html.twig', [
+            'heading' => 'Simple Dungeon Generator (WIP)',
             'rows_count' => $rowsCount,
             'columns_count' => $columnsCount,
             'template' => 'map-generator/simple.html.twig',
@@ -37,12 +38,13 @@ class PlayController extends AbstractController
     #[Route('/play/railroad', name: 'app_play_railroad')]
     public function railroad(): Response
     {
-        $rowsCount = 15;
-        $roomsCount = 5;
+        $rowsCount = 10;
+        $roomsCount = 4;
 
         $map = $this->railroadGenerator->create($rowsCount, 1, $roomsCount);
 
         return $this->render('play/index.html.twig', [
+            'heading' => 'Railroad Dungeon Generator (WIP)',
             'rows_count' => $rowsCount,
             'map' => $map,
             'template' => 'map-generator/railroad.html.twig',
