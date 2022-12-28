@@ -13,31 +13,33 @@
 
     <div class="w-full flex">
         <div class="w-1/2">
-            {{ include(template, {map: map}) }}
+            {{ include(template, {map: game.map}) }}
 
-            <p>Position: {{ position }}</p>
-        
-            <form>
-                <input type="hidden" name="direction" value="backward">
-                <button type="submit">Backward...</button>
-            </form>
-            <form>
-                <input type="hidden" name="direction" value="forward">
-                <button type="submit">Forward!</button>
-            </form>
+            <div class="flex items-center">
+                <p class="mr-4">Position: {{ game.position.x }}, {{ game.position.y }}</p>
+            
+                <form class="mr-4">
+                    <input type="hidden" name="direction" value="backward">
+                    <button type="submit">Backward...</button>
+                </form>
+                <form class="mr-4">
+                    <input type="hidden" name="direction" value="forward">
+                    <button type="submit">Forward!</button>
+                </form>
+            </div>
         </div>
 
-        <div class="w-1/2 flex items-start text-xs">
+        <div class="w-1/2 flex items-start">
             <div class="mr-4">
                 <h2 class="text-3xl mb-2">Dungeon</h2>
 
-                <p>Length: {{ map.length ?? 'N\A' }}</p>
+                <p>Length: {{ game.map.length ?? 'N\A' }}</p>
             </div>
 
             <div class="mr-4">
                 <h2 class="text-3xl mb-2">Rooms</h2>
 
-                {% for room in map.rooms %}
+                {% for room in game.map.rooms %}
                     <h3 class="text-2xl">#{{ loop.index }}</h3>
                     <p>x: {{ room.x }}
                     <p>treasure: {{ room.treasure ? room.treasure | json_encode() : 'nope' }}</p>
