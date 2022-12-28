@@ -2,9 +2,10 @@
 
 namespace App\Service\Map\Roguelike;
 
+use App\Interface\RoomInterface;
 use App\Interface\TreasureInterface;
 
-class Room
+class Room implements RoomInterface
 {
     private ?TreasureInterface $treasure = null;
 

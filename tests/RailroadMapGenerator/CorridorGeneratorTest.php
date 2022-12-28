@@ -7,16 +7,14 @@ use App\Service\Map\Railroad\CorridorGenerator;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class CorridorGeneratorTest extends KernelTestCase
-{ 
+{
     private CorridorGenerator $generator;
 
     public function setUp(): void
     {
         self::bootKernel();
 
-        $container = static::getContainer();
-
-        $this->generator = $container->get(CorridorGenerator::class);
+        $this->generator = static::getContainer()->get(CorridorGenerator::class);
     }
 
     /** @test */

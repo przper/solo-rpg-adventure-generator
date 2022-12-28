@@ -2,9 +2,10 @@
 
 namespace App\Service\Map\Railroad;
 
+use App\Interface\RoomInterface;
 use App\Interface\TreasureInterface;
 
-class Room extends Cell
+class Room extends Cell implements RoomInterface
 {
     final public const TYPE = 'ROOM';
 

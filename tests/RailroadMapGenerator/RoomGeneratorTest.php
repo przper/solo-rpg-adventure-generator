@@ -15,9 +15,7 @@ class RoomGeneratorTest extends KernelTestCase
     {
         self::bootKernel();
 
-        $container = static::getContainer();
-
-        $this->generator = $container->get(RoomGenerator::class);
+        $this->generator = static::getContainer()->get(RoomGenerator::class);
     }
 
     /** @test */
