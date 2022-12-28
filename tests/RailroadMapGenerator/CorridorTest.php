@@ -2,8 +2,10 @@
 
 namespace App\Tests\RailroadMapGenerator;
 
-use App\Service\RailroadGenerator\Corridor;
 use PHPUnit\Framework\TestCase;
+use App\Service\Treasure\Treasure;
+use App\Interface\TreasureInterface;
+use App\Service\RailroadGenerator\Corridor;
 
 class CorridorTest extends TestCase
 {
@@ -32,5 +34,19 @@ class CorridorTest extends TestCase
 
         $this->assertIsString($corridor->getTemplate());
         $this->assertFileExists("templates/".$corridor->getTemplate());
+    }
+
+
+    /** @test */
+    public function it_has_treasure()
+    {
+        $corridor = Corridor::fromX(5);
+
+        $this->assertNull($corridor->getTreasure());
+
+        $treasure = new Treasure();
+        $corridor->setTreasure($treasure);
+
+        $this->assertInstanceOf(TreasureInterface::class, $corridor->getTreasure());
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Service\SimpleGenerator;
 
-use App\Service\MapGeneratorInterface;
-use App\Service\MapInterface;
+use App\Interface\MapInterface;
+use App\Interface\MapGeneratorInterface;
 
 class SimpleMapBuilder implements MapGeneratorInterface
 {

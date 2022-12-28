@@ -2,7 +2,9 @@
 
 namespace App\Tests\RailroadMapGenerator;
 
+use App\Interface\TreasureInterface;
 use App\Service\RailroadGenerator\Room;
+use App\Service\Treasure\Treasure;
 use PHPUnit\Framework\TestCase;
 
 class RoomTest extends TestCase
@@ -32,5 +34,18 @@ class RoomTest extends TestCase
 
         $this->assertIsString($room->getTemplate());
         $this->assertFileExists("templates/".$room->getTemplate());
+    }
+
+    /** @test */
+    public function it_has_treasure()
+    {
+        $room = Room::fromX(5);
+
+        $this->assertNull($room->getTreasure());
+
+        $treasure = new Treasure();
+        $room->setTreasure($treasure);
+
+        $this->assertInstanceOf(TreasureInterface::class, $room->getTreasure());
     }
 }

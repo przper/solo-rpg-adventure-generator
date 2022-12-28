@@ -2,8 +2,8 @@
 
 namespace App\Service\RailroadGenerator;
 
-use App\Service\MapGeneratorInterface;
-use App\Service\MapInterface;
+use App\Interface\MapInterface;
+use App\Interface\MapGeneratorInterface;
 
 class RailroadMapBuilder implements MapGeneratorInterface
 {
@@ -11,6 +11,13 @@ class RailroadMapBuilder implements MapGeneratorInterface
 
     private int $minCorridorLength = 1;
     private int $maxCorridorLength = 1;
+
+    public function __construct(
+        private RoomGenerator $roomGenerator,
+        private CorridorGenerator $corridorGenerator
+    ) {
+        //
+    }
 
     public function setRoomsCount(int $roomsCount): self
     {
@@ -39,7 +46,7 @@ class RailroadMapBuilder implements MapGeneratorInterface
 
         /** To Do: Refactor "while (true) ... break;" */
         while (true) {
-            $room = Room::fromX($map->getLength());
+            $room = $this->roomGenerator->generate();
 
             $map->addCell($room);
 
@@ -59,7 +66,7 @@ class RailroadMapBuilder implements MapGeneratorInterface
         $max = rand($this->minCorridorLength, $this->maxCorridorLength);
 
         for($i = $min; $i <= $max + 1; $i++) {
-            $corridor = Corridor::fromX($map->getLength());
+            $corridor = $this->corridorGenerator->generate();
 
             $map->addCell($corridor);
         }

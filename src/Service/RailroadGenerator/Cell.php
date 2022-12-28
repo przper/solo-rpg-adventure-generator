@@ -2,6 +2,8 @@
 
 namespace App\Service\RailroadGenerator;
 
+use App\Interface\TreasureInterface;
+
 abstract class Cell
 {
     private int $x;
@@ -21,4 +23,6 @@ abstract class Cell
     abstract public static function getType(): string;
 
     abstract public static function getTemplate(): string;
+
+    abstract public function getTreasure(): ?TreasureInterface;
 }

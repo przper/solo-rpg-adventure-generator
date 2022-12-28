@@ -2,19 +2,30 @@
 
 namespace App\Tests\RailroadMapGenerator;
 
-use PHPUnit\Framework\TestCase;
+use App\Interface\MapInterface;
 use App\Service\RailroadGenerator\Map;
 use App\Service\RailroadGenerator\RailroadMapBuilder;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class RailroadMapBuilderTest extends TestCase
+class RailroadMapBuilderTest extends KernelTestCase
 {
     private RailroadMapBuilder $builder;
 
     public function setUp(): void
     {
-        parent::setUp();
+        self::bootKernel();
 
-        $this->builder = new RailroadMapBuilder();
+        $container = static::getContainer();
+
+        $this->builder = $container->get(RailroadMapBuilder::class);
+    }
+
+    /** @test */
+    public function it_builds_map()
+    {
+        $map = $this->builder->setRoomsCount(1)->create();
+
+        $this->assertInstanceOf(MapInterface::class, $map);
     }
 
     /** @test */

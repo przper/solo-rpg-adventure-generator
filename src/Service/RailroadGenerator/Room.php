@@ -2,9 +2,13 @@
 
 namespace App\Service\RailroadGenerator;
 
+use App\Interface\TreasureInterface;
+
 class Room extends Cell
 {
     final public const TYPE = 'ROOM';
+
+    private ?TreasureInterface $treasure = null;
 
     public static function getType(): string
     {
@@ -14,6 +18,18 @@ class Room extends Cell
     public static function getTemplate(): string
     {
         return 'map-generator/_room.html.twig';
+    }
+
+    public function getTreasure(): ?TreasureInterface
+    {
+        return $this->treasure;
+    }
+
+    public function setTreasure(TreasureInterface $treasure): self
+    {
+        $this->treasure = $treasure;
+
+        return $this;
     }
 
     public static function fromX(int $x): self

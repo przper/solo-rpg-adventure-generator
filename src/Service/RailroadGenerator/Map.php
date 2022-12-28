@@ -2,7 +2,8 @@
 
 namespace App\Service\RailroadGenerator;
 
-use App\Service\MapInterface;
+use App\Interface\MapInterface;
+
 
 class Map implements MapInterface
 {
@@ -33,6 +34,7 @@ class Map implements MapInterface
     public function addCell(Cell $cell): self
     {
         if (! in_array($cell, $this->cells)) {
+            $cell->setX($this->getLength());
             $this->cells[] = $cell;
         }
 
