@@ -20,7 +20,7 @@ class Map implements MapInterface
 
         foreach (range(0, $columnsCount - 1) as $columnIndex) {
             foreach (range(0, $rowsCount - 1) as $rowIndex) {
-                $this->cells[$rowIndex][$columnIndex] = new Wall($columnIndex, $rowIndex);
+                $this->cells[$columnIndex][$rowIndex] = new Wall($columnIndex, $rowIndex);
             }
         }
 
@@ -35,7 +35,7 @@ class Map implements MapInterface
             }
 
             $this->rooms[] = $room;
-            $this->cells[$room->getYCoordinate()][$room->getXCoordinate()] = $room;
+            $this->cells[$room->getXCoordinate()][$room->getYCoordinate()] = $room;
         }
 
         dump($this);
