@@ -7,11 +7,12 @@ use App\Interface\MapInterface;
 use PHPUnit\Framework\TestCase;
 use App\Service\Game\PlayerPosition;
 use App\Tests\Game\Fixtures\DummyMap;
+use App\Tests\Game\Fixtures\DummyMapRenderer;
 
 class GameTest extends TestCase
 {
     /** @test */
-    public function map_can_be_set()
+    public function it_has_map_instance()
     {
         $game = new Game();
 
@@ -22,11 +23,11 @@ class GameTest extends TestCase
     }
 
     /** @test */
-    public function player_position_can_be_set()
+    public function it_stores_player_position()
     {
         $game = new Game();
 
-        $position = new PlayerPosition();
+        $position = new PlayerPosition(0, 0);
         $game->setPosition($position);
 
         $this->assertInstanceOf(PlayerPosition::class, $game->getPosition());

@@ -10,7 +10,7 @@ class Game
 {
     private MapInterface $map;
 
-    private PlayerPosition $position;
+    private PlayerPosition $playerPosition;
 
     public function getMap(): MapInterface
     {
@@ -24,14 +24,21 @@ class Game
         return $this;
     }
 
-    public function getPosition(): PlayerPosition
+    public function getPlayerPosition(): PlayerPosition
     {
-        return $this->position;
+        return $this->playerPosition;
     }
 
-    public function setPosition(PlayerPosition $position): self
+    public function setPlayerPosition(PlayerPosition $position): self
     {
-        $this->position = $position;
+        $this->playerPosition = $position;
+
+        return $this;
+    }
+
+    public function movePlayer(int $x, int $y): self
+    {
+        $this->playerPosition->move($x, $y);
 
         return $this;
     }
@@ -42,7 +49,7 @@ class Game
             throw new NoGeneratedMapException();
         }
 
-        if (! $this->position) {
+        if (! $this->playerPosition) {
             throw new UnknownPlayerPositionException();
         }
 

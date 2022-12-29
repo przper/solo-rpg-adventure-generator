@@ -10,36 +10,29 @@ use App\Interface\TreasureInterface;
 class RoomTest extends TestCase
 {
     /** @test */
-    public function it_has_y_coordinate()
+    public function it_has_x_and_y_coordinates()
     {
-        $room = Room::fromX(5);
+        $room = Room::fromCoordinates(0, 1);
 
-        $this->assertIsNumeric($room->getX());
-        $this->assertEquals(5, $room->getX());
+        $this->assertIsNumeric($room->getXCoordinate());
+        $this->assertEquals(0, $room->getXCoordinate());
+        $this->assertIsNumeric($room->getYCoordinate());
+        $this->assertEquals(1, $room->getYCoordinate());
     }
 
     /** @test */
     public function it_has_type()
     {
-        $room = Room::fromX(5);
+        $room = Room::fromCoordinates(0, 1);
 
         $this->assertIsString($room->getType());
         $this->assertEquals(Room::TYPE, $room->getType());
     }
 
     /** @test */
-    public function it_has_template()
-    {
-        $room = Room::fromX(5);
-
-        $this->assertIsString($room->getTemplate());
-        $this->assertFileExists("templates/".$room->getTemplate());
-    }
-
-    /** @test */
     public function it_has_treasure()
     {
-        $room = Room::fromX(5);
+        $room = Room::fromCoordinates(0, 1);
 
         $this->assertNull($room->getTreasure());
 

@@ -2,10 +2,9 @@
 
 namespace App\Service\Map\Railroad;
 
-use App\Interface\RoomInterface;
 use App\Interface\TreasureInterface;
 
-class Room extends Cell implements RoomInterface
+class Room extends Cell
 {
     final public const TYPE = 'ROOM';
 
@@ -14,11 +13,6 @@ class Room extends Cell implements RoomInterface
     public static function getType(): string
     {
         return static::TYPE;
-    }
-
-    public static function getTemplate(): string
-    {
-        return 'map-generator/_room.html.twig';
     }
 
     public function getTreasure(): ?TreasureInterface
@@ -33,11 +27,12 @@ class Room extends Cell implements RoomInterface
         return $this;
     }
 
-    public static function fromX(int $x): self
+    public static function fromCoordinates(int $x, int $y = 0): self
     {
         $room = new self();
 
-        $room->setX($x);
+        $room->setXCoordinate($x);
+        $room->setYCoordinate($y);
 
         return $room;
     }

@@ -4,7 +4,6 @@ namespace App\Interface;
 
 interface MapInterface
 {
-    public function getRooms(): array;
-
+    /** @return MapCellInterface[][] */
     public function getCells(): array;
 }

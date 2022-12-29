@@ -2,11 +2,12 @@
 
 namespace App\Service\Map\Railroad;
 
+use App\Interface\MapCellInterface;
 use App\Interface\MapInterface;
 
 class Map implements MapInterface
 {
-    /** @var Cell[] $cells */
+    /** @var Cell[][] $cells */
     private array $cells = [];
 
     public function getCells(): array
@@ -16,26 +17,42 @@ class Map implements MapInterface
 
     public function getRooms(): array
     {
-        return array_filter(
-            $this->cells,
-            fn (Cell $c) => $c->getType() === Room::TYPE
+        $rooms = [];
+
+        array_walk_recursive(
+            $this->cells, 
+            function (MapCellInterface $cell) use (&$rooms) {
+                if ($cell->getType() === Room::getType()) {
+                    $rooms[] = $cell;
+                }
+            }
         );
+
+        return $rooms;
     }
 
     public function getCorridors(): array
     {
-        return array_filter(
+        $corridors = [];
+
+        array_walk_recursive(
             $this->cells,
-            fn (Cell $c) => $c->getType() === Corridor::TYPE
+            function (MapCellInterface $cell) use (&$corridors) {
+                if ($cell->getType() === Corridor::getType()) {
+                    $corridors[] = $cell;
+                }
+            }
         );
+
+        return $corridors;
     }
 
     public function addCell(Cell $cell): self
     {
-        if (! in_array($cell, $this->cells)) {
-            $cell->setX($this->getLength());
-            $this->cells[] = $cell;
-        }
+        $cell->setXCoordinate($this->getLength());
+        $cell->setYCoordinate(0);
+
+        $this->cells[] = [$cell];
 
         return $this;
     }

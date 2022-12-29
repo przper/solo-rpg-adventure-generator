@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\Game\Game;
 use App\Service\Game\GameFactory;
 use App\Service\Game\PlayerPosition;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\Map\Railroad\RailroadMapBuilder;
 use App\Service\Map\Roguelike\RoguelikeMapBuilder;
+use App\Service\MapRenderer\MapRenderer;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -17,7 +19,8 @@ class PlayController extends AbstractController
     public function __construct(
         private RoguelikeMapBuilder $roguelikeGenerator,
         private RailroadMapBuilder $railroadGenerator,
-        private GameFactory $gameFactory
+        private GameFactory $gameFactory,
+        private MapRenderer $mapRenderer
     ) {
         //
     }
@@ -25,9 +28,9 @@ class PlayController extends AbstractController
     #[Route('/play/simple', name: 'app_play_simple')]
     public function simple(SessionInterface $session): Response
     {
-        $rowsCount = 15;
-        $columnsCount = 15;
-        $roomsCount = 15;
+        $rowsCount = 5;
+        $columnsCount = 5;
+        $roomsCount = 5;
 
         $session->remove('game');
 
@@ -43,10 +46,13 @@ class PlayController extends AbstractController
                 ->create()
         );
 
+        $map = $this->mapRenderer->render($game->getMap(), $game->getPlayerPosition());
+
         return $this->render('play/index.html.twig', [
             'heading' => 'Simple Dungeon Generator (WIP)',
             'template' => 'map-generator/simple.html.twig',
             'game' => $game,
+            'map' => $map
         ]);
     }
 
@@ -55,6 +61,7 @@ class PlayController extends AbstractController
     {
         $roomsCount = 5;
 
+        /** @var Game $game */
         $game = $session->get(
             'game',
             $this->gameFactory
@@ -68,14 +75,13 @@ class PlayController extends AbstractController
         );
 
         if ($direction = $request->get('direction')) {
-            /** @var PlayerPosition $position */
-            $position = $session->get('game')->getPosition();
-
             match ($direction) {
-                'forward' => $position->move(1, 0),
-                'backward' => $position->move(-1, 0)
+                'forward' => $game->movePlayer(1, 0),
+                'backward' => $game->movePlayer(-1, 0)
             };
         }
+
+        $map = $this->mapRenderer->render($game->getMap(), $game->getPlayerPosition());
 
         $session->set('game', $game);
 
@@ -83,6 +89,7 @@ class PlayController extends AbstractController
             'heading' => 'Railroad Dungeon Generator (WIP)',
             'template' => 'map-generator/railroad.html.twig',
             'game' => $session->get('game'),
+            'map' => $map
         ]);
     }
 }

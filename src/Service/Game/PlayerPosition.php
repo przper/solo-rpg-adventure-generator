@@ -2,12 +2,16 @@
 
 namespace App\Service\Game;
 
-use App\Interface\RoomInterface;
+use App\Interface\MapCellInterface;
 
 class PlayerPosition
 {
-    private int $xCoordinate = 0;
-    private int $yCoordinate = 0;
+    public function __construct(
+        private int $xCoordinate,
+        private int $yCoordinate
+    ) {
+      //
+    }
 
     public function getX(): int
     {
@@ -27,9 +31,12 @@ class PlayerPosition
         return $this;
     }
 
-    public static function fromRoom(RoomInterface $room): self
+    public static function fromCell(MapCellInterface $cell): self
     {
-        $position = new self();
+        $position = new self(
+            $cell->getXCoordinate(),
+            $cell->getYCoordinate()
+        );
 
         return $position;
     }

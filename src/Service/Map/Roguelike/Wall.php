@@ -3,13 +3,10 @@
 namespace App\Service\Map\Roguelike;
 
 use App\Interface\MapCellInterface;
-use App\Interface\TreasureInterface;
 
-class Room implements MapCellInterface
+class Wall implements MapCellInterface
 {
-    final public const TYPE = 'ROOM';
-
-    private ?TreasureInterface $treasure = null;
+    final public const TYPE = 'WALL';
 
     public function __construct(
         private int $x,
@@ -18,11 +15,11 @@ class Room implements MapCellInterface
         //
     }
 
-    public static function createRandom(int $maxX, int $maxY): self
+    public static function createFromCoordinates(int $x, int $y): self
     {
-        $room = new self(rand(0, $maxX), rand(0, $maxY));
+        $wall = new self($x, $y);
 
-        return $room;
+        return $wall;
     }
 
     public function getXCoordinate(): int
@@ -38,10 +35,5 @@ class Room implements MapCellInterface
     public static function getType(): string
     {
         return static::TYPE;
-    }
-
-    public function getTreasure(): ?TreasureInterface
-    {
-        return $this->treasure;
     }
 }

@@ -57,6 +57,8 @@ class RailroadMapBuilder implements MapGeneratorInterface
             $this->addCorridorToMap($map);
         }
 
+        dump($map);
+
         return $map;
     }
 
@@ -65,7 +67,7 @@ class RailroadMapBuilder implements MapGeneratorInterface
         $min = $this->minCorridorLength;
         $max = rand($this->minCorridorLength, $this->maxCorridorLength);
 
-        for($i = $min; $i <= $max + 1; $i++) {
+        for ($i = $min; $i <= $max + 1; $i++) {
             $corridor = $this->corridorGenerator->generate();
 
             $map->addCell($corridor);

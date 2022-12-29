@@ -10,37 +10,29 @@ use App\Service\Map\Railroad\Corridor;
 class CorridorTest extends TestCase
 {
     /** @test */
-    public function it_has_y_coordinate()
+    public function it_has_x_and_y_coordinate()
     {
-        $corridor = Corridor::fromX(5);
+        $corridor = Corridor::fromCoordinates(0, 1);
 
-        $this->assertIsNumeric($corridor->getX());
-        $this->assertEquals(5, $corridor->getX());
+        $this->assertIsNumeric($corridor->getXCoordinate());
+        $this->assertEquals(0, $corridor->getXCoordinate());
+        $this->assertIsNumeric($corridor->getYCoordinate());
+        $this->assertEquals(1, $corridor->getYCoordinate());
     }
 
     /** @test */
     public function it_has_type()
     {
-        $corridor = Corridor::fromX(5);
+        $corridor = Corridor::fromCoordinates(0, 1);
 
         $this->assertIsString($corridor->getType());
         $this->assertEquals(Corridor::TYPE, $corridor->getType());
     }
 
     /** @test */
-    public function it_has_template()
-    {
-        $corridor = Corridor::fromX(5);
-
-        $this->assertIsString($corridor->getTemplate());
-        $this->assertFileExists("templates/".$corridor->getTemplate());
-    }
-
-
-    /** @test */
     public function it_has_treasure()
     {
-        $corridor = Corridor::fromX(5);
+        $corridor = Corridor::fromCoordinates(0, 1);
 
         $this->assertNull($corridor->getTreasure());
 

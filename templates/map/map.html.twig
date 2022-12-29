@@ -1,0 +1,16 @@
+<h1 class="text-4xl">Test Map Renderer</h1>
+
+<div class="mb-4 p-4 rounded-xl shadow-sm bg-white flex items-center justify-center">
+    <div class="text-xs flex items-center justify-center">
+    {% for column in map.cells %}
+        <div class="">
+        Y={{ loop.index }}
+        {% for cell in column %}
+            <div class="w-8 h-8">
+                {{ cell.type | first | upper }}[{{ cell.xCoordinate }}, {{ cell.yCoordinate }}]
+            </div>
+        {% endfor %}
+        </div>
+    {% endfor %}
+    </div>
+</div>

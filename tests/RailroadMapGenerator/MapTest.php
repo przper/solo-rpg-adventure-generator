@@ -22,12 +22,13 @@ class MapTest extends TestCase
     public function room_can_be_added()
     {
         $map = new Map();
-        $room = new Room();
+        $map->addCell(new Room);
+        $map->addCell(new Room);
 
-        $map->addCell($room);
-
-        $this->assertCount(1, $map->getCells());
-        $this->assertCount(1, $map->getRooms());
+        $this->assertCount(2, $map->getCells());
+        $this->assertCount(1, $map->getCells()[0]);
+        $this->assertCount(2, $map->getRooms());
+        $this->assertInstanceOf(Room::class, $map->getCells()[0][0]);
         $this->assertInstanceOf(Room::class, $map->getRooms()[0]);
     }
 
@@ -35,12 +36,14 @@ class MapTest extends TestCase
     public function corridor_can_be_added()
     {
         $map = new Map();
-        $corridor = new Corridor();
 
-        $map->addCell($corridor);
+        $map->addCell(new Corridor());
+        $map->addCell(new Corridor());
 
-        $this->assertCount(1, $map->getCells());
-        $this->assertCount(1, $map->getCorridors());
+        $this->assertCount(2, $map->getCells());
+        $this->assertCount(1, $map->getCells()[0]);
+        $this->assertCount(2, $map->getCorridors());
+        $this->assertInstanceOf(Corridor::class, $map->getCells()[0][0]);
         $this->assertInstanceOf(Corridor::class, $map->getCorridors()[0]);
     }
 }

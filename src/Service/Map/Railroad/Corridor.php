@@ -15,11 +15,6 @@ class Corridor extends Cell
         return static::TYPE;
     }
 
-    public static function getTemplate(): string
-    {
-        return 'map-generator/_corridor.html.twig';
-    }
-
     public function getTreasure(): ?TreasureInterface
     {
         return $this->treasure;
@@ -32,11 +27,12 @@ class Corridor extends Cell
         return $this;
     }
 
-    public static function fromX(int $x): self
+    public static function fromCoordinates(int $x, int $y = 0): self
     {
         $corridor = new self();
 
-        $corridor->setX($x);
+        $corridor->setXCoordinate($x);
+        $corridor->setYCoordinate($y);
 
         return $corridor;
     }
