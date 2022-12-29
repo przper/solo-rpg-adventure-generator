@@ -38,7 +38,7 @@ class Map implements MapInterface
             $this->cells[$room->getXCoordinate()][$room->getYCoordinate()] = $room;
         }
 
-        dump($this);
+        // dump($this);
     }
 
     public function getCells(): array

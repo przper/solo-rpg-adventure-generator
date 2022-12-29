@@ -57,7 +57,7 @@ class RailroadMapBuilder implements MapGeneratorInterface
             $this->addCorridorToMap($map);
         }
 
-        dump($map);
+        // dump($map);
 
         return $map;
     }

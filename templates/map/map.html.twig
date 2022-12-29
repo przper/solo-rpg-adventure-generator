@@ -2,13 +2,14 @@
 
 <div class="mb-4 p-4 rounded-xl shadow-sm bg-white flex items-center justify-center">
     <div class="text-xs flex items-center justify-center">
-        {% for column in map.cells %}
+        {% for column in cells %}
             <div class="">
                 {# <p class="mb-2">X={{ loop.index0 }}</p> #}
                 {% for cell in column %}
-                    <div class="w-8 h-8">
-                        {{ cell.type | first | upper }}
-                        {# [{{ cell.xCoordinate }}, {{ cell.yCoordinate }}] #}
+                    <div class="w-4 h-4 flex items-center justify-center">
+                        {{ include(cell.template) }}
+                        {# <span>{{ cell.type | first | upper }}</span> #}
+                        {# <span>[{{ cell.xCoordinate }}, {{ cell.yCoordinate }}]</span> #}
                     </div>
                 {% endfor %}
             </div>

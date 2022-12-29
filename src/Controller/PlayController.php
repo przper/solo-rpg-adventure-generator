@@ -28,8 +28,8 @@ class PlayController extends AbstractController
     #[Route('/play/simple', name: 'app_play_simple')]
     public function simple(SessionInterface $session): Response
     {
-        $rowsCount = 5;
-        $columnsCount = 5;
+        $rowsCount = 20;
+        $columnsCount = 20;
         $roomsCount = 5;
 
         $session->remove('game');
