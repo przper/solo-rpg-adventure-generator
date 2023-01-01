@@ -13,16 +13,17 @@ There is a number of free Dungeon Generators, but they don't **hide their conten
 5. Run `make down` to stop the Docker containers.
 
 ## How To Play
-1. Select Dungeon Type at `https://localhost/`
-2. ???
+1. Select Dungeon Type at `https://localhost/play/new`
+2. Move using `forward` or `backward` buttons and explore the generated dungeon
+3. Remember that confidence is slow but insidious killer.
 
 ## Features
 
-- Hide Dungeon layout, reveal with advancement (Planned)
+- Hide Dungeon layout, reveal with advancement **(DONE)**
 - Railroad Dungeon Generation **(WIP)**
     - Room & Corridors **(DONE)**
     - Treasure **(WIP)**
     - Enemies (Planned)
     - Traps (Planned)
-    - Descriptions (Planned)
+    - Descriptions (Maybe...)
 - Roguelike Dungeon Generation (Planned)
