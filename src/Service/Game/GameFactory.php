@@ -22,9 +22,8 @@ class GameFactory
         $map = $this->mapBuilder->create();
         $game->setMap($map);
 
-        $game->setPlayerPosition(PlayerPosition::fromCell($map->getCells()[0][0]));
-
-        // $game->setMapRenderer()
+        $startCell = $map->getRooms()[0] ?? $map->getCells()[0][0];
+        $game->setPlayerPosition(PlayerPosition::fromCell($startCell));
 
         return $game;
     }

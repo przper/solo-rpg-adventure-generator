@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Service\Game\Game;
 use App\Service\Game\GameFactory;
-use App\Service\Game\PlayerPosition;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,54 +24,63 @@ class PlayController extends AbstractController
         //
     }
 
-    #[Route('/play/simple', name: 'app_play_simple')]
-    public function simple(SessionInterface $session): Response
+    #[Route('play/new', name: 'app_new_game')]
+    public function new(Request $request, SessionInterface $session): Response
     {
-        $rowsCount = 20;
-        $columnsCount = 20;
-        $roomsCount = 5;
-
         $session->remove('game');
 
-        $game = $session->get(
-            'game',
-            $this->gameFactory
+        $type = $request->get('type');
+
+        if (is_null($type)) {
+            return $this->render('play/new.html.twig', [
+                'heading' => 'Select Map Type'
+            ]);
+        }
+
+        if ($type === 'roguelike') {
+            $rowsCount = 20;
+            $columnsCount = 20;
+            $roomsCount = 5;
+
+            $game = $this->gameFactory
                 ->setMapBuilder(
                     $this->roguelikeGenerator
                     ->setRowsCount($rowsCount)
                     ->setColumnsCount($columnsCount)
                     ->setRoomsCount($roomsCount)
                 )
-                ->create()
-        );
+                ->create();
+        }
 
-        $map = $this->mapRenderer->render($game->getMap(), $game->getPlayerPosition());
+        if ($type === 'railroad') {
+            $roomsCount = 5;
 
-        return $this->render('play/index.html.twig', [
-            'heading' => 'Simple Dungeon Generator (WIP)',
-            'template' => 'map-generator/simple.html.twig',
-            'game' => $game,
-            'map' => $map
-        ]);
-    }
-
-    #[Route('/play/railroad', name: 'app_play_railroad')]
-    public function railroad(Request $request, SessionInterface $session): Response
-    {
-        $roomsCount = 5;
-
-        /** @var Game $game */
-        $game = $session->get(
-            'game',
-            $this->gameFactory
+            $game = $this->gameFactory
                 ->setMapBuilder(
                     $this->railroadGenerator
                         ->setRoomsCount($roomsCount)
                         ->setMinCorridorLength(2)
                         ->setMaxCorridorLength(5)
                 )
-                ->create()
-        );
+                ->create();
+        }
+
+        $game->start();
+
+        $session->set('game', $game);
+
+        return $this->redirectToRoute('app_play');
+    }
+
+    #[Route('/play', name: 'app_play')]
+    public function railroad(Request $request, SessionInterface $session): Response
+    {
+        if (! $session->has('game')) {
+            return $this->redirectToRoute('app_new_game');
+        }
+
+        /** @var Game $game */
+        $game = $session->get('game');
 
         if ($direction = $request->get('direction')) {
             match ($direction) {
@@ -81,13 +89,12 @@ class PlayController extends AbstractController
             };
         }
 
-        $map = $this->mapRenderer->render($game->getMap(), $game->getPlayerPosition());
+        $map = $this->mapRenderer->render($game->getMap(), $game);
 
         $session->set('game', $game);
 
         return $this->render('play/index.html.twig', [
-            'heading' => 'Railroad Dungeon Generator (WIP)',
-            'template' => 'map-generator/railroad.html.twig',
+            'heading' => 'Survive, brave adventurer...',
             'game' => $session->get('game'),
             'map' => $map
         ]);
