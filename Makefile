@@ -51,3 +51,9 @@ sf: ## List all Symfony commands or pass the parameter "c=" to run a given comma
 
 cc: c=c:c ## Clear the cache
 cc: sf
+
+## —— PHPUnit ———————————————————————————————————————————————————————————————
+test: 
+	@$(eval testsuite ?= 'all')
+	@$(eval filter ?= '.')
+	@$(PHP_CONT) bin/phpunit --testsuite=$(testsuite) --filter=$(filter)

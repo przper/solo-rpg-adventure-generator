@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tests\Game;
+namespace App\Tests\Unit\Game;
 
-use App\Interface\MapGeneratorInterface;
 use App\Service\Game\Game;
-use App\Service\Game\GameFactory;
-use App\Tests\Game\Fixtures\DummyMapGenerator;
 use PHPUnit\Framework\TestCase;
+use App\Service\Game\GameFactory;
+use App\Interface\MapGeneratorInterface;
+use App\Tests\Unit\Game\Fixtures\DummyMapGenerator;
 
 class GameFactoryTest extends TestCase
 {

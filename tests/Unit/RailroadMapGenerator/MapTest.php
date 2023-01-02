@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\RailroadMapGenerator;
+namespace App\Tests\Unit\RailroadMapGenerator;
 
 use PHPUnit\Framework\TestCase;
 use App\Service\Map\Railroad\Map;
@@ -22,8 +22,8 @@ class MapTest extends TestCase
     public function room_can_be_added()
     {
         $map = new Map();
-        $map->addCell(new Room);
-        $map->addCell(new Room);
+        $map->addCell(new Room());
+        $map->addCell(new Room());
 
         $this->assertCount(2, $map->getCells());
         $this->assertCount(1, $map->getCells()[0]);

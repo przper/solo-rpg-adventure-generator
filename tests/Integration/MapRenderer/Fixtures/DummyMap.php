@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\MapRenderer\Fixtures;
+namespace App\Tests\Integration\MapRenderer\Fixtures;
 
 use App\Interface\MapInterface;
 

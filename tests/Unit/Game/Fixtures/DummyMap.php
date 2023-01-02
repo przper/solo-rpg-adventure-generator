@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Game\Fixtures;
+namespace App\Tests\Unit\Game\Fixtures;
 
 use App\Interface\MapInterface;
 

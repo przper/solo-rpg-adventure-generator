@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Game\Fixtures;
+namespace App\Tests\Unit\MapRenderer\Fixtures;
 
 use App\Interface\MapGeneratorInterface;
 use App\Interface\MapInterface;

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tests\MapRenderer;
+namespace App\Tests\Integration\MapRenderer;
 
 use App\Service\MapRenderer\MapRenderer;
-use App\Tests\MapRenderer\Fixtures\DummyMap;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tests\Integration\MapRenderer\Fixtures\DummyMap;
 
 class MapRendererTest extends KernelTestCase
 {

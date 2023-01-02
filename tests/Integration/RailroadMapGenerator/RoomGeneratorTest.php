@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\RailroadMapGenerator;
+namespace App\Tests\Integration\RailroadMapGenerator;
 
 use App\Service\Map\Railroad\Room;
 use App\Interface\TreasureInterface;

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Tests\RailroadMapGenerator;
+namespace App\Tests\Unit\RailroadMapGenerator;
 
 use PHPUnit\Framework\TestCase;
 use App\Service\Treasure\Treasure;
 use App\Interface\TreasureInterface;
 use App\Service\Map\Railroad\Corridor;
+use App\Tests\Unit\RailroadMapGenerator\Fixtures\DummyTreasure;
 
 class CorridorTest extends TestCase
 {
@@ -36,8 +37,7 @@ class CorridorTest extends TestCase
 
         $this->assertNull($corridor->getTreasure());
 
-        $treasure = new Treasure();
-        $corridor->setTreasure($treasure);
+        $corridor->setTreasure(new DummyTreasure());
 
         $this->assertInstanceOf(TreasureInterface::class, $corridor->getTreasure());
     }

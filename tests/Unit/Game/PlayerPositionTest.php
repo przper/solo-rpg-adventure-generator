@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tests\Game;
+namespace App\Tests\Unit\Game;
 
-use App\Service\Game\PlayerPosition;
-use App\Tests\Game\Fixtures\DummyMapCell;
 use PHPUnit\Framework\TestCase;
+use App\Service\Game\PlayerPosition;
+use App\Tests\Unit\Game\Fixtures\DummyMapCell;
 
 class PlayerPositionTest extends TestCase
 {

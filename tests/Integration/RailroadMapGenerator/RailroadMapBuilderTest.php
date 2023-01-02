@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\RailroadMapGenerator;
+namespace App\Tests\Integration\RailroadMapGenerator;
 
 use App\Interface\MapInterface;
 use App\Service\Map\Railroad\Map;
