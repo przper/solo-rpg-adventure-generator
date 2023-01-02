@@ -6,7 +6,7 @@ use App\Interface\MapCellInterface;
 
 class DummyMapCell implements MapCellInterface
 {
-    public static function getType(): string
+    public function getType(): string
     {
         return 'DUMMY';
     }

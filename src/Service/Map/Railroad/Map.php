@@ -22,7 +22,7 @@ class Map implements MapInterface
         array_walk_recursive(
             $this->cells, 
             function (MapCellInterface $cell) use (&$rooms) {
-                if ($cell->getType() === Room::getType()) {
+                if ($cell->getType() === Room::TYPE) {
                     $rooms[] = $cell;
                 }
             }
@@ -38,7 +38,7 @@ class Map implements MapInterface
         array_walk_recursive(
             $this->cells,
             function (MapCellInterface $cell) use (&$corridors) {
-                if ($cell->getType() === Corridor::getType()) {
+                if ($cell->getType() === Corridor::TYPE) {
                     $corridors[] = $cell;
                 }
             }

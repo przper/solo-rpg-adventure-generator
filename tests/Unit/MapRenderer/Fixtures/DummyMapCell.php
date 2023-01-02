@@ -6,9 +6,15 @@ use App\Interface\MapCellInterface;
 
 class DummyMapCell implements MapCellInterface
 {
-    public static function getType(): string
+    public function __construct(
+        private string $type = 'DUMMY'
+    ) {
+        //
+    }
+
+    public function getType(): string
     {
-        return 'DUMMY';
+        return $this->type;
     }
 
     public function getXCoordinate(): int

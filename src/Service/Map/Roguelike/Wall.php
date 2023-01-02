@@ -32,8 +32,8 @@ class Wall implements MapCellInterface
         return $this->y;
     }
 
-    public static function getType(): string
+    public function getType(): string
     {
-        return static::TYPE;
+        return self::TYPE;
     }
 }

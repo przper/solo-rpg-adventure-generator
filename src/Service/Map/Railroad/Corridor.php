@@ -11,9 +11,9 @@ class Corridor extends Cell implements HasTreasure
 
     private ?TreasureInterface $treasure = null;
 
-    public static function getType(): string
+    public function getType(): string
     {
-        return static::TYPE;
+        return self::TYPE;
     }
 
     public function getTreasure(): ?TreasureInterface

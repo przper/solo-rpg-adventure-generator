@@ -8,5 +8,5 @@ interface MapCellInterface
 
     public function getYCoordinate(): int;
 
-    public static function getType(): string;
+    public function getType(): string;
 }

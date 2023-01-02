@@ -35,7 +35,7 @@ abstract class Cell implements MapCellInterface
         return $this;
     }
 
-    abstract public static function getType(): string;
+    abstract public function getType(): string;
 
     abstract public function getTreasure(): ?TreasureInterface;
 

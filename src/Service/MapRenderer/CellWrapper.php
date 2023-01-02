@@ -9,6 +9,10 @@ use App\Service\Game\Game;
 
 class CellWrapper
 {
+    final public const ROOM_TEMPLATE = 'map/_room.html.twig';
+    final public const CORRIDOR_TEMPLATE = 'map/_corridor.html.twig';
+    final public const WALL_TEMPLATE = 'map/_wall.html.twig';
+
     private bool $hasPlayer = false;
 
     private bool $isVisited = false;
@@ -68,13 +72,13 @@ class CellWrapper
     public function getTemplate(): string
     {
         if (! $this->isVisited) {
-            return 'map/_wall.html.twig';
+            return self::WALL_TEMPLATE;
         }
 
         return match ($this->type) {
-            'ROOM' => 'map/_room.html.twig',
-            'CORRIDOR' => 'map/_corridor.html.twig',
-            'WALL' => 'map/_wall.html.twig'
+            'ROOM' => self::ROOM_TEMPLATE,
+            'CORRIDOR' => self::CORRIDOR_TEMPLATE,
+            'WALL' => self::WALL_TEMPLATE
         };
     }
 
