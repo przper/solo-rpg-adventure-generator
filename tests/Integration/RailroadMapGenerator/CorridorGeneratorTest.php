@@ -12,8 +12,6 @@ class CorridorGeneratorTest extends KernelTestCase
 
     public function setUp(): void
     {
-        self::bootKernel();
-
         $this->generator = static::getContainer()->get(CorridorGenerator::class);
     }
 

@@ -11,8 +11,6 @@ class MapRendererTest extends KernelTestCase
     /** @test */
     public function it_renders_map()
     {
-        static::bootKernel();
-
         /** @var MapRenderer $renderer */
         $renderer = static::getContainer()->get(MapRenderer::class);
 

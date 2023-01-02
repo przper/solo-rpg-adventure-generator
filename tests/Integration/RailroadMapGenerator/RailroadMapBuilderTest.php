@@ -13,8 +13,6 @@ class RailroadMapBuilderTest extends KernelTestCase
 
     public function setUp(): void
     {
-        self::bootKernel();
-
         $this->builder = static::getContainer()->get(RailroadMapBuilder::class);
     }
 
