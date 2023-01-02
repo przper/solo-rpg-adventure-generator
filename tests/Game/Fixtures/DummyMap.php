@@ -13,6 +13,8 @@ class DummyMap implements MapInterface
 
     public function getCells(): array
     {
-        return [];
+        return [
+            [ new DummyMapCell() ]
+        ];
     }
 }

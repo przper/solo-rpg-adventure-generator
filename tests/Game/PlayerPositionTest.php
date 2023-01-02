@@ -2,16 +2,38 @@
 
 namespace App\Tests\Game;
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Service\Game\PlayerPosition;
+use App\Tests\Game\Fixtures\DummyMapCell;
+use PHPUnit\Framework\TestCase;
 
-class PlayerPositionTest extends KernelTestCase
+class PlayerPositionTest extends TestCase
 {
-    public function testSomething(): void
+    /** @test */
+    public function it_has_x_and_y_coordinates()
     {
-        $kernel = self::bootKernel();
+        $position = new PlayerPosition(0, 0);
 
-        $this->assertSame('test', $kernel->getEnvironment());
-        // $routerService = static::getContainer()->get('router');
-        // $myCustomService = static::getContainer()->get(CustomService::class);
+        $this->assertEquals(0, $position->getX());
+        $this->assertEquals(0, $position->getY());
+    }
+
+    /** @test */
+    public function it_can_be_moved()
+    {
+        $position = new PlayerPosition(10, 10);
+        $position->move(1, 1);
+
+        $this->assertEquals(11, $position->getX());
+        $this->assertEquals(11, $position->getY());
+    }
+
+    /** @test */
+    public function it_can_be_created_from_MapCell()
+    {
+        $cell = new DummyMapCell();
+        $position = PlayerPosition::fromCell($cell);
+
+        $this->assertEquals(0, $position->getX());
+        $this->assertEquals(0, $position->getY());
     }
 }

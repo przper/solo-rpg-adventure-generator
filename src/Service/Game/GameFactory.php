@@ -8,6 +8,11 @@ class GameFactory
 {
     private MapGeneratorInterface $mapBuilder;
 
+    public function getMapBuilder(): MapGeneratorInterface
+    {
+        return $this->mapBuilder;
+    }
+
     public function setMapBuilder(MapGeneratorInterface $mapBuilder): self
     {
         $this->mapBuilder = $mapBuilder;
