@@ -2,9 +2,10 @@
 
 namespace App\Service\Map\Railroad;
 
+use App\Interface\HasTreasure;
 use App\Interface\TreasureInterface;
 
-class Corridor extends Cell
+class Corridor extends Cell implements HasTreasure
 {
     final public const TYPE = 'CORRIDOR';
 
