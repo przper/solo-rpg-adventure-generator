@@ -13,11 +13,13 @@ class DiceStack
     final public const TYPE_D12 = 'd12';
     final public const TYPE_D20 = 'd20';
 
-    final public const DICE_STACK_REGEX = "/^(?<count>\d+)?(?<type>d\d{1,2})$/";
+    final public const DICE_STACK_REGEX = "/^(?<count>\d+)?(?<type>d\d{1,2})(?<modifier>[\+-]\d+)?$/";
 
     private int $dicesCount;
 
     private string $diceType;
+
+    private int $rollModifier;
 
     public function getDicesCount(): int
     {
@@ -51,6 +53,18 @@ class DiceStack
         return $this;
     }
 
+    public function getRollModifier(): int
+    {
+        return $this->rollModifier;
+    }
+
+    public function setRollModifier(int $modifier): self
+    {
+        $this->rollModifier = $modifier;
+
+        return $this;
+    }
+
     public static function getTypes(): array
     {
         return [
@@ -63,12 +77,13 @@ class DiceStack
         ];
     }
 
-    public static function fromIntegers(int $count, int $sides)
+    public static function fromIntegers(int $count, int $sides, int $modifier = 0)
     {
         $diceStack = new self();
 
         $diceStack->setDicesCount($count);
         $diceStack->setDiceType('d'.$sides);
+        $diceStack->setRollModifier($modifier);
         
         return $diceStack;
     }
@@ -87,13 +102,14 @@ class DiceStack
 
         $diceStack->setDicesCount($matches['count'] ?? 1);
         $diceStack->setDiceType($matches['type']);
+        $diceStack->setRollModifier($matches['modifier'] ?? 0);
 
         return $diceStack;
     }
 
     public function roll(): int
     {
-        $result = 0;
+        $result = $this->rollModifier;
 
         foreach(range(0, $this->dicesCount - 1) as $i) {
             $result += rand(1, $this->getDiceTypeSidesCount());
@@ -116,6 +132,11 @@ class DiceStack
 
     public function __toString()
     {
-        return $this->dicesCount . $this->diceType;
+        return sprintf(
+            "%d%s%+d",
+            $this->dicesCount,
+            $this->diceType,
+            $this->rollModifier
+        );
     }
 }

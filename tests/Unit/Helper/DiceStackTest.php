@@ -50,18 +50,32 @@ class DiceStackTest extends TestCase
         ];
     }
 
-    /** @test */
-    public function it_can_be_created_from_string()
+    /**
+     * @test
+     * @dataProvider fromStringData
+     */
+    public function it_can_be_created_from_string(
+        string $text,
+        int $diceCount,
+        string $diceType,
+        int $rollModifier
+    ) {
+        $diceStack = DiceStack::fromString($text);
+
+        $this->assertEquals($diceCount, $diceStack->getDicesCount());
+        $this->assertEquals($diceType, $diceStack->getDiceType());
+        $this->assertEquals($rollModifier, $diceStack->getRollModifier());
+    }
+
+    public function fromStringData(): array
     {
-        $diceStack1 = DiceStack::fromString("d20");
-
-        $this->assertEquals(1, $diceStack1->getDicesCount());
-        $this->assertEquals("d20", $diceStack1->getDiceType());
-
-        $diceStack2 = DiceStack::fromString("6d6");
-
-        $this->assertEquals(6, $diceStack2->getDicesCount());
-        $this->assertEquals("d6", $diceStack2->getDiceType());
+        return [
+            // TEXT, DICE_COUNT, DICE_TYPE, ROLL_MODIFIER
+            ['d20', 1, 'd20', 0],
+            ['6d6', 6, 'd6', 0],
+            ['1d20+3', 1, 'd20', 3],
+            ['1d6-3', 1, 'd6', -3],
+        ];
     }
 
     /**
@@ -88,19 +102,36 @@ class DiceStackTest extends TestCase
         ];
     }
 
-    /** @test */
-    public function it_can_be_printed()
+    /**
+     * @test
+     * @dataProvider printData
+     */
+    public function it_can_be_printed(string $text, string $toString)
     {
-        $diceStack = DiceStack::fromString("d20");
+        $diceStack = DiceStack::fromString($text);
 
-        $this->assertEquals("1d20", $diceStack);
+        $this->assertEquals($toString, $diceStack);
+    }
+
+    public function printData(): array
+    {
+        return [
+            //TEXT, TO_STRING
+            ["d20", "1d20+0"],
+            ["d20+1", "1d20+1"],
+            ["d20-1", "1d20-1"],
+        ];
     }
 
     /** @test */
     public function it_can_be_rolled()
     {
-        $diceStack = DiceStack::fromString("2d2");
+        $doubleDiceStack = DiceStack::fromString("2d2");
+        $this->assertGreaterThan(1, $doubleDiceStack->roll());
+        $this->assertLessThan(5, $doubleDiceStack->roll());
 
-        $this->assertGreaterThan(1, $diceStack->roll());
+        $diceStackWithModifier = DiceStack::fromString("1d2+10");
+        $this->assertGreaterThan(10, $diceStackWithModifier->roll());
+        $this->assertLessThan(13, $diceStackWithModifier->roll());
     }
 }
