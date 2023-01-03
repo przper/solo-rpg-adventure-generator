@@ -15,8 +15,10 @@ class MapRenderer
         //
     }
 
-    public function render(MapInterface $map, ?Game $game = null)
+    public function render(MapInterface $map, ?Game $game = null): MapRender
     {
+        $cells = [];
+
         foreach ($map->getCells() as $column) {
             $cells[] = array_map(function (MapCellInterface $baseCell) use ($game) {
                 $cellWrapper = new CellWrapper($baseCell);
@@ -29,8 +31,10 @@ class MapRenderer
             }, $column);
         }
 
-        return $this->twig->render('map/map.html.twig', [
-            'cells' => $cells ?? [[]],
+        $html = $this->twig->render('map/map.html.twig', [
+            'cells' => $cells,
         ]);
+        
+        return new MapRender($cells, $html);
     }
 }

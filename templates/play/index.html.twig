@@ -11,9 +11,9 @@
     </div>
 
 
-    <div class="w-full flex">
+    <div class="mb-6 w-full flex">
         <div class="w-2/3">
-            <div>{{ map | raw }}</div>
+            <div>{{ map.html | raw }}</div>
 
             <div class="flex items-center">
                 <p class="mr-4">Position: {{ game.playerPosition.coordinates }}</p>

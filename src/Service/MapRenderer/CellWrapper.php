@@ -10,6 +10,10 @@ use App\Service\Game\Game;
 
 class CellWrapper
 {
+    final public const ROOM_TYPE = 'ROOM';
+    final public const CORRIDOR_TYPE = 'CORRIDOR';
+    final public const WALL_TYPE = 'WALL';
+
     final public const ROOM_TEMPLATE = 'map/_room.html.twig';
     final public const CORRIDOR_TEMPLATE = 'map/_corridor.html.twig';
     final public const WALL_TEMPLATE = 'map/_wall.html.twig';
@@ -38,7 +42,7 @@ class CellWrapper
         return $this->hasPlayer;
     }
 
-    public function setHasPlayer(int $hasPlayer): self
+    public function setHasPlayer(bool $hasPlayer): self
     {
         $this->hasPlayer = $hasPlayer;
 
@@ -74,9 +78,9 @@ class CellWrapper
         }
 
         return match ($this->type) {
-            'ROOM' => self::ROOM_TEMPLATE,
-            'CORRIDOR' => self::CORRIDOR_TEMPLATE,
-            'WALL' => self::WALL_TEMPLATE
+            self::ROOM_TYPE => self::ROOM_TEMPLATE,
+            self::CORRIDOR_TYPE => self::CORRIDOR_TEMPLATE,
+            self::WALL_TYPE => self::WALL_TEMPLATE
         };
     }
 
