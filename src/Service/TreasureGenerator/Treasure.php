@@ -1,5 +1,5 @@
 <?php
-namespace App\Service\Treasure;
+namespace App\Service\TreasureGenerator;
 
 use App\Interface\TreasureInterface;
 
