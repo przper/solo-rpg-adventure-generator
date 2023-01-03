@@ -17,6 +17,7 @@ class MapRenderer
 
     public function render(MapInterface $map, ?Game $game = null): MapRender
     {
+        /** @var CellWrapper[][] */
         $cells = [];
 
         foreach ($map->getCells() as $column) {

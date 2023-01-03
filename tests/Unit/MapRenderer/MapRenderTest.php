@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Tests\Unit\MapRenderer;
+
+use App\Service\MapRenderer\CellWrapper;
+use App\Service\MapRenderer\MapRender;
+use App\Tests\Unit\MapRenderer\Fixtures\DummyMapCell;
+use PHPUnit\Framework\TestCase;
+
+class MapRenderTest extends TestCase
+{
+    /** @test */
+    public function it_has_cells()
+    {
+        $cell = new CellWrapper(new DummyMapCell());
+        $html = '<h1>test</h1>';
+
+        $mapRender = new MapRender([[$cell]], $html);
+
+        $this->assertInstanceOf(CellWrapper::class, $mapRender->cells[0][0]);
+        $this->assertEquals($cell, $mapRender->cells[0][0]);
+        $this->assertIsString($mapRender->html);
+        $this->assertEquals($html, $mapRender->html);
+    }
+}

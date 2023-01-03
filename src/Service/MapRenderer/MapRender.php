@@ -5,7 +5,7 @@ namespace App\Service\MapRenderer;
 final readonly class MapRender
 {
     /**
-     * @param CellWrapper[] $cells
+     * @param CellWrapper[][] $cells
      * 
      * @return void
      */
