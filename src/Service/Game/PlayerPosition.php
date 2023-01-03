@@ -2,41 +2,49 @@
 
 namespace App\Service\Game;
 
+use App\Helper\Coordinates;
 use App\Interface\MapCellInterface;
 
 class PlayerPosition
 {
     public function __construct(
-        private int $xCoordinate,
-        private int $yCoordinate
+        private Coordinates $coordinates
     ) {
       //
     }
 
     public function getX(): int
     {
-        return $this->xCoordinate;
+        return $this->coordinates->getX();
     }
 
     public function getY(): int
     {
-        return $this->yCoordinate;
+        return $this->coordinates->getY();
     }
 
-    public function move(int $x, int $y): self
+    public function getCoordinates(): Coordinates
     {
-        $this->xCoordinate += $x;
-        $this->yCoordinate += $y;
+        return $this->coordinates;
+    }
+
+    public function setCoordinates(Coordinates $coordinates): self
+    {
+        $this->coordinates = $coordinates;
+
+        return $this;
+    }
+
+    public function moveBy(int $deltaX, int $deltaY): self
+    {
+        $this->coordinates->moveBy($deltaX, $deltaY);
 
         return $this;
     }
 
     public static function fromCell(MapCellInterface $cell): self
     {
-        $position = new self(
-            $cell->getXCoordinate(),
-            $cell->getYCoordinate()
-        );
+        $position = new self(clone $cell->getCoordinates());
 
         return $position;
     }

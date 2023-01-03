@@ -35,7 +35,7 @@ class Game
     public function setPlayerPosition(PlayerPosition $position): self
     {
         $this->playerPosition = $position;
-        $this->visitedCells[] = ['x' => $position->getX(), 'y' => $position->getY()];
+        $this->visitedCells[] = clone $position->getCoordinates();
 
         return $this;
     }
@@ -46,17 +46,14 @@ class Game
         return $this->visitedCells;
     }
 
-    public function movePlayer(int $x, int $y): self
+    public function movePlayerByIntegers(int $deltaX, int $deltaY): self
     {
-        $this->playerPosition->move($x, $y);
+        $this->playerPosition->moveBy($deltaX, $deltaY);
 
-        $newPositionCoordinates = [
-            'x' => $this->playerPosition->getX(), 
-            'y' => $this->playerPosition->getY()
-        ];
+        $newPositionCoordinates = $this->playerPosition->getCoordinates();
 
         if (! in_array($newPositionCoordinates, $this->visitedCells)) {
-            $this->visitedCells[] = $newPositionCoordinates;
+            $this->visitedCells[] = clone $newPositionCoordinates;
         }
 
         return $this;

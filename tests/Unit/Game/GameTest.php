@@ -2,6 +2,7 @@
 
 namespace App\Tests\Unit\Game;
 
+use App\Helper\Coordinates;
 use App\Service\Game\Game;
 use App\Interface\MapInterface;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +26,7 @@ class GameTest extends TestCase
     {
         $game = new Game();
 
-        $game->setPlayerPosition(new PlayerPosition(0, 0));
+        $game->setPlayerPosition(new PlayerPosition(Coordinates::fromIntegers(0, 0)));
 
         $this->assertInstanceOf(PlayerPosition::class, $game->getPlayerPosition());
     }
@@ -34,24 +35,42 @@ class GameTest extends TestCase
     public function player_position_can_be_moved()
     {
         $game = new Game();
-        $game->setPlayerPosition(new PlayerPosition(0, 0));
+        $game->setPlayerPosition(new PlayerPosition(Coordinates::fromIntegers(0, 0)));
 
-        $game->movePlayer(1, 1);
-        $this->assertEquals(1, $game->getPlayerPosition()->getX());
-        $this->assertEquals(1, $game->getPlayerPosition()->getY());
+        $game->movePlayerByIntegers(1, 1);
+        $this->assertEquals(
+            Coordinates::fromIntegers(1, 1),
+            $game->getPlayerPosition()->getCoordinates()
+        );
     }
 
     /** @test */
     public function it_stores_visited_cells()
     {
         $game = new Game();
-        $game->setPlayerPosition(new PlayerPosition(0, 0));
+        $game->setPlayerPosition(new PlayerPosition(Coordinates::fromIntegers(0, 0)));
 
         $this->assertCount(1, $game->getVisitedCells());
-        $this->assertEquals(['x'=>0,'y'=>0], $game->getVisitedCells()[0]);
+        $this->assertEquals(
+            Coordinates::fromIntegers(0, 0),
+            $game->getVisitedCells()[0]
+        );
 
-        $game->movePlayer(1, 1);
+        $game->movePlayerByIntegers(1, 1);
         $this->assertCount(2, $game->getVisitedCells());
-        $this->assertEquals(['x'=>1,'y'=>1], $game->getVisitedCells()[1]);
+        $this->assertEquals(
+            Coordinates::fromIntegers(1, 1),
+            $game->getVisitedCells()[1]
+        );
+
+        $game->movePlayerByIntegers(-1, -1);
+        $this->assertCount(2, $game->getVisitedCells());
+
+        $game->movePlayerByIntegers(2, 2);
+        $this->assertCount(3, $game->getVisitedCells());
+        $this->assertEquals(
+            Coordinates::fromIntegers(2, 2),
+            $game->getVisitedCells()[2]
+        );
     }
 }

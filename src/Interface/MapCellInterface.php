@@ -2,11 +2,11 @@
 
 namespace App\Interface;
 
+use App\Helper\Coordinates;
+
 interface MapCellInterface
 {
-    public function getXCoordinate(): int;
-
-    public function getYCoordinate(): int;
+    public function getCoordinates(): Coordinates;
 
     public function getType(): string;
 }

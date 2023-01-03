@@ -2,6 +2,7 @@
 
 namespace App\Service\Map\Railroad;
 
+use App\Helper\Coordinates;
 use App\Interface\HasTreasure;
 use App\Interface\TreasureInterface;
 
@@ -28,12 +29,11 @@ class Room extends Cell implements HasTreasure
         return $this;
     }
 
-    public static function fromCoordinates(int $x, int $y = 0): self
+    public static function fromCoordinates(Coordinates $coordinates): self
     {
         $room = new self();
 
-        $room->setXCoordinate($x);
-        $room->setYCoordinate($y);
+        $room->setCoordinates($coordinates);
 
         return $room;
     }

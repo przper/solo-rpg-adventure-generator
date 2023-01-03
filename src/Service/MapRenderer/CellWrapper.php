@@ -2,6 +2,7 @@
 
 namespace App\Service\MapRenderer;
 
+use App\Helper\Coordinates;
 use App\Interface\HasTreasure;
 use App\Interface\MapCellInterface;
 use App\Interface\TreasureInterface;
@@ -17,20 +18,17 @@ class CellWrapper
 
     private bool $isVisited = false;
 
-    public readonly string $type;
+    readonly public string $type;
 
-    public readonly int $x;
+    readonly public Coordinates $coordinates;
 
-    public readonly int $y;
-
-    public readonly ?TreasureInterface $treasure;
+    readonly public ?TreasureInterface $treasure;
 
     public function __construct(MapCellInterface $baseCell)
     {
         $this->type = $baseCell->getType();
 
-        $this->x = $baseCell->getXCoordinate();
-        $this->y = $baseCell->getYCoordinate();
+        $this->coordinates = $baseCell->getCoordinates();
 
         $this->treasure = $baseCell instanceof HasTreasure ? $baseCell->getTreasure() : null;
     }
@@ -84,15 +82,16 @@ class CellWrapper
 
     public function applyGameState(Game $game): void
     {
+        $this->hasPlayer = false;
+        $this->isVisited = false;
+
         $position = $game->getPlayerPosition();
 
-        if ($this->x === $position->getX() && $this->y === $position->getY()) {
+        if ($this->coordinates == $position->getCoordinates()) {
             $this->hasPlayer = true;
         }
 
-        $cellCoordinates = ['x'=> $this->x, 'y' => $this->y];
-
-        if (in_array($cellCoordinates, $game->getVisitedCells())) {
+        if (in_array($this->coordinates, $game->getVisitedCells())) {
             $this->isVisited = true;
         }
     }

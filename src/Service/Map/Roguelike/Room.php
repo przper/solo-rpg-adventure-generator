@@ -2,6 +2,7 @@
 
 namespace App\Service\Map\Roguelike;
 
+use App\Helper\Coordinates;
 use App\Interface\MapCellInterface;
 use App\Interface\TreasureInterface;
 
@@ -12,27 +13,14 @@ class Room implements MapCellInterface
     private ?TreasureInterface $treasure = null;
 
     public function __construct(
-        private int $x,
-        private int $y
+        private Coordinates $coordinates
     ) {
         //
     }
 
-    public static function createRandom(int $maxX, int $maxY): self
+    public function getCoordinates(): Coordinates
     {
-        $room = new self(rand(0, $maxX), rand(0, $maxY));
-
-        return $room;
-    }
-
-    public function getXCoordinate(): int
-    {
-        return $this->x;
-    }
-
-    public function getYCoordinate(): int
-    {
-        return $this->y;
+        return $this->coordinates;
     }
 
     public function getType(): string
@@ -43,5 +31,14 @@ class Room implements MapCellInterface
     public function getTreasure(): ?TreasureInterface
     {
         return $this->treasure;
+    }
+
+    public static function createWithRandomCoordinates(int $maxX, int $maxY): self
+    {
+        $coordinates = Coordinates::fromIntegers(rand(0, $maxX), rand(0, $maxY));
+
+        $room = new self($coordinates);
+
+        return $room;
     }
 }

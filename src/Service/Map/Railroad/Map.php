@@ -2,6 +2,7 @@
 
 namespace App\Service\Map\Railroad;
 
+use App\Helper\Coordinates;
 use App\Interface\MapCellInterface;
 use App\Interface\MapInterface;
 
@@ -49,9 +50,9 @@ class Map implements MapInterface
 
     public function addCell(Cell $cell): self
     {
-        $cell->setXCoordinate($this->getLength());
-        $cell->setYCoordinate(0);
-
+        $coordinates = Coordinates::fromIntegers($this->getLength(), 0);
+        $cell->setCoordinates($coordinates);
+        
         $this->cells[] = [$cell];
 
         return $this;

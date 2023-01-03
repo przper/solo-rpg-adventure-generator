@@ -2,35 +2,22 @@
 
 namespace App\Service\Map\Railroad;
 
+use App\Helper\Coordinates;
 use App\Interface\MapCellInterface;
 use App\Interface\TreasureInterface;
 
 abstract class Cell implements MapCellInterface
 {
-    private int $x;
+    private Coordinates $coordinates;
 
-    private int $y;
-
-    public function getXCoordinate(): int
+    public function getCoordinates(): Coordinates
     {
-        return $this->x;
+        return $this->coordinates;
     }
 
-    public function setXCoordinate(int $x): self
+    public function setCoordinates(Coordinates $coordinates): self
     {
-        $this->x = $x;
-
-        return $this;
-    }
-
-    public function getYCoordinate(): int
-    {
-        return $this->y;
-    }
-
-    public function setYCoordinate(int $y): self
-    {
-        $this->y = $y;
+        $this->coordinates = $coordinates;
 
         return $this;
     }
@@ -38,5 +25,4 @@ abstract class Cell implements MapCellInterface
     abstract public function getType(): string;
 
     abstract public function getTreasure(): ?TreasureInterface;
-
 }

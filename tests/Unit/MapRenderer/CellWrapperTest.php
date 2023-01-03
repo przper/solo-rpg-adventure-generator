@@ -2,6 +2,7 @@
 
 namespace App\Tests\Unit\MapRenderer;
 
+use App\Helper\Coordinates;
 use PHPUnit\Framework\TestCase;
 use App\Service\MapRenderer\CellWrapper;
 use App\Tests\Unit\MapRenderer\Fixtures\DummyMapCell;
@@ -18,8 +19,10 @@ class CellWrapperTest extends TestCase
         $this->assertFalse($wrapper->getHasPlayer());
         $this->assertFalse($wrapper->getIsVisited());
 
-        $this->assertEquals(0, $wrapper->x);
-        $this->assertEquals(0, $wrapper->y);
+        $this->assertEquals(
+            Coordinates::fromIntegers(0, 0),
+            $wrapper->coordinates
+        );
 
         $this->assertNull($wrapper->treasure);
     }

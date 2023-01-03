@@ -84,8 +84,8 @@ class PlayController extends AbstractController
 
         if ($direction = $request->get('direction')) {
             match ($direction) {
-                'forward' => $game->movePlayer(1, 0),
-                'backward' => $game->movePlayer(-1, 0)
+                'forward' => $game->movePlayerByIntegers(1, 0),
+                'backward' => $game->movePlayerByIntegers(-1, 0)
             };
         }
 

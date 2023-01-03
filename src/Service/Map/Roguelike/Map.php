@@ -2,6 +2,7 @@
 
 namespace App\Service\Map\Roguelike;
 
+use App\Helper\Coordinates;
 use App\Interface\MapInterface;
 
 class Map implements MapInterface
@@ -16,29 +17,25 @@ class Map implements MapInterface
         private int $columnsCount,
         private int $roomsCount
     ) {
-        // $this->cells = array_pad([], $rowsCount, array_pad([], $columnsCount, new Wall()));
-
         foreach (range(0, $columnsCount - 1) as $columnIndex) {
             foreach (range(0, $rowsCount - 1) as $rowIndex) {
-                $this->cells[$columnIndex][$rowIndex] = new Wall($columnIndex, $rowIndex);
+                $wallCoordinates = Coordinates::fromIntegers($columnIndex, $rowIndex);
+                $this->cells[$columnIndex][$rowIndex] = new Wall($wallCoordinates);
             }
         }
 
         $this->rooms = [];
 
         while (count($this->rooms) < $this->roomsCount) {
-            $room = Room::createRandom($rowsCount - 1, $columnsCount - 1);
-            // dump($room);
+            $room = Room::createWithRandomCoordinates($rowsCount - 1, $columnsCount - 1);
 
             if (in_array($room, $this->rooms)) {
                 continue;
             }
 
             $this->rooms[] = $room;
-            $this->cells[$room->getXCoordinate()][$room->getYCoordinate()] = $room;
+            $this->cells[$room->getCoordinates()->getX()][$room->getCoordinates()->getY()] = $room;
         }
-
-        // dump($this);
     }
 
     public function getCells(): array

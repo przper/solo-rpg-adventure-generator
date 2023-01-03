@@ -2,6 +2,7 @@
 
 namespace App\Tests\Integration\MapRenderer\Fixtures;
 
+use App\Helper\Coordinates;
 use App\Interface\MapCellInterface;
 
 class DummyMapCell implements MapCellInterface
@@ -11,13 +12,8 @@ class DummyMapCell implements MapCellInterface
         return 'DUMMY';
     }
 
-    public function getXCoordinate(): int
+    public function getCoordinates(): Coordinates
     {
-        return 0;
-    }
-
-    public function getYCoordinate(): int
-    {
-        return 0;
+        return Coordinates::fromIntegers(0, 0);
     }
 }

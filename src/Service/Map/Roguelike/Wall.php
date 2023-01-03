@@ -2,6 +2,7 @@
 
 namespace App\Service\Map\Roguelike;
 
+use App\Helper\Coordinates;
 use App\Interface\MapCellInterface;
 
 class Wall implements MapCellInterface
@@ -9,27 +10,14 @@ class Wall implements MapCellInterface
     final public const TYPE = 'WALL';
 
     public function __construct(
-        private int $x,
-        private int $y
+        private Coordinates $coordinates
     ) {
         //
     }
 
-    public static function createFromCoordinates(int $x, int $y): self
+    public function getCoordinates(): Coordinates
     {
-        $wall = new self($x, $y);
-
-        return $wall;
-    }
-
-    public function getXCoordinate(): int
-    {
-        return $this->x;
-    }
-
-    public function getYCoordinate(): int
-    {
-        return $this->y;
+        return $this->coordinates;
     }
 
     public function getType(): string
