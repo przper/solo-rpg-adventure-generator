@@ -27,11 +27,11 @@ class RoomGeneratorTest extends KernelTestCase
     /** @test */
     public function treasureChanceCanBeSet()
     {
-        $this->generator->setTreasurePercentageChangeInInt(100);
+        $this->generator->setTreasurePercentageChanceInInt(100);
         $room = $this->generator->generate();
         $this->assertInstanceOf(TreasureInterface::class, $room->getTreasure());
 
-        $this->generator->setTreasurePercentageChangeInInt(0);
+        $this->generator->setTreasurePercentageChanceInInt(0);
         $room = $this->generator->generate();
         $this->assertNull($room->getTreasure());
     }

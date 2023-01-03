@@ -15,7 +15,7 @@ There is a number of free Dungeon Generators, but they don't **hide their conten
 ## How To Play
 1. Select Dungeon Type at `https://localhost/play/new`
 2. Move using `forward` or `backward` buttons and explore the generated dungeon
-3. Remember that confidence is slow but insidious killer.
+3. Remember that confidence is slow but insidious killer...
 
 ## Features
 
@@ -23,7 +23,8 @@ There is a number of free Dungeon Generators, but they don't **hide their conten
 - Railroad Dungeon Generation **(WIP)**
     - Room & Corridors **(DONE)**
     - Treasure **(WIP)**
-    - Enemies (Planned)
+    - Enemies **(WIP)**
     - Traps (Planned)
     - Descriptions (Maybe...)
 - Roguelike Dungeon Generation (Planned)
+- Simple Diceroller (Planned)
