@@ -2,21 +2,33 @@
 
 namespace App\Service\Map\Railroad;
 
+use App\Interface\EnemyGeneratorInterface;
 use App\Interface\TreasureGeneratorInterface;
+
 
 class RoomGenerator
 {
-    private int $treasurePercentageChangeInInt = 50;
+    private int $treasurePercentageChanceInInt = 50;
+
+    private $enemyPercentageChanceInInt = 50;
 
     public function __construct(
-        private TreasureGeneratorInterface $treasureGenerator
+        private TreasureGeneratorInterface $treasureGenerator,
+        private EnemyGeneratorInterface $enemyGenerator
     ) {
         //
     }
 
-    public function setTreasurePercentageChangeInInt(int $treasurePercentageChangeInInt): self
+    public function setTreasurePercentageChanceInInt(int $treasurePercentageChanceInInt): self
     {
-        $this->treasurePercentageChangeInInt = $treasurePercentageChangeInInt;
+        $this->treasurePercentageChanceInInt = $treasurePercentageChanceInInt;
+
+        return $this;
+    }
+
+    public function setEnemyPercentageChanceInInt(int $enemyPercentageChanceInInt): self
+    {
+        $this->enemyPercentageChanceInInt = $enemyPercentageChanceInInt;
 
         return $this;
     }
@@ -25,9 +37,14 @@ class RoomGenerator
     {
         $room = new Room();
 
-        if (rand(0, 100) < $this->treasurePercentageChangeInInt) {
+        if (rand(0, 100) < $this->treasurePercentageChanceInInt) {
             $treasure = $this->treasureGenerator->generate();
             $room->setTreasure($treasure);
+        }
+
+        if (rand(0, 100) < $this->enemyPercentageChanceInInt) {
+            $enemies = $this->enemyGenerator->generateMany(rand(1, 3));
+            $room->setEnemies($enemies);
         }
 
         return $room;
