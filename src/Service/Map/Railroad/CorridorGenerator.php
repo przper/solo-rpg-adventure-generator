@@ -46,6 +46,9 @@ class CorridorGenerator
             $corridor->setEnemies($enemies);
         }
 
+        $this->setTreasurePercentageChanceInInt(20);
+        $this->setEnemyPercentageChanceInInt(30);
+
         return $corridor;
     }
 }

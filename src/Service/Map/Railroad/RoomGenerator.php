@@ -47,6 +47,9 @@ class RoomGenerator
             $room->setEnemies($enemies);
         }
 
+        $this->setTreasurePercentageChanceInInt(50);
+        $this->setEnemyPercentageChanceInInt(80);
+
         return $room;
     }
 
