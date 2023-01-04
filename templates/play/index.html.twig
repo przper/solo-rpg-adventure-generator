@@ -56,21 +56,23 @@
         <div class="w-2/3 h-min mb-4 p-4 rounded-xl shadow-sm bg-white">
             {% set currentCell = game.map.getCell(game.playerPosition.coordinates) %}
 
-            <div class="mb-2">
-                <h2 class="text-3xl">Treasure</h2>
-                <p>{{ currentCell.treasure|json_encode() }}</p>
-            </div>
+            {% if currentCell %}
+                <div class="mb-2">
+                    <h2 class="text-3xl">Treasure</h2>
+                    <p>{{ currentCell.treasure|json_encode() }}</p>
+                </div>
 
-            <div class="mb-2">
-                <h2 class="text-3xl">Enemies</h2>
-                <ul>
-                    {% for enemy in currentCell.enemies ?? [] %}
-                        <li>{{ enemy|json_encode() }}</li>
-                    {% else %}
-                        <li>No monster to slay.</li>
-                    {% endfor %}
-                </ul>
-            </div>
+                <div class="mb-2">
+                    <h2 class="text-3xl">Enemies</h2>
+                    <ul>
+                        {% for enemy in currentCell.enemies ?? [] %}
+                            <li>{{ enemy|json_encode() }}</li>
+                        {% else %}
+                            <li>No monster to slay.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
         </div>
     <div>
 </div>
