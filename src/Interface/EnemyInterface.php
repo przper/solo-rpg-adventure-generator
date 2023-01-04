@@ -7,6 +7,7 @@ use JsonSerializable;
 
 interface EnemyInterface extends JsonSerializable
 {
+    public function getChallangeRating(): float;
     public function getName(): string;
     public function getHitDice(): DiceStack;
     public function getHitPoints(): int;

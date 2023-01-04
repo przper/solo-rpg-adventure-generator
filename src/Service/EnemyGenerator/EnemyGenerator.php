@@ -13,8 +13,9 @@ class EnemyGenerator implements EnemyGeneratorInterface
         $enemy = new Enemy();
 
         $monsterType = array_rand($this->getMonsterManual());
-        [$name, $hitDice, $armorClass, $damage] = $this->getMonsterManual()[$monsterType];
+        [$challangeRating, $name, $hitDice, $armorClass, $damage] = $this->getMonsterManual()[$monsterType];
 
+        $enemy->setChallangeRating($challangeRating);
         $enemy->setName($name);
         $enemy->setHitDice($hitDice);
         $enemy->setHitPoints($hitDice->roll());
@@ -38,9 +39,10 @@ class EnemyGenerator implements EnemyGeneratorInterface
     private function getMonsterManual(): array
     {
         return [
-            /** NAME, HIT_DICE, ARMOR_CLASS, DAMAGE */
-            'GOBLIN' => ['Goblin', DiceStack::fromString("1d6"), '13', DiceStack::fromString("1d6")],
-            'GOBLIN_BOSS' => ['Goblin Boss', DiceStack::fromString("6d6"), '17', DiceStack::fromString("1d6+2")],
+            /** CHALLANGE_RATING, NAME, HIT_DICE, ARMOR_CLASS, DAMAGE */
+            'GOBLIN' => [1, 'Goblin', DiceStack::fromString("1d6"), '13', DiceStack::fromString("1d6")],
+            'GOBLIN_WARRIOR' => [2, 'Goblin Warrior', DiceStack::fromString("2d6"), '13', DiceStack::fromString("1d6+2")],
+            'GOBLIN_BOSS' => [3, 'Goblin Boss', DiceStack::fromString("3d6"), '15', DiceStack::fromString("1d6+2")],
         ];
     }
 }

@@ -7,6 +7,8 @@ use App\Interface\EnemyInterface;
 
 class Enemy implements EnemyInterface
 {
+    private float $challangeRating;
+
     private string $name;
 
     private DiceStack $hitDice;
@@ -16,6 +18,18 @@ class Enemy implements EnemyInterface
     private int $armorClass;
 
     private DiceStack $damage;
+
+    public function getChallangeRating(): float
+    {
+        return $this->challangeRating;
+    }
+
+    public function setChallangeRating(float $challangeRating): self
+    {
+        $this->challangeRating = $challangeRating;
+
+        return $this;
+    }
 
     public function getName(): string
     {
