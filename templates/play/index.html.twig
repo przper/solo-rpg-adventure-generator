@@ -4,18 +4,13 @@
 
 {% block body %}
 <div class="container mx-auto">
-    <h1 class="text-4xl mb-6">{{ heading }}</h1>
-
-    <div class="mb-6 rounded-xl shadow-sm bg-white">
-        <p>Description</p>
-    </div>
-
+    <h1 class="mb-6 text-4xl flex justify-center">{{ heading }}</h1>
 
     <div class="mb-6 w-full flex">
-        <div class="w-2/3">
+        <div class="w-1/3 mr-4">
             <div>{{ map.html | raw }}</div>
 
-            <div class="flex items-center">
+            <div class="mb-4 flex items-center justify-center">
                 <p class="mr-4">Position: {{ game.playerPosition.coordinates }}</p>
             
                 <form class="mr-4">
@@ -28,28 +23,56 @@
                 </form>
             </div>
 
+            <div class="flex items-start">
+                <div class="mr-4 text-xs">
+
+                    <div class="flex mb-4">
+                        <div class="w-1/2 mr-2">
+                            <h2 class="text-2xl mb-2">Rooms</h2>
+
+                            {% for room in game.map.rooms %}
+                                <h3 class="text-xl">#{{ loop.index }}</h3>
+                                <p>position: {{ room.coordinates }}
+                                <p>treasure: {{ room.treasure ? room.treasure | json_encode() : 'nope' }}</p>
+                                <p>enemies: {{ room.enemies ? room.enemies|length : 'nope' }}</p>
+                            {% endfor %}
+                        </div>
+
+                        <div class="w-1/2">
+                            <h2 class="text-2xl mb-2">Corridors</h2>
+
+                            {% for corridor in game.map.corridors %}
+                                <h3 class="text-xl">#{{ loop.index }}</h3>
+                                <p>position: {{ corridor.coordinates }}
+                                <p>treasure: {{ corridor.treasure ? corridor.treasure | json_encode() : 'nope' }}</p>
+                                <p>enemies: {{ corridor.enemies ? corridor.enemies|length : 'nope' }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="w-1/3 flex items-start">
-            <div class="mr-4">
-                <h2 class="text-3xl mb-2">Dungeon</h2>
+        <div class="w-2/3 h-min mb-4 p-4 rounded-xl shadow-sm bg-white">
+            {% set currentCell = game.map.getCell(game.playerPosition.coordinates) %}
 
-                <p>Length: {{ game.map.length ?? 'N\A' }}</p>
+            <div class="mb-2">
+                <h2 class="text-3xl">Treasure</h2>
+                <p>{{ currentCell.treasure|json_encode() }}</p>
             </div>
 
-            <div class="mr-4">
-                <h2 class="text-3xl mb-2">Rooms</h2>
-
-                {% for room in game.map.rooms %}
-                    <h3 class="text-2xl">#{{ loop.index }}</h3>
-                    <p>position: {{ room.coordinates }}
-                    <p>treasure: {{ room.treasure ? room.treasure | json_encode() : 'nope' }}</p>
-                    <p>enemies: {{ room.enemies ? room.enemies |json_encode() : 'nope' }}</p>
-                {% endfor %}
+            <div class="mb-2">
+                <h2 class="text-3xl">Enemies</h2>
+                <ul>
+                    {% for enemy in currentCell.enemies ?? [] %}
+                        <li>{{ enemy|json_encode() }}</li>
+                    {% else %}
+                        <li>No monster to slay.</li>
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     <div>
-
 </div>
 
 {% endblock %}

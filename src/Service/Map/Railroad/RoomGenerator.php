@@ -10,7 +10,7 @@ class RoomGenerator
 {
     private int $treasurePercentageChanceInInt = 50;
 
-    private $enemyPercentageChanceInInt = 50;
+    private $enemyPercentageChanceInInt = 80;
 
     public function __construct(
         private TreasureGeneratorInterface $treasureGenerator,
@@ -43,7 +43,7 @@ class RoomGenerator
         }
 
         if (rand(0, 100) < $this->enemyPercentageChanceInInt) {
-            $enemies = $this->enemyGenerator->generateMany(rand(1, 3));
+            $enemies = $this->enemyGenerator->generateMany(rand(3, 4));
             $room->setEnemies($enemies);
         }
 

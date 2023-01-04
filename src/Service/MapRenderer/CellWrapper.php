@@ -3,6 +3,7 @@
 namespace App\Service\MapRenderer;
 
 use App\Helper\Coordinates;
+use App\Interface\HasEnemies;
 use App\Interface\HasTreasure;
 use App\Interface\MapCellInterface;
 use App\Interface\TreasureInterface;
@@ -28,13 +29,14 @@ class CellWrapper
 
     readonly public ?TreasureInterface $treasure;
 
+    readonly public array $enemies;
+
     public function __construct(MapCellInterface $baseCell)
     {
         $this->type = $baseCell->getType();
-
         $this->coordinates = $baseCell->getCoordinates();
-
         $this->treasure = $baseCell instanceof HasTreasure ? $baseCell->getTreasure() : null;
+        $this->enemies = $baseCell instanceof HasEnemies ? $baseCell->getEnemies() : [];
     }
 
     public function getHasPlayer(): bool
