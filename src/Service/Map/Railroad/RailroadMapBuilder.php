@@ -44,17 +44,17 @@ class RailroadMapBuilder implements MapGeneratorInterface
     {
         $map = new Map();
 
-        /** To Do: Refactor "while (true) ... break;" */
-        while (true) {
-            $room = $this->roomGenerator->generate();
+        $starterRoom = $this->roomGenerator
+            ->setEnemyPercentageChanceInInt(0)
+            ->setTreasurePercentageChanceInInt(0)
+            ->generate();
 
-            $map->addCell($room);
+        $map->addCell($starterRoom);
 
-            if (count($map->getRooms()) >= $this->roomsCount) {
-                break;
-            }
-
+        while(count($map->getRooms()) < $this->roomsCount) {
             $this->addCorridorToMap($map);
+
+            $map->addCell($this->roomGenerator->generate());
         }
 
         return $map;
