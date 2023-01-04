@@ -4,6 +4,7 @@ namespace App\Service\Map\Roguelike;
 
 use App\Helper\Coordinates;
 use App\Interface\MapInterface;
+use App\Interface\MapCellInterface;
 
 class Map implements MapInterface
 {
@@ -41,6 +42,11 @@ class Map implements MapInterface
     public function getCells(): array
     {
         return $this->cells;
+    }
+
+    public function getCell(Coordinates $coordinates): ?MapCellInterface
+    {
+        return $this->cells[$coordinates->getX()][$coordinates->getY()] ?? null;
     }
 
     public function getRooms(): array

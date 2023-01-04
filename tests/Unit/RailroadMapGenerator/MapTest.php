@@ -2,6 +2,7 @@
 
 namespace App\Tests\Unit\RailroadMapGenerator;
 
+use App\Helper\Coordinates;
 use PHPUnit\Framework\TestCase;
 use App\Service\Map\Railroad\Map;
 use App\Service\Map\Railroad\Room;
@@ -16,6 +17,21 @@ class MapTest extends TestCase
 
         $this->assertIsArray($map->getCells());
         $this->assertCount(0, $map->getCells());
+    }
+
+    /** @test */
+    public function it_can_retrieve_cell_at_given_coordinates()
+    {
+        $map = new Map();
+
+        $map->addCell(new Room());
+        $map->addCell(new Corridor());
+        $map->addCell(new Room());
+
+        $this->assertInstanceOf(Room::class, $map->getCell(Coordinates::fromIntegers(0, 0)));
+        $this->assertInstanceOf(Corridor::class, $map->getCell(Coordinates::fromIntegers(1, 0)));
+        $this->assertInstanceOf(Room::class, $map->getCell(Coordinates::fromIntegers(2, 0)));
+
     }
 
     /** @test */

@@ -16,6 +16,11 @@ class Map implements MapInterface
         return $this->cells;
     }
 
+    public function getCell(Coordinates $coordinates): ?MapCellInterface
+    {
+        return $this->cells[$coordinates->getX()][$coordinates->getY()] ?? null;
+    }
+
     public function getRooms(): array
     {
         $rooms = [];

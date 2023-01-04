@@ -2,7 +2,9 @@
 
 namespace App\Tests\Unit\Game\Fixtures;
 
+use App\Helper\Coordinates;
 use App\Interface\MapInterface;
+use App\Interface\MapCellInterface;
 
 class DummyMap implements MapInterface
 {
@@ -16,5 +18,10 @@ class DummyMap implements MapInterface
         return [
             [ new DummyMapCell() ]
         ];
+    }
+
+    public function getCell(Coordinates $coordinates): ?MapCellInterface
+    {
+        return $this->getCells()[$coordinates->getX()][$coordinates->getY()] ?? null;
     }
 }
