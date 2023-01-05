@@ -1,0 +1,48 @@
+<?php
+
+namespace App\Service\EncounterPlanner;
+
+class EncounterPlanner
+{
+    final public const DUNGEON_SIZE_SHORT = 'DUNGEON_SHORT';
+    final public const DUNGEON_SIZE_MEDIUM = 'DUNGEON_MEDIUM';
+    final public const DUNGEON_SIZE_LONG = 'DUNGEON_LONG';
+
+    public function plan(string $dungeonLength, int $teamChallangeRating)
+    {
+        $maxNumberOfEncounters = match ($dungeonLength) {
+            self::DUNGEON_SIZE_SHORT => rand(5, 6),
+            self::DUNGEON_SIZE_MEDIUM => rand (11, 12),
+            self::DUNGEON_SIZE_LONG => rand(17, 18)
+        };
+        // dump($maxNumberOfEncounters);
+
+        $mediumEncountersCount = ceil($maxNumberOfEncounters / 2);
+        $easyEncountersCount = floor(($maxNumberOfEncounters - $mediumEncountersCount) / 2);
+        $hardEncounterCount = $maxNumberOfEncounters - $mediumEncountersCount - $easyEncountersCount;
+        $deadlyEncounterCount = 0;
+
+        if ($hardEncounterCount > 1 && rand(1, 100) < 60) {
+            $hardEncounterCount -= 2;
+            $deadlyEncounterCount++;
+        }
+
+        $encounterPlan =  [
+            'easy' => $easyEncountersCount,
+            'medium' => $mediumEncountersCount,
+            'hard' => $hardEncounterCount,
+            'deadly' => $deadlyEncounterCount
+        ];
+
+        // dump($encounterPlan);
+        $encounters = [];
+
+        foreach($encounterPlan as $difficulty => $count) {
+            for($i = 0; $i < $count; $i++) {
+                $encounters[] = Encounter::create($difficulty, $teamChallangeRating);
+            }
+        }
+
+        return $encounters;
+    }
+}
