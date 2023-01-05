@@ -12,13 +12,14 @@ class EnemyGenerator implements EnemyGeneratorInterface
     {
         $enemy = new Enemy();
 
-        $monsterType = array_rand($this->getMonsterManual());
-        [$challangeRating, $name, $hitDice, $armorClass, $damage] = $this->getMonsterManual()[$monsterType];
+        $monsterType = array_rand($this->getGnGMonsterManual());
+        [$challangeRating, $experiencePoints, $name, $hitDice, $hipPoints, $armorClass, $damage] = $this->getGnGMonsterManual()[$monsterType];
 
         $enemy->setChallangeRating($challangeRating);
+        $enemy->setExperiencePoints($experiencePoints);
         $enemy->setName($name);
         $enemy->setHitDice($hitDice);
-        $enemy->setHitPoints($hitDice->roll());
+        $enemy->setHitPoints($hipPoints ?? $hitDice->roll());
         $enemy->setArmorClass($armorClass);
         $enemy->setDamage($damage);
 
@@ -36,13 +37,62 @@ class EnemyGenerator implements EnemyGeneratorInterface
         return $enemies;
     }
 
-    private function getMonsterManual(): array
+    public function generateForExperienceNumber(int $expectedExperienceSum): array
+    {
+        $multipleMonsterModifier = [
+            //COUNT => MULTIPLIER
+            1 => 1.0,
+            2 => 1.5,
+            3 => 2.0,
+            4 => 2.0,
+            5 => 2.0,
+            6 => 2.0,
+            7 => 2.5,
+            8 => 2.5,
+            9 => 2.5,
+            10 => 2.5,
+            11 => 3.0,
+            12 => 3.0,
+            13 => 3.0,
+            14 => 3.0,
+            15 => 4.0,
+        ];
+
+        $enemies = [];
+        $experienceSum = 0;
+        $adjustedExperience = 0;
+
+        while($adjustedExperience < $expectedExperienceSum) {
+            /**
+             * ToDo:
+             * Program encounter "type" - boss lair, patrol, barracks, ambush, single monster, etc.
+             */
+            $enemy = $this->generate();
+
+            $enemies[] = $enemy;
+            $experienceSum += $enemy->getExperiencePoints();
+            $adjustedExperience = $multipleMonsterModifier[count($enemies)] * $experienceSum;
+        }
+
+        return $enemies;
+    }
+
+    private function getDnDMonsterManual(): array
     {
         return [
-            /** CHALLANGE_RATING, NAME, HIT_DICE, ARMOR_CLASS, DAMAGE */
-            'GOBLIN' => [1, 'Goblin', DiceStack::fromString("1d6"), '13', DiceStack::fromString("1d6")],
-            'GOBLIN_WARRIOR' => [2, 'Goblin Warrior', DiceStack::fromString("2d6"), '13', DiceStack::fromString("1d6+2")],
-            'GOBLIN_BOSS' => [3, 'Goblin Boss', DiceStack::fromString("3d6"), '15', DiceStack::fromString("1d6+2")],
+            /** CHALLANGE_RATING, EXPERIENCE_POINTS, NAME, HIT_DICE, HIT_POINTS, ARMOR_CLASS, DAMAGE */
+            'DND_5E_GOBLIN_MINION' => [0.25, 10, 'Goblin Minion', DiceStack::fromString("1d6"), 6, '14', DiceStack::fromString("1d2-1")],
+            'DND_5E_GOBLIN_WARRIOR' => [0.25, 50, 'Goblin Warrior', DiceStack::fromString("2d6+2"), 9, '15', DiceStack::fromString("1d6+2")],
+            'DND_5E_GOBLIN_SPINECLEAVER' => [1, 200, 'Goblin Spinecleaver', DiceStack::fromString("6d6+12"), 33, '14', DiceStack::fromString("1d12+3")],
+            'DND_5E_GOBLIN_BOSS' => [2, 450, 'Goblin Boss', DiceStack::fromString("8d6+8"), 36, '17', DiceStack::fromString("1d6+3")],
+        ];
+    }
+
+    private function getGnGMonsterManual(): array
+    {
+        return [
+            /** CHALLANGE_RATING, EXPERIENCE_POINTS, NAME, HIT_DICE, HIT_POINTS, ARMOR_CLASS, DAMAGE */
+            'GOBLIN' => [1, 30, 'Goblin', DiceStack::fromString("1d6"), null, '13', DiceStack::fromString("1d6")],
         ];
     }
 }

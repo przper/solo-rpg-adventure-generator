@@ -8,7 +8,19 @@ class EncounterPlanner
     final public const DUNGEON_SIZE_MEDIUM = 'DUNGEON_MEDIUM';
     final public const DUNGEON_SIZE_LONG = 'DUNGEON_LONG';
 
-    public function plan(string $dungeonLength, int $teamChallangeRating)
+    public function __construct(
+        private EncounterGenerator $encounterGenerator
+    ) {
+        //
+    }
+
+    /**
+     * @param string $dungeonLength
+     * @param TeamChallangeRating $teamChallangeRating
+     * 
+     * @return Encounter[]
+     */
+    public function plan(string $dungeonLength, TeamChallangeRating $teamChallangeRating): array
     {
         $maxNumberOfEncounters = match ($dungeonLength) {
             self::DUNGEON_SIZE_SHORT => rand(5, 6),
@@ -39,7 +51,7 @@ class EncounterPlanner
 
         foreach($encounterPlan as $difficulty => $count) {
             for($i = 0; $i < $count; $i++) {
-                $encounters[] = Encounter::create($difficulty, $teamChallangeRating);
+                $encounters[] = $this->encounterGenerator->create($difficulty, $teamChallangeRating);
             }
         }
 

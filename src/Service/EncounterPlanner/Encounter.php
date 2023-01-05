@@ -16,7 +16,7 @@ class Encounter
     /** @var EnemyInterface[] $enemies */
     private array $enemies = [];
     
-    private int $challangeRating;
+    private TeamChallangeRating $challangeRating;
 
     public function getDifficulty(): string
     {
@@ -48,32 +48,15 @@ class Encounter
         return $this;
     }
 
-    public function getChallangeRating(): int
+    public function getChallangeRating(): TeamChallangeRating
     {
         return $this->challangeRating;
     }
 
-    public function setChallangeRating(int $challangeRating): self
+    public function setChallangeRating(TeamChallangeRating $challangeRating): self
     {
         $this->challangeRating = $challangeRating;
 
         return $this;
-    }
-
-    public static function create(string $difficulty, int $teamChallangeRating): self
-    {
-        $encounter = new self();
-
-        $enemiesChallangeRatingSum = $teamChallangeRating * match($difficulty) {
-            self::DIFFICULTY_EASY => 0.5,
-            self::DIFFICULTY_MEDIUM => 1,
-            self::DIFFICULTY_HARD => 1.5,
-            self::DIFFICULTY_DEADLY => 2.5
-        };
-
-        $encounter->setDifficulty($difficulty);
-        $encounter->setChallangeRating($enemiesChallangeRatingSum);
-
-        return $encounter;
     }
 }

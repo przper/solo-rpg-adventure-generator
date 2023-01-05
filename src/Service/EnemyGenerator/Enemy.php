@@ -9,6 +9,8 @@ class Enemy implements EnemyInterface
 {
     private float $challangeRating;
 
+    private int $experiencePoints;
+
     private string $name;
 
     private DiceStack $hitDice;
@@ -27,6 +29,18 @@ class Enemy implements EnemyInterface
     public function setChallangeRating(float $challangeRating): self
     {
         $this->challangeRating = $challangeRating;
+
+        return $this;
+    }
+
+    public function getExperiencePoints(): int
+    {
+        return $this->experiencePoints;
+    }
+
+    public function setExperiencePoints(int $experiencePoints): self
+    {
+        $this->experiencePoints = $experiencePoints;
 
         return $this;
     }
@@ -94,6 +108,8 @@ class Enemy implements EnemyInterface
     public function jsonSerialize(): mixed
     {
         return [
+            'challange_rating' => $this->challangeRating,
+            'experience_points' => $this->experiencePoints,
             'name' => $this->getName(),
             'hit_dice' => (string) $this->getHitDice(),
             'hit_points' => $this->getHitPoints(),

@@ -12,4 +12,6 @@ interface EnemyGeneratorInterface
      * @return EnemyInterface[]
      */
     public function generateMany(int $enemiesCount): array;
+
+    public function generateForExperienceNumber(int $experienceTreshold): array;
 }
