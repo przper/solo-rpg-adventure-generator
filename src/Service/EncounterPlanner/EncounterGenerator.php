@@ -16,12 +16,13 @@ class EncounterGenerator
     {
         $encounter = new Encounter();
 
-        $enemiesExperienceSum = $teamChallengeRating->getExperienceTresholdForDifficulty($difficulty);
-        $enemies = $this->enemyGenerator->generateForExperienceNumber($enemiesExperienceSum);
-
         $encounter->setDifficulty($difficulty);
         $encounter->setChallengeRating($teamChallengeRating);
-        $encounter->setEnemies($enemies);
+
+        $enemiesExperienceSum = $teamChallengeRating->getExperienceTresholdForDifficulty($difficulty);
+        $encounter->setEnemies(
+            $this->enemyGenerator->generateForExperienceNumber($enemiesExperienceSum)
+        );
 
         return $encounter;
     }
