@@ -6,7 +6,8 @@ final readonly class MapRender
 {
     /**
      * @param CellWrapper[][] $cells
-     * 
+     * @param string $html
+     *
      * @return void
      */
     public function __construct(

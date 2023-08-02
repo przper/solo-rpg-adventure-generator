@@ -17,7 +17,7 @@ class MapRenderer
 
     public function render(MapInterface $map, ?Game $game = null): MapRender
     {
-        /** @var CellWrapper[][] */
+        /** @var CellWrapper[][] $cells */
         $cells = [];
 
         foreach ($map->getCells() as $column) {
@@ -35,7 +35,7 @@ class MapRenderer
         $html = $this->twig->render('map/map.html.twig', [
             'cells' => $cells,
         ]);
-        
+
         return new MapRender($cells, $html);
     }
 }
