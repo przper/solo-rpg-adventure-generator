@@ -2,7 +2,7 @@
 
 namespace App\Service\EncounterPlanner;
 
-class EncounterPlanner
+class EncountersPlanner
 {
     final public const DUNGEON_SIZE_SHORT = 'DUNGEON_SHORT';
     final public const DUNGEON_SIZE_MEDIUM = 'DUNGEON_MEDIUM';
