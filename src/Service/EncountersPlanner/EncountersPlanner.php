@@ -46,15 +46,30 @@ class EncountersPlanner
             'deadly' => $deadlyEncounterCount
         ];
 
-        // dump($encounterPlan);
         $encounters = [];
 
         foreach($encounterPlan as $difficulty => $count) {
             for($i = 0; $i < $count; $i++) {
-                $encounters[] = $this->encounterGenerator->create($difficulty, $teamChallengeRating);
+                $encounters[] = $this->pickEasiestEncounter($difficulty, $teamChallengeRating);
             }
         }
 
         return $encounters;
+    }
+
+    private function pickEasiestEncounter($difficulty, $teamChallengeRating): Encounter
+    {
+        /** @var Encounter[] $variants */
+        $variants = [];
+
+        for ($i = 0; $i < 10; $i++) {
+            $variants[] = $this->encounterGenerator->create($difficulty, $teamChallengeRating);
+        }
+
+        usort($variants, function (Encounter $a, Encounter $b) {
+            return $a->getAdjustedEnemiesExperienceSum() - $b->getAdjustedEnemiesExperienceSum();
+        });
+
+        return $variants[0];
     }
 }
