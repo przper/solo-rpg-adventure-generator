@@ -12,15 +12,15 @@ class EncounterGenerator
         //
     }
 
-    public function create(string $difficulty, TeamChallangeRating $teamChallangeRating): Encounter
+    public function create(string $difficulty, TeamChallengeRating $teamChallengeRating): Encounter
     {
         $encounter = new Encounter();
 
-        $enemiesExperienceSum = $teamChallangeRating->getExperienceTresholdForDifficulty($difficulty);
+        $enemiesExperienceSum = $teamChallengeRating->getExperienceTresholdForDifficulty($difficulty);
         $enemies = $this->enemyGenerator->generateForExperienceNumber($enemiesExperienceSum);
 
         $encounter->setDifficulty($difficulty);
-        $encounter->setChallangeRating($teamChallangeRating);
+        $encounter->setChallengeRating($teamChallengeRating);
         $encounter->setEnemies($enemies);
 
         return $encounter;

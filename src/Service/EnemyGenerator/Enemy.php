@@ -7,7 +7,7 @@ use App\Interface\EnemyInterface;
 
 class Enemy implements EnemyInterface
 {
-    private float $challangeRating;
+    private float $challengeRating;
 
     private int $experiencePoints;
 
@@ -21,14 +21,14 @@ class Enemy implements EnemyInterface
 
     private DiceStack $damage;
 
-    public function getChallangeRating(): float
+    public function getChallengeRating(): float
     {
-        return $this->challangeRating;
+        return $this->challengeRating;
     }
 
-    public function setChallangeRating(float $challangeRating): self
+    public function setChallengeRating(float $challengeRating): self
     {
-        $this->challangeRating = $challangeRating;
+        $this->challengeRating = $challengeRating;
 
         return $this;
     }
@@ -104,11 +104,11 @@ class Enemy implements EnemyInterface
 
         return $this;
     }
-    
+
     public function jsonSerialize(): mixed
     {
         return [
-            'challange_rating' => $this->challangeRating,
+            'challenge_rating' => $this->challengeRating,
             'experience_points' => $this->experiencePoints,
             'name' => $this->getName(),
             'hit_dice' => (string) $this->getHitDice(),

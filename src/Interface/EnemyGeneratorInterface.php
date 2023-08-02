@@ -8,10 +8,10 @@ interface EnemyGeneratorInterface
 
     /**
      * @param int $enemiesCount
-     * 
+     *
      * @return EnemyInterface[]
      */
     public function generateMany(int $enemiesCount): array;
 
-    public function generateForExperienceNumber(int $experienceTreshold): array;
+    public function generateForExperienceNumber(int $expectedExperienceSum): array;
 }

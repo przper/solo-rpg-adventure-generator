@@ -16,11 +16,11 @@ class EncounterPlanner
 
     /**
      * @param string $dungeonLength
-     * @param TeamChallangeRating $teamChallangeRating
-     * 
+     * @param TeamChallengeRating $teamChallengeRating
+     *
      * @return Encounter[]
      */
-    public function plan(string $dungeonLength, TeamChallangeRating $teamChallangeRating): array
+    public function plan(string $dungeonLength, TeamChallengeRating $teamChallengeRating): array
     {
         $maxNumberOfEncounters = match ($dungeonLength) {
             self::DUNGEON_SIZE_SHORT => rand(5, 6),
@@ -51,7 +51,7 @@ class EncounterPlanner
 
         foreach($encounterPlan as $difficulty => $count) {
             for($i = 0; $i < $count; $i++) {
-                $encounters[] = $this->encounterGenerator->create($difficulty, $teamChallangeRating);
+                $encounters[] = $this->encounterGenerator->create($difficulty, $teamChallengeRating);
             }
         }
 

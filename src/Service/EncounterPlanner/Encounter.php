@@ -15,8 +15,8 @@ class Encounter
 
     /** @var EnemyInterface[] $enemies */
     private array $enemies = [];
-    
-    private TeamChallangeRating $challangeRating;
+
+    private TeamChallengeRating $challengeRating;
 
     public function getDifficulty(): string
     {
@@ -38,7 +38,7 @@ class Encounter
 
     /**
      * @param EnemyInterface[] $enemies
-     * 
+     *
      * @return self
      */
     public function setEnemies(array $enemies): self
@@ -48,14 +48,14 @@ class Encounter
         return $this;
     }
 
-    public function getChallangeRating(): TeamChallangeRating
+    public function getChallengeRating(): TeamChallengeRating
     {
-        return $this->challangeRating;
+        return $this->challengeRating;
     }
 
-    public function setChallangeRating(TeamChallangeRating $challangeRating): self
+    public function setChallengeRating(TeamChallengeRating $challengeRating): self
     {
-        $this->challangeRating = $challangeRating;
+        $this->challengeRating = $challengeRating;
 
         return $this;
     }

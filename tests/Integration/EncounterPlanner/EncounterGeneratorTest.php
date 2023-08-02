@@ -4,7 +4,7 @@ namespace App\Tests\Integration\EncounterPlanner;
 
 use App\Service\EncounterPlanner\Encounter;
 use App\Service\EncounterPlanner\EncounterGenerator;
-use App\Service\EncounterPlanner\TeamChallangeRating;
+use App\Service\EncounterPlanner\TeamChallengeRating;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class EncounterGeneratorTest extends KernelTestCase
@@ -15,11 +15,13 @@ class EncounterGeneratorTest extends KernelTestCase
         /** @var EncounterGenerator $encounterGenerator */
         $encounterGenerator = static::getContainer()->get(EncounterGenerator::class);
 
-        $team = TeamChallangeRating::fromLevelsAsIntegers(2, 2);
-        $encounter = $encounterGenerator->create(Encounter::DIFFICULTY_MEDIUM, $team);
+        $difficulty = Encounter::DIFFICULTY_MEDIUM;
+        $team = TeamChallengeRating::fromLevelsAsIntegers(1, 1);
+        $encounter = $encounterGenerator->create($difficulty, $team);
 
-        // dump(count(array_map(fn($e) => $e->getName(), $encounter->getEnemies())));
-        // dump($team->getExperienceTresholdForDifficulty(TeamChallangeRating::DIFFICULTY_MEDIUM));
+        dump(implode("|", array_map(fn($e) => $e->getName(), $encounter->getEnemies())));
+        dump($team->getExperienceTresholdForDifficulty($difficulty));
+        dump($team->getExperienceTresholdForDifficulty(Encounter::DIFFICULTY_HARD));
 
         $this->assertIsArray($encounter->getEnemies());
     }

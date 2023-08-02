@@ -2,7 +2,7 @@
 
 namespace App\Service\EncounterPlanner;
 
-class TeamChallangeRating
+class TeamChallengeRating
 {
     final public const DIFFICULTY_EASY = 'easy';
     final public const DIFFICULTY_MEDIUM = 'medium';
@@ -19,7 +19,7 @@ class TeamChallangeRating
 
     /**
      * @param int[] $teamLevels
-     * 
+     *
      * @return self
      */
     public function setTeamLevels(array $teamLevels): self
@@ -45,11 +45,11 @@ class TeamChallangeRating
 
     public static function fromLevelsAsIntegers(...$levels): self
     {
-        $teamChallangeRating = new self();
+        $teamChallengeRating = new self();
 
-        $teamChallangeRating->setTeamLevels($levels);
+        $teamChallengeRating->setTeamLevels($levels);
 
-        return $teamChallangeRating;
+        return $teamChallengeRating;
     }
 
     public function getExperienceTresholdForDifficulty(string $difficulty): int
@@ -59,7 +59,7 @@ class TeamChallangeRating
         foreach ($this->teamLevels as $level) {
             $experienceTreshold += static::getPlayerExperienceTresholdByDifficulty($difficulty, $level);
         }
-        
+
         return $experienceTreshold;
     }
 }
