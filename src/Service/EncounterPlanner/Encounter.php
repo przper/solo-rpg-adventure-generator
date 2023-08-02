@@ -2,6 +2,7 @@
 
 namespace App\Service\EncounterPlanner;
 
+use App\Helper\MultipleEnemiesEncounterExperienceCountModifier;
 use App\Interface\EnemyInterface;
 
 class Encounter
@@ -58,5 +59,18 @@ class Encounter
         $this->challengeRating = $challengeRating;
 
         return $this;
+    }
+
+    public function getRawEnemiesExperienceSum(): int
+    {
+        return array_reduce($this->enemies, fn ($c, EnemyInterface $e) => $c+$e->getExperiencePoints());
+    }
+
+    public function getAdjustedEnemiesExperienceSum(): int
+    {
+        return MultipleEnemiesEncounterExperienceCountModifier::adjustExperiencePoints(
+            count($this->enemies),
+            $this->getRawEnemiesExperienceSum()
+        );
     }
 }
