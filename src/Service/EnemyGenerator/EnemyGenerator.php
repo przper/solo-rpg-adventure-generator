@@ -3,6 +3,7 @@
 namespace App\Service\EnemyGenerator;
 
 use App\Helper\DiceStack;
+use App\Helper\MultipleEnemiesEncounterExperienceCountModifier;
 use App\Interface\EnemyInterface;
 use App\Interface\EnemyGeneratorInterface;
 
@@ -26,6 +27,11 @@ class EnemyGenerator implements EnemyGeneratorInterface
         return $enemy;
     }
 
+    /**
+     * @param int $enemiesCount
+     *
+     * @return EnemyInterface[]
+     */
     public function generateMany(int $enemiesCount): array
     {
         $enemies = [];
@@ -37,27 +43,13 @@ class EnemyGenerator implements EnemyGeneratorInterface
         return $enemies;
     }
 
+    /**
+     * @param int $expectedExperienceSum
+     *
+     * @return EnemyInterface[]
+     */
     public function generateForExperienceNumber(int $expectedExperienceSum): array
     {
-        $multipleMonsterModifier = [
-            //COUNT => MULTIPLIER
-            1 => 1.0,
-            2 => 1.5,
-            3 => 2.0,
-            4 => 2.0,
-            5 => 2.0,
-            6 => 2.0,
-            7 => 2.5,
-            8 => 2.5,
-            9 => 2.5,
-            10 => 2.5,
-            11 => 3.0,
-            12 => 3.0,
-            13 => 3.0,
-            14 => 3.0,
-            15 => 4.0,
-        ];
-
         $enemies = [];
         $experienceSum = 0;
         $adjustedExperience = 0;
@@ -71,7 +63,7 @@ class EnemyGenerator implements EnemyGeneratorInterface
 
             $enemies[] = $enemy;
             $experienceSum += $enemy->getExperiencePoints();
-            $adjustedExperience = $multipleMonsterModifier[count($enemies)] * $experienceSum;
+            $adjustedExperience = MultipleEnemiesEncounterExperienceCountModifier::adjustExperiencePoints(count($enemies), $experienceSum);
         }
 
         return $enemies;
