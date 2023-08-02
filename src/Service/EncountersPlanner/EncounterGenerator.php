@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\EncounterPlanner;
+namespace App\Service\EncountersPlanner;
 
 use App\Interface\EnemyGeneratorInterface;
 

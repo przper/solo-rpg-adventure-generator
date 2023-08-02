@@ -2,8 +2,8 @@
 
 namespace App\Tests\Integration\EncountersPlanner;
 
-use App\Service\EncounterPlanner\EncountersPlanner;
-use App\Service\EncounterPlanner\TeamChallengeRating;
+use App\Service\EncountersPlanner\EncountersPlanner;
+use App\Service\EncountersPlanner\TeamChallengeRating;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class EncountersPlannerTest extends KernelTestCase

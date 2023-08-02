@@ -2,7 +2,7 @@
 
 namespace App\Tests\Unit\EncounterPlanner;
 
-use App\Service\EncounterPlanner\TeamChallengeRating;
+use App\Service\EncountersPlanner\TeamChallengeRating;
 use PHPUnit\Framework\TestCase;
 
 class TeamChallengeRatingTest extends TestCase

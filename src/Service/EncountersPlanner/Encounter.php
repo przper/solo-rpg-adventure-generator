@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\EncounterPlanner;
+namespace App\Service\EncountersPlanner;
 
 use App\Helper\MultipleEnemiesEncounterExperienceCountModifier;
 use App\Interface\EnemyInterface;
