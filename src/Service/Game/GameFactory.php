@@ -2,6 +2,7 @@
 
 namespace App\Service\Game;
 
+use App\Enum\DungeonLength;
 use App\Interface\MapGeneratorInterface;
 use App\Service\EncountersPlanner\EncountersPlanner;
 use App\Service\EncountersPlanner\TeamChallengeRating;
@@ -30,7 +31,7 @@ class GameFactory
     public function create(): Game
     {
         $map = $this->mapBuilder->create();
-        $encounterPlan = $this->encountersPlanner->plan(EncountersPlanner::DUNGEON_SIZE_MEDIUM, TeamChallengeRating::fromLevelsAsIntegers(1, 1, 1, 1));
+        $encounterPlan = $this->encountersPlanner->plan(DungeonLength::MEDIUM, TeamChallengeRating::fromLevelsAsIntegers(1, 1, 1, 1));
 
         return new Game($map, $encounterPlan);
     }

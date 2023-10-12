@@ -2,14 +2,11 @@
 
 namespace App\Service\EncountersPlanner;
 
+use App\Enum\DungeonLength;
 use App\Enum\EncounterDifficulty;
 
 class EncountersPlanner
 {
-    final public const DUNGEON_SIZE_SHORT = 'DUNGEON_SHORT';
-    final public const DUNGEON_SIZE_MEDIUM = 'DUNGEON_MEDIUM';
-    final public const DUNGEON_SIZE_LONG = 'DUNGEON_LONG';
-
     public function __construct(
         private readonly EncounterGenerator $encounterGenerator
     ) {
@@ -17,12 +14,12 @@ class EncountersPlanner
     }
 
     /**
-     * @param string $dungeonLength
+     * @param DungeonLength $dungeonLength
      * @param TeamChallengeRating $teamChallengeRating
      *
      * @return EncountersPlan
      */
-    public function plan(string $dungeonLength, TeamChallengeRating $teamChallengeRating): EncountersPlan
+    public function plan(DungeonLength $dungeonLength, TeamChallengeRating $teamChallengeRating): EncountersPlan
     {
         $encountersPlan = $this->generateEncounterNumberPerDifficultMap($dungeonLength);
 
@@ -38,13 +35,9 @@ class EncountersPlanner
         return new EncountersPlan($encounters);
     }
 
-    private function generateEncounterNumberPerDifficultMap(string $dungeonLength): array
+    private function generateEncounterNumberPerDifficultMap(DungeonLength $dungeonLength): array
     {
-        $maxNumberOfEncounters = match ($dungeonLength) {
-            self::DUNGEON_SIZE_SHORT => rand(5, 6),
-            self::DUNGEON_SIZE_MEDIUM => rand (11, 12),
-            self::DUNGEON_SIZE_LONG => rand(17, 18)
-        };
+        $maxNumberOfEncounters = $dungeonLength->getMaxRoomCount();
 
         $mediumEncountersCount = ceil($maxNumberOfEncounters / 2);
         $easyEncountersCount = floor(($maxNumberOfEncounters - $mediumEncountersCount) / 2);
