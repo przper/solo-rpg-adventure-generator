@@ -21,21 +21,18 @@ class EncountersPlanner
      */
     public function plan(DungeonLength $dungeonLength, TeamChallengeRating $teamChallengeRating): EncountersPlan
     {
-        $encountersPlan = $this->generateEncounterNumberPerDifficultMap($dungeonLength);
+        $plan = new EncountersPlan();
 
-        $encounters = [];
+        foreach ($this->generateEncounterDifficultyList($dungeonLength) as $difficulty) {
+            $encounter = $this->encounterGenerator->create($difficulty, $teamChallengeRating);
 
-        foreach($encountersPlan as $difficulty => $count) {
-            for($i = 0; $i < $count; $i++) {
-                $encounters[] = $this->encounterGenerator->create(EncounterDifficulty::from($difficulty), $teamChallengeRating);
-            }
+            $plan->addEncounter($encounter);
         }
-        shuffle($encounters);
 
-        return new EncountersPlan($encounters);
+        return $plan;
     }
 
-    private function generateEncounterNumberPerDifficultMap(DungeonLength $dungeonLength): array
+    private function generateEncounterDifficultyList(DungeonLength $dungeonLength): array
     {
         $maxNumberOfEncounters = $dungeonLength->getMaxRoomCount();
 
@@ -49,11 +46,11 @@ class EncountersPlanner
             $deadlyEncounterCount++;
         }
 
-        return [
-            EncounterDifficulty::EASY->value => $easyEncountersCount,
-            EncounterDifficulty::MEDIUM->value => $mediumEncountersCount,
-            EncounterDifficulty::HARD->value => $hardEncounterCount,
-            EncounterDifficulty::DEADLY->value => $deadlyEncounterCount
-        ];
+        return array_merge(
+            array_fill(0, $mediumEncountersCount, EncounterDifficulty::MEDIUM),
+            array_fill(0, $easyEncountersCount, EncounterDifficulty::EASY),
+            array_fill(0, $hardEncounterCount, EncounterDifficulty::HARD),
+            array_fill(0, $deadlyEncounterCount, EncounterDifficulty::DEADLY)
+        );
     }
 }
