@@ -25,13 +25,11 @@ class EncounterGeneratorTest extends KernelTestCase
         $team = TeamChallengeRating::fromLevelsAsIntegers(2, 2, 2, 2);
         $encounter = $this->generator->create($difficulty, $team);
 
-        dump(implode("|", array_map(fn($e) => $e->getName(), $encounter->getEnemies())));
-        dump("Raw encounter experience: ".$encounter->getRawEnemiesExperienceSum());
-        dump($team->getExperienceTresholdForDifficulty(EncounterDifficulty::EASY));
-        dump($team->getExperienceTresholdForDifficulty(EncounterDifficulty::MEDIUM));
-        dump($team->getExperienceTresholdForDifficulty(EncounterDifficulty::HARD));
-        dump($team->getExperienceTresholdForDifficulty(EncounterDifficulty::DEADLY));
+//        dump(implode("|", array_map(fn($e) => $e->getName(), $encounter->getEnemies())));
+//        dump("Raw encounter experience: ".$encounter->getRawEnemiesExperienceSum());
 
         $this->assertIsArray($encounter->getEnemies());
+        $this->assertGreaterThan($team->getExperienceTresholdForDifficulty(EncounterDifficulty::EASY), $encounter->getAdjustedEnemiesExperienceSum());
+        $this->assertLessThan($team->getExperienceTresholdForDifficulty(EncounterDifficulty::HARD), $encounter->getAdjustedEnemiesExperienceSum());
     }
 }
