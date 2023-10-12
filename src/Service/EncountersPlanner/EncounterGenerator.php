@@ -15,16 +15,27 @@ class EncounterGenerator
 
     public function create(EncounterDifficulty $difficulty, TeamChallengeRating $teamChallengeRating): Encounter
     {
-        $encounter = new Encounter();
+        /** @var Encounter[] $variants */
+        $variants = [];
 
-        $encounter->setDifficulty($difficulty);
-        $encounter->setChallengeRating($teamChallengeRating);
+        for ($i = 0; $i < 50; $i++) {
+            $encounter = new Encounter();
 
-        $enemiesExperienceSum = $teamChallengeRating->getExperienceTresholdForDifficulty($difficulty);
-        $encounter->setEnemies(
-            $this->enemyGenerator->generateForExperienceNumber($enemiesExperienceSum)
-        );
+            $encounter->setDifficulty($difficulty);
+            $encounter->setChallengeRating($teamChallengeRating);
 
-        return $encounter;
+            $enemiesExperienceSum = $teamChallengeRating->getExperienceTresholdForDifficulty($difficulty);
+            $encounter->setEnemies(
+                $this->enemyGenerator->generateForExperienceNumber($enemiesExperienceSum)
+            );
+
+            $variants[] = $encounter;
+        }
+
+        usort($variants, function (Encounter $a, Encounter $b) {
+            return $a->getAdjustedEnemiesExperienceSum() - $b->getAdjustedEnemiesExperienceSum();
+        });
+
+        return $variants[0];
     }
 }

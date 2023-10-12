@@ -24,12 +24,27 @@ class EncountersPlanner
      */
     public function plan(string $dungeonLength, TeamChallengeRating $teamChallengeRating): array
     {
+        $encountersPlan = $this->generateEncounterNumberPerDifficultMap($dungeonLength);
+
+        $encounters = [];
+
+        foreach($encountersPlan as $difficulty => $count) {
+            for($i = 0; $i < $count; $i++) {
+                $encounters[] = $this->encounterGenerator->create(EncounterDifficulty::from($difficulty), $teamChallengeRating);
+            }
+        }
+        shuffle($encounters);
+
+        return $encounters;
+    }
+
+    private function generateEncounterNumberPerDifficultMap(string $dungeonLength): array
+    {
         $maxNumberOfEncounters = match ($dungeonLength) {
             self::DUNGEON_SIZE_SHORT => rand(5, 6),
             self::DUNGEON_SIZE_MEDIUM => rand (11, 12),
             self::DUNGEON_SIZE_LONG => rand(17, 18)
         };
-        // dump($maxNumberOfEncounters);
 
         $mediumEncountersCount = ceil($maxNumberOfEncounters / 2);
         $easyEncountersCount = floor(($maxNumberOfEncounters - $mediumEncountersCount) / 2);
@@ -47,31 +62,5 @@ class EncountersPlanner
             EncounterDifficulty::HARD->value => $hardEncounterCount,
             EncounterDifficulty::DEADLY->value => $deadlyEncounterCount
         ];
-
-        $encounters = [];
-
-        foreach($encounterPlan as $difficulty => $count) {
-            for($i = 0; $i < $count; $i++) {
-                $encounters[] = $this->pickEasiestEncounter($difficulty, $teamChallengeRating);
-            }
-        }
-
-        return $encounters;
-    }
-
-    private function pickEasiestEncounter($difficulty, $teamChallengeRating): Encounter
-    {
-        /** @var Encounter[] $variants */
-        $variants = [];
-
-        for ($i = 0; $i < 10; $i++) {
-            $variants[] = $this->encounterGenerator->create($difficulty, $teamChallengeRating);
-        }
-
-        usort($variants, function (Encounter $a, Encounter $b) {
-            return $a->getAdjustedEnemiesExperienceSum() - $b->getAdjustedEnemiesExperienceSum();
-        });
-
-        return $variants[0];
     }
 }
