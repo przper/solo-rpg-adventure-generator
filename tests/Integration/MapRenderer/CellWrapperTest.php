@@ -26,6 +26,10 @@ class CellWrapperTest extends KernelTestCase
     {
         $wrapper = new CellWrapper(new DummyMapCell());
 
+        $this->assertFalse($wrapper->getIsVisited());
+        $this->assertFalse($wrapper->getHasPlayer());
+
+        $this->game->start();
         $wrapper->applyGameState($this->game);
 
         $this->assertTrue($wrapper->getIsVisited());
