@@ -19,7 +19,7 @@ class PlayController extends AbstractController
         private RoguelikeMapBuilder $roguelikeGenerator,
         private RailroadMapBuilder $railroadGenerator,
         private GameFactory $gameFactory,
-        private MapRenderer $mapRenderer
+        private MapRenderer $mapRenderer,
     ) {
         //
     }
@@ -73,7 +73,7 @@ class PlayController extends AbstractController
     }
 
     #[Route('/play', name: 'app_play')]
-    public function railroad(Request $request, SessionInterface $session): Response
+    public function play(Request $request, SessionInterface $session): Response
     {
         if (! $session->has('game')) {
             return $this->redirectToRoute('app_new_game');
