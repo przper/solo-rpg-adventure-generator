@@ -25,6 +25,14 @@ class MultipleEnemiesEncounterExperienceCountModifier
 
     public static function getMultiplier(int $enemiesCount): float
     {
+        if ($enemiesCount < 1) {
+            return 0;
+        }
+
+        if ($enemiesCount > 15) {
+            return 4.0;
+        }
+
         return self::$table[$enemiesCount];
     }
 
