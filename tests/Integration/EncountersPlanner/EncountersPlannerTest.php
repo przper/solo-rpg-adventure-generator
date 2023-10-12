@@ -14,8 +14,10 @@ class EncountersPlannerTest extends KernelTestCase
         /** @var EncountersPlanner $planner */
         $planner = static::getContainer()->get(EncountersPlanner::class);
 
-        $encounters = $planner->plan(EncountersPlanner::DUNGEON_SIZE_SHORT, TeamChallengeRating::fromLevelsAsIntegers(2, 2));
+        $encounters = $planner->plan(EncountersPlanner::DUNGEON_SIZE_MEDIUM, TeamChallengeRating::fromLevelsAsIntegers(2, 2, 2, 2));
 
-         dump($encounters);
+        foreach ($encounters as $encounter) {
+            dump("{$encounter->getDifficulty()->name} {$encounter->getRawEnemiesExperienceSum()}");
+        }
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Service\EncountersPlanner;
 
+use App\Enum\EncounterDifficulty;
+
 class EncountersPlanner
 {
     final public const DUNGEON_SIZE_SHORT = 'DUNGEON_SHORT';
@@ -39,11 +41,11 @@ class EncountersPlanner
             $deadlyEncounterCount++;
         }
 
-        $encounterPlan =  [
-            'easy' => $easyEncountersCount,
-            'medium' => $mediumEncountersCount,
-            'hard' => $hardEncounterCount,
-            'deadly' => $deadlyEncounterCount
+        return [
+            EncounterDifficulty::EASY->value => $easyEncountersCount,
+            EncounterDifficulty::MEDIUM->value => $mediumEncountersCount,
+            EncounterDifficulty::HARD->value => $hardEncounterCount,
+            EncounterDifficulty::DEADLY->value => $deadlyEncounterCount
         ];
 
         $encounters = [];

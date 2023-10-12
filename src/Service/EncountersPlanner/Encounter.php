@@ -2,29 +2,25 @@
 
 namespace App\Service\EncountersPlanner;
 
+use App\Enum\EncounterDifficulty;
 use App\Helper\MultipleEnemiesEncounterExperienceCountModifier;
 use App\Interface\EnemyInterface;
 
 class Encounter
 {
-    final public const DIFFICULTY_EASY = 'easy';
-    final public const DIFFICULTY_MEDIUM = 'medium';
-    final public const DIFFICULTY_HARD = 'hard';
-    final public const DIFFICULTY_DEADLY = 'deadly';
-
-    private string $difficulty;
+    private EncounterDifficulty $difficulty;
 
     /** @var EnemyInterface[] $enemies */
     private array $enemies = [];
 
     private TeamChallengeRating $challengeRating;
 
-    public function getDifficulty(): string
+    public function getDifficulty(): EncounterDifficulty
     {
         return $this->difficulty;
     }
 
-    public function setDifficulty(string $difficulty): self
+    public function setDifficulty(EncounterDifficulty $difficulty): self
     {
         $this->difficulty = $difficulty;
 

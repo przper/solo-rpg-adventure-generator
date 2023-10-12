@@ -2,6 +2,7 @@
 
 namespace App\Service\EncountersPlanner;
 
+use App\Enum\EncounterDifficulty;
 use App\Interface\EnemyGeneratorInterface;
 
 class EncounterGenerator
@@ -12,7 +13,7 @@ class EncounterGenerator
         //
     }
 
-    public function create(string $difficulty, TeamChallengeRating $teamChallengeRating): Encounter
+    public function create(EncounterDifficulty $difficulty, TeamChallengeRating $teamChallengeRating): Encounter
     {
         $encounter = new Encounter();
 
