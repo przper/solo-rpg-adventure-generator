@@ -2,18 +2,59 @@
 
 namespace App\Service\Game;
 
+use App\Helper\Coordinates;
 use App\Interface\MapCellInterface;
 use App\Interface\MapInterface;
-use App\Service\Game\Exception\NoGeneratedMapException;
-use App\Service\Game\Exception\UnknownPlayerPositionException;
+use App\Service\EncountersPlanner\EncountersPlan;
 
 class Game
 {
-    private MapInterface $map;
+    public const STATUS_READY = 'ready';
+    public const STATUS_RUNNING = 'running';
+
+    private string $status;
+
+    /** @var Coordinates[] */
+    private array $visitedCells = [];
 
     private PlayerPosition $playerPosition;
 
-    private array $visitedCells = [];
+    public function __construct(
+        private MapInterface $map,
+        private EncountersPlan $encountersPlan,
+    ) {
+        $this->status = self::STATUS_READY;
+        $this->playerPosition = new PlayerPosition(Coordinates::fromIntegers(0, 0));
+    }
+
+    public function movePlayerByIntegers(int $deltaX, int $deltaY): self
+    {
+        $this->playerPosition->moveBy($deltaX, $deltaY);
+
+        $newPositionCoordinates = $this->playerPosition->getCoordinates();
+
+        if (! in_array($newPositionCoordinates, $this->visitedCells)) {
+            $this->visitedCells[] = clone $newPositionCoordinates;
+        }
+
+        return $this;
+    }
+
+    public function start(): void
+    {
+        $this->visitedCells[] = clone $this->playerPosition->getCoordinates();
+        $this->status = 'running';
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function isRunning(): bool
+    {
+        return $this->status === self::STATUS_RUNNING;
+    }
 
     public function getMap(): MapInterface
     {
@@ -34,6 +75,10 @@ class Game
 
     public function setPlayerPosition(PlayerPosition $position): self
     {
+        if (! $this->isRunning()) {
+            throw new \Exception('Game is not running!');
+        }
+
         $this->playerPosition = $position;
         $this->visitedCells[] = clone $position->getCoordinates();
 
@@ -46,29 +91,13 @@ class Game
         return $this->visitedCells;
     }
 
-    public function movePlayerByIntegers(int $deltaX, int $deltaY): self
+    public function getEncountersPlan(): EncountersPlan
     {
-        $this->playerPosition->moveBy($deltaX, $deltaY);
-
-        $newPositionCoordinates = $this->playerPosition->getCoordinates();
-
-        if (! in_array($newPositionCoordinates, $this->visitedCells)) {
-            $this->visitedCells[] = clone $newPositionCoordinates;
-        }
-
-        return $this;
+        return $this->encountersPlan;
     }
 
-    public function start(): void
+    public function setEncountersPlan(EncountersPlan $encountersPlan): void
     {
-        if (! $this->map) {
-            throw new NoGeneratedMapException();
-        }
-
-        if (! $this->playerPosition) {
-            throw new UnknownPlayerPositionException();
-        }
-
-        //
+        $this->encountersPlan = $encountersPlan;
     }
 }
