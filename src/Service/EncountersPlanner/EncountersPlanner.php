@@ -11,7 +11,7 @@ class EncountersPlanner
     final public const DUNGEON_SIZE_LONG = 'DUNGEON_LONG';
 
     public function __construct(
-        private EncounterGenerator $encounterGenerator
+        private readonly EncounterGenerator $encounterGenerator
     ) {
         //
     }
@@ -20,9 +20,9 @@ class EncountersPlanner
      * @param string $dungeonLength
      * @param TeamChallengeRating $teamChallengeRating
      *
-     * @return Encounter[]
+     * @return EncountersPlan
      */
-    public function plan(string $dungeonLength, TeamChallengeRating $teamChallengeRating): array
+    public function plan(string $dungeonLength, TeamChallengeRating $teamChallengeRating): EncountersPlan
     {
         $encountersPlan = $this->generateEncounterNumberPerDifficultMap($dungeonLength);
 
@@ -35,7 +35,7 @@ class EncountersPlanner
         }
         shuffle($encounters);
 
-        return $encounters;
+        return new EncountersPlan($encounters);
     }
 
     private function generateEncounterNumberPerDifficultMap(string $dungeonLength): array
