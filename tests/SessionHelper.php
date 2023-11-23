@@ -9,13 +9,11 @@ use Symfony\Component\HttpFoundation\Session\Storage\MockFileSessionStorage;
 
 trait SessionHelper
 {
+    /** @link https://github.com/symfony/symfony/discussions/46961#discussioncomment-4573371 */
     public function createSession(KernelBrowser $client): Session
     {
-        $container = $client->getContainer();
-        $sessionSavePath = $container->getParameter('session.save_path');
-        $sessionStorage = new MockFileSessionStorage($sessionSavePath);
+        $session = $this->getContainer()->get('session.factory')->createSession();
 
-        $session = new Session($sessionStorage);
         $session->start();
         $session->save();
 
