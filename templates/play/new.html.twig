@@ -11,9 +11,6 @@
     </div>
 
     <div>
-        {{ form_start(form) }}
-        {{ form_end(form) }}
-
         <ul class="">
             <li>
                 <form class="mr-4">
@@ -22,9 +19,16 @@
                 </form>
             </li>
             <li>
+                <p><strong>WIP Roguelike</strong></p>
+{#                <form class="mr-4">#}
+{#                    <input type="hidden" name="type" value="roguelike">#}
+{#                    <button type="submit"><strong>WIP</strong> Roguelike</button>#}
+{#                </form>#}
+            </li>
+            <li>
                 <form class="mr-4">
-                    <input type="hidden" name="type" value="roguelike">
-                    <button type="submit"><strong>WIP</strong> Roguelike</button>
+                    <input type="hidden" name="type" value="grid">
+                    <button type="submit"><strong>WIP</strong> Grid</button>
                 </form>
             </li>
         </ul>

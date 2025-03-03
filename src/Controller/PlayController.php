@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\Game\Game;
 use App\Service\Game\GameFactory;
+use App\Service\Map\Grid\GridMapBuilder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,6 +19,7 @@ class PlayController extends AbstractController
     public function __construct(
         private RoguelikeMapBuilder $roguelikeGenerator,
         private RailroadMapBuilder $railroadGenerator,
+        private GridMapBuilder $gridMapBuilder,
         private GameFactory $gameFactory,
         private MapRenderer $mapRenderer,
     ) {
@@ -61,6 +63,18 @@ class PlayController extends AbstractController
                         ->setRoomsCount($roomsCount)
                         ->setMinCorridorLength(2)
                         ->setMaxCorridorLength(5)
+                )
+                ->create();
+        }
+
+        if ($type === 'grid') {
+            $game = $this->gameFactory
+                ->setMapBuilder(
+                    $this->gridMapBuilder
+                        ->setGridWidth(5)
+                        ->setGridHeight(4)
+                        ->setRoomSize(1)
+                        ->setCorridorLength(4)
                 )
                 ->create();
         }

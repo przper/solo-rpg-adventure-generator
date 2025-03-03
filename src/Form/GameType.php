@@ -18,6 +18,7 @@ class GameType extends AbstractType
             ->add('type', ChoiceType::class, [
                 'choices' => [
                     'Railroad' => 'railroad',
+                    'Grid' => 'grid',
                     'Roguelike' => 'roguelike',
                 ],
             ])
