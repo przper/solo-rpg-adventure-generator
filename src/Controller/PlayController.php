@@ -97,20 +97,58 @@ class PlayController extends AbstractController
         $game = $session->get('game');
 
         if ($direction = $request->get('direction')) {
+            $deltaX = 0;
+            $deltaY = 0;
+
+            // Determine movement deltas based on direction
             match ($direction) {
-                'forward' => $game->movePlayerByIntegers(1, 0),
-                'backward' => $game->movePlayerByIntegers(-1, 0)
+                'forward', 'east' => $deltaX = 1,
+                'backward', 'west' => $deltaX = -1,
+                'north' => $deltaY = -1,  // Moving north decreases y-coordinate (going up in the grid)
+                'south' => $deltaY = 1    // Moving south increases y-coordinate (going down in the grid)
             };
+
+            // Calculate the new position coordinates
+            $currentCoords = clone $game->getPlayerPosition()->getCoordinates();
+            $targetCoords = clone $currentCoords;
+            $targetCoords->moveBy($deltaX, $deltaY);
+
+            // Only move if there's a valid cell at the target coordinates
+            if ($game->getMap()->getCell($targetCoords) !== null) {
+                $game->movePlayerByIntegers($deltaX, $deltaY);
+            }
         }
 
         $map = $this->mapRenderer->render($game->getMap(), $game);
 
+        // Check possible moves for template
+        $currentCoords = $game->getPlayerPosition()->getCoordinates();
+        $canMoveNorth = $this->canMoveInDirection($game, 0, -1);
+        $canMoveSouth = $this->canMoveInDirection($game, 0, 1);
+        $canMoveEast = $this->canMoveInDirection($game, 1, 0);
+        $canMoveWest = $this->canMoveInDirection($game, -1, 0);
+
         $session->set('game', $game);
+
+        dump($game);
 
         return $this->render('play/index.html.twig', [
             'heading' => 'Survive, brave adventurer...',
             'game' => $session->get('game'),
-            'map' => $map
+            'map' => $map,
+            'canMoveNorth' => $canMoveNorth,
+            'canMoveSouth' => $canMoveSouth,
+            'canMoveEast' => $canMoveEast,
+            'canMoveWest' => $canMoveWest
         ]);
+    }
+
+    private function canMoveInDirection(Game $game, int $deltaX, int $deltaY): bool
+    {
+        $currentCoords = clone $game->getPlayerPosition()->getCoordinates();
+        $targetCoords = clone $currentCoords;
+        $targetCoords->moveBy($deltaX, $deltaY);
+
+        return $game->getMap()->getCell($targetCoords) !== null;
     }
 }

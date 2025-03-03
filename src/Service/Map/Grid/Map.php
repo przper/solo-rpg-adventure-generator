@@ -11,6 +11,8 @@ class Map implements MapInterface
     /** @var MapCellInterface[][] */
     private array $cells = [];
 
+    private string $movementType = MapInterface::MOVEMENT_TYPE_2D;
+
     public function __construct()
     {
     }
@@ -30,13 +32,13 @@ class Map implements MapInterface
     {
         return $this->cells[$coordinates->getY()][$coordinates->getX()] ?? null;
     }
-    
+
     public function getRooms(): array
     {
         $rooms = [];
 
         array_walk_recursive(
-            $this->cells, 
+            $this->cells,
             function (MapCellInterface $cell) use (&$rooms) {
                 if ($cell->getType() === Room::TYPE) {
                     $rooms[] = $cell;
@@ -61,5 +63,14 @@ class Map implements MapInterface
         );
 
         return $corridors;
+    }
+
+    public function getMovementType(): string
+    {
+        return $this->movementType;
+    }
+
+    public function dumpRaw(): void
+    {
     }
 }

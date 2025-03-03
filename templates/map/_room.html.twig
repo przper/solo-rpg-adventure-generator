@@ -1,15 +1,42 @@
-<span
-    class=" {{ html_classes(
-        'w-full',
-        'flex items-center justify-center',
-        'bg-white',
-        'scale-150',
-        {
-            'bg-yellow-300 border border-yellow-300': cell.treasure,
-            'bg-red-500': cell.enemies,
-            'animate-pulse': cell.hasPlayer
-        }
-    ) }}"
->
-    R
-</span>
+<div class="relative">
+    <span
+        class=" {{ html_classes(
+            'w-full',
+            'flex items-center justify-center',
+            'bg-white',
+            'scale-125',
+            {
+                'bg-yellow-300 border border-yellow-300': cell.treasure,
+                'bg-red-500': cell.enemies,
+                'animate-pulse': cell.hasPlayer
+            }
+        ) }}"
+    >
+        R
+    </span>
+    
+    {# Show connection indicators for each direction #}
+    {% if cell.hasConnection('north') and cell.connections.north == 'CORRIDOR' %}
+        <div class="absolute -top-1 inset-x-0 flex justify-center">
+            <span class="h-1 w-1 bg-gray-500 rounded-full"></span>
+        </div>
+    {% endif %}
+    
+    {% if cell.hasConnection('east') and cell.connections.east == 'CORRIDOR' %}
+        <div class="absolute -right-1 inset-y-0 flex items-center">
+            <span class="w-1 h-1 bg-gray-500 rounded-full"></span>
+        </div>
+    {% endif %}
+    
+    {% if cell.hasConnection('south') and cell.connections.south == 'CORRIDOR' %}
+        <div class="absolute -bottom-1 inset-x-0 flex justify-center">
+            <span class="h-1 w-1 bg-gray-500 rounded-full"></span>
+        </div>
+    {% endif %}
+    
+    {% if cell.hasConnection('west') and cell.connections.west == 'CORRIDOR' %}
+        <div class="absolute -left-1 inset-y-0 flex items-center">
+            <span class="w-1 h-1 bg-gray-500 rounded-full"></span>
+        </div>
+    {% endif %}
+</div>

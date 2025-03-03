@@ -30,6 +30,8 @@ class CellWrapper
     readonly public ?TreasureInterface $treasure;
 
     readonly public array $enemies;
+    
+    private array $connections = [];
 
     public function __construct(MapCellInterface $baseCell)
     {
@@ -37,6 +39,11 @@ class CellWrapper
         $this->coordinates = $baseCell->getCoordinates();
         $this->treasure = $baseCell instanceof HasTreasure ? $baseCell->getTreasure() : null;
         $this->enemies = $baseCell instanceof HasEnemies ? $baseCell->getEnemies() : [];
+        
+        // Store connections if available
+        if (method_exists($baseCell, 'getConnections')) {
+            $this->connections = $baseCell->getConnections();
+        }
     }
 
     public function getHasPlayer(): bool
@@ -71,6 +78,32 @@ class CellWrapper
     public function getTreasure(): ?TreasureInterface
     {
         return $this->treasure;
+    }
+    
+    /**
+     * Gets the cell's connections
+     *
+     * @return array<string, string> Map of directions to connection types
+     */
+    public function getConnections(): array
+    {
+        return $this->connections;
+    }
+    
+    /**
+     * Check if the cell has a connection in a specific direction
+     */
+    public function hasConnection(string $direction): bool
+    {
+        return isset($this->connections[$direction]);
+    }
+    
+    /**
+     * Get the connection type in a specific direction
+     */
+    public function getConnectionType(string $direction): ?string
+    {
+        return $this->connections[$direction] ?? null;
     }
 
     public function getTemplate(): string

@@ -71,4 +71,5 @@ class RailroadMapBuilder implements MapGeneratorInterface
             $map->addCell($corridor);
         }
     }
+    
 }

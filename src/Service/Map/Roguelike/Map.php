@@ -12,6 +12,8 @@ class Map implements MapInterface
 
     /** @var Room[] $rooms */
     private array $rooms;
+    
+    private string $movementType = MapInterface::MOVEMENT_TYPE_2D;
 
     public function __construct(
         private int $rowsCount,
@@ -62,5 +64,10 @@ class Map implements MapInterface
     public function getColumnsCount(): int
     {
         return $this->columnsCount;
+    }
+    
+    public function getMovementType(): string
+    {
+        return $this->movementType;
     }
 }

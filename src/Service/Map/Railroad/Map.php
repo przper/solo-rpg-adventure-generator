@@ -10,6 +10,8 @@ class Map implements MapInterface
 {
     /** @var Cell[][] $cells */
     private array $cells = [];
+    
+    private string $movementType = MapInterface::MOVEMENT_TYPE_1D;
 
     public function getCells(): array
     {
@@ -66,5 +68,10 @@ class Map implements MapInterface
     public function getLength(): int
     {
         return count($this->cells);
+    }
+    
+    public function getMovementType(): string
+    {
+        return $this->movementType;
     }
 }

@@ -18,10 +18,11 @@ class Game
     private array $visitedCells = [];
 
     private PlayerPosition $playerPosition;
+    
 
     public function __construct(
         private MapInterface $map,
-        private EncountersPlan $encountersPlan,
+        private EncountersPlan $encountersPlan
     ) {
         $this->status = self::STATUS_READY;
         $this->playerPosition = new PlayerPosition(Coordinates::fromIntegers(0, 0));
@@ -99,5 +100,20 @@ class Game
     public function setEncountersPlan(EncountersPlan $encountersPlan): void
     {
         $this->encountersPlan = $encountersPlan;
+    }
+    
+    public function getMovementType(): string
+    {
+        return $this->map->getMovementType();
+    }
+    
+    public function is1DMovement(): bool
+    {
+        return $this->map->getMovementType() === MapInterface::MOVEMENT_TYPE_1D;
+    }
+    
+    public function is2DMovement(): bool
+    {
+        return $this->map->getMovementType() === MapInterface::MOVEMENT_TYPE_2D;
     }
 }

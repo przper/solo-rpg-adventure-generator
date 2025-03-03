@@ -21,7 +21,7 @@ class GridMapBuilder implements MapGeneratorInterface
 
     private RoomGenerator $roomGenerator;
     private CorridorGenerator $corridorGenerator;
-    
+
     private int $gridWidth;
     private int $gridHeight;
     private int $roomSize;
@@ -33,7 +33,7 @@ class GridMapBuilder implements MapGeneratorInterface
     ) {
         $this->roomGenerator = $roomGenerator;
         $this->corridorGenerator = $corridorGenerator;
-        
+
         $this->gridWidth = self::DEFAULT_GRID_WIDTH;
         $this->gridHeight = self::DEFAULT_GRID_HEIGHT;
         $this->roomSize = self::DEFAULT_ROOM_SIZE;
@@ -67,15 +67,16 @@ class GridMapBuilder implements MapGeneratorInterface
     public function create(): MapInterface
     {
         $map = new Map();
-        
+
         // Generate grid map structure
         $gridMap = $this->generateGridMap();
-        
+
         // Convert grid map to map with cells
         $this->buildMapFromGrid($map, $gridMap);
-        
+
         return $map;
     }
+
 
     private function generateGridMap(): array
     {
@@ -85,7 +86,7 @@ class GridMapBuilder implements MapGeneratorInterface
 
         // Initialize empty map
         $gridMap = array_fill(0, $mapHeight, array_fill(0, $mapWidth, self::EMPTY_SPACE));
-        
+
         // Room positions tracking
         $rooms = [];
 
@@ -318,18 +319,56 @@ class GridMapBuilder implements MapGeneratorInterface
         $mapHeight = count($gridMap);
         $mapWidth = $mapHeight > 0 ? count($gridMap[0]) : 0;
 
+        // First pass: create all cells
+        for ($y = 0; $y < $mapHeight; $y++) {
+            for ($x = 0; $x < $mapWidth; $x++) {
+                $cellType = $gridMap[$y][$x];
+                    $coordinates = Coordinates::fromIntegers($x, $y);
+
+                    if ($cellType === self::ROOM) {
+                        $map->addCell($this->roomGenerator->generate($coordinates));
+                    } elseif ($cellType === self::CORRIDOR) {
+                        $map->addCell($this->corridorGenerator->generate($coordinates));
+                    } else {
+                        $map->addCell(new Wall($coordinates));
+                    }
+            }
+        }
+
         for ($y = 0; $y < $mapHeight; $y++) {
             for ($x = 0; $x < $mapWidth; $x++) {
                 $cellType = $gridMap[$y][$x];
                 if ($cellType !== self::EMPTY_SPACE) {
                     $coordinates = Coordinates::fromIntegers($x, $y);
-                    
-                    if ($cellType === self::ROOM) {
-                        $map->addCell($this->roomGenerator->generate($coordinates));
-                    } elseif ($cellType === self::CORRIDOR) {
-                        $map->addCell($this->corridorGenerator->generate($coordinates));
+                    $cell = $map->getCell($coordinates);
+
+                    if ($cell instanceof Room || $cell instanceof Corridor) {
+                        $this->establishConnections($map, $cell, $x, $y);
                     }
                 }
+            }
+        }
+    }
+
+    private function establishConnections(Map $map, $cell, int $x, int $y): void
+    {
+        // Define possible directions
+        $directions = [
+            'north' => [0, -1],
+            'east' => [1, 0],
+            'south' => [0, 1],
+            'west' => [-1, 0]
+        ];
+
+        foreach ($directions as $direction => [$dx, $dy]) {
+            $neighborX = $x + $dx;
+            $neighborY = $y + $dy;
+            $neighborCoords = Coordinates::fromIntegers($neighborX, $neighborY);
+            $neighborCell = $map->getCell($neighborCoords);
+
+            if ($neighborCell !== null) {
+                // Add connection to the current cell
+                $cell->addConnection($direction, $neighborCell->getType());
             }
         }
     }
