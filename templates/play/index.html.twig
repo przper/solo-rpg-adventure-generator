@@ -7,76 +7,13 @@
     <h1 class="mb-6 text-4xl flex justify-center">{{ heading }}</h1>
 
     <div class="mb-6 w-full">
-        <div class="" data-controller="map-debug map-tooltips">
-            <div data-map-debug-target="container" data-map-tooltips-target="container">{{ map.html | raw }}</div>
-            <div class="mb-2 mt-2 flex justify-center">
-                <button 
-                    data-map-debug-target="button" 
-                    data-action="click->map-debug#toggleMap" 
-                    class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm">
-                    DEBUG: Reveal Map
-                </button>
-            </div>
+        <div class="">
+            <div>{{ map.html|raw }}</div>
 
             <div class="mb-4 flex items-center justify-center">
                 <p class="mr-4">Position: {{ game.playerPosition.coordinates }}</p>
 
-                {% if game.movementType == '1d' %}
-                    <form class="mr-4">
-                        <input type="hidden" name="direction" value="backward">
-                        <button type="submit" class="p-2 rounded {{ canMoveWest ? 'bg-gray-200 hover:bg-gray-300' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}"
-                                {{ not canMoveWest ? 'disabled' : '' }}>
-                            Backward...
-                        </button>
-                    </form>
-                    <form class="mr-4">
-                        <input type="hidden" name="direction" value="forward">
-                        <button type="submit" class="p-2 rounded {{ canMoveEast ? 'bg-gray-200 hover:bg-gray-300' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}"
-                                {{ not canMoveEast ? 'disabled' : '' }}>
-                            Forward!
-                        </button>
-                    </form>
-                {% else %}
-                    <div class="grid grid-cols-3 gap-2">
-                        <div></div>
-                        <form>
-                            <input type="hidden" name="direction" value="north">
-                            <button type="submit"
-                                    class="w-full p-2 rounded {{ canMoveNorth ? 'bg-gray-200 hover:bg-gray-300' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}"
-                                    {{ not canMoveNorth ? 'disabled' : '' }}>
-                                North
-                            </button>
-                        </form>
-                        <div></div>
-                        <form>
-                            <input type="hidden" name="direction" value="west">
-                            <button type="submit"
-                                    class="w-full p-2 rounded {{ canMoveWest ? 'bg-gray-200 hover:bg-gray-300' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}"
-                                    {{ not canMoveWest ? 'disabled' : '' }}>
-                                West
-                            </button>
-                        </form>
-                        <div></div>
-                        <form>
-                            <input type="hidden" name="direction" value="east">
-                            <button type="submit"
-                                    class="w-full p-2 rounded {{ canMoveEast ? 'bg-gray-200 hover:bg-gray-300' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}"
-                                    {{ not canMoveEast ? 'disabled' : '' }}>
-                                East
-                            </button>
-                        </form>
-                        <div></div>
-                        <form>
-                            <input type="hidden" name="direction" value="south">
-                            <button type="submit"
-                                    class="w-full p-2 rounded {{ canMoveSouth ? 'bg-gray-200 hover:bg-gray-300' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}"
-                                    {{ not canMoveSouth ? 'disabled' : '' }}>
-                                South
-                            </button>
-                        </form>
-                        <div></div>
-                    </div>
-                {% endif %}
+                {%  include 'play/_movement.html.twig' %}
             </div>
         </div>
 

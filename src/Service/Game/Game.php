@@ -2,6 +2,7 @@
 
 namespace App\Service\Game;
 
+use App\Enum\MovementType;
 use App\Helper\Coordinates;
 use App\Interface\MapCellInterface;
 use App\Interface\MapInterface;
@@ -18,7 +19,7 @@ class Game
     private array $visitedCells = [];
 
     private PlayerPosition $playerPosition;
-    
+
 
     public function __construct(
         private MapInterface $map,
@@ -101,19 +102,9 @@ class Game
     {
         $this->encountersPlan = $encountersPlan;
     }
-    
-    public function getMovementType(): string
+
+    public function getMovementType(): MovementType
     {
         return $this->map->getMovementType();
-    }
-    
-    public function is1DMovement(): bool
-    {
-        return $this->map->getMovementType() === MapInterface::MOVEMENT_TYPE_1D;
-    }
-    
-    public function is2DMovement(): bool
-    {
-        return $this->map->getMovementType() === MapInterface::MOVEMENT_TYPE_2D;
     }
 }

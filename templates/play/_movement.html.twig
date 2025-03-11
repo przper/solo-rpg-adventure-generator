@@ -1,0 +1,60 @@
+<div>
+    {% if game.movementType == enum('App\\Enum\\MovementType').OneDimension  %}
+        <form class="mr-4">
+            <input type="hidden" name="direction" value="backward">
+            <button type="submit" class="p-2 rounded {{ canMoveWest ? 'bg-gray-200 hover:bg-gray-300' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}"
+                    {{ not canMoveWest ? 'disabled' : '' }}>
+                Backward...
+            </button>
+        </form>
+        <form class="mr-4">
+            <input type="hidden" name="direction" value="forward">
+            <button type="submit" class="p-2 rounded {{ canMoveEast ? 'bg-gray-200 hover:bg-gray-300' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}"
+                    {{ not canMoveEast ? 'disabled' : '' }}>
+                Forward!
+            </button>
+        </form>
+    {% endif %}
+
+    {% if game.movementType == enum('App\\Enum\\MovementType').TwoDimension  %}
+        <div class="grid grid-cols-3 gap-2">
+            <div></div>
+            <form>
+                <input type="hidden" name="direction" value="north">
+                <button type="submit"
+                        class="w-full p-2 rounded {{ canMoveNorth ? 'bg-gray-200 hover:bg-gray-300' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}"
+                        {{ not canMoveNorth ? 'disabled' : '' }}>
+                    North
+                </button>
+            </form>
+            <div></div>
+            <form>
+                <input type="hidden" name="direction" value="west">
+                <button type="submit"
+                        class="w-full p-2 rounded {{ canMoveWest ? 'bg-gray-200 hover:bg-gray-300' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}"
+                        {{ not canMoveWest ? 'disabled' : '' }}>
+                    West
+                </button>
+            </form>
+            <div></div>
+            <form>
+                <input type="hidden" name="direction" value="east">
+                <button type="submit"
+                        class="w-full p-2 rounded {{ canMoveEast ? 'bg-gray-200 hover:bg-gray-300' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}"
+                        {{ not canMoveEast ? 'disabled' : '' }}>
+                    East
+                </button>
+            </form>
+            <div></div>
+            <form>
+                <input type="hidden" name="direction" value="south">
+                <button type="submit"
+                        class="w-full p-2 rounded {{ canMoveSouth ? 'bg-gray-200 hover:bg-gray-300' : 'bg-gray-100 text-gray-400 cursor-not-allowed' }}"
+                        {{ not canMoveSouth ? 'disabled' : '' }}>
+                    South
+                </button>
+            </form>
+            <div></div>
+        </div>
+    {% endif %}
+</div>
