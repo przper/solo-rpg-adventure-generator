@@ -2,6 +2,7 @@
 
 namespace App\Service\Map\Roguelike;
 
+use App\Enum\MovementType;
 use App\Helper\Coordinates;
 use App\Interface\MapInterface;
 use App\Interface\MapCellInterface;
@@ -12,8 +13,6 @@ class Map implements MapInterface
 
     /** @var Room[] $rooms */
     private array $rooms;
-    
-    private string $movementType = MapInterface::MOVEMENT_TYPE_2D;
 
     public function __construct(
         private int $rowsCount,
@@ -65,9 +64,9 @@ class Map implements MapInterface
     {
         return $this->columnsCount;
     }
-    
-    public function getMovementType(): string
+
+    public function getMovementType(): MovementType
     {
-        return $this->movementType;
+        return MovementType::TwoDimension;
     }
 }

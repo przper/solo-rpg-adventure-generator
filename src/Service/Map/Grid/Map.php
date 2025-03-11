@@ -2,6 +2,7 @@
 
 namespace App\Service\Map\Grid;
 
+use App\Enum\MovementType;
 use App\Helper\Coordinates;
 use App\Interface\MapCellInterface;
 use App\Interface\MapInterface;
@@ -10,12 +11,6 @@ class Map implements MapInterface
 {
     /** @var MapCellInterface[][] */
     private array $cells = [];
-
-    private string $movementType = MapInterface::MOVEMENT_TYPE_2D;
-
-    public function __construct()
-    {
-    }
 
     public function addCell(MapCellInterface $cell): void
     {
@@ -65,9 +60,9 @@ class Map implements MapInterface
         return $corridors;
     }
 
-    public function getMovementType(): string
+    public function getMovementType(): MovementType
     {
-        return $this->movementType;
+        return MovementType::TwoDimension;
     }
 
     public function dumpRaw(): void

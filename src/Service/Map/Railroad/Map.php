@@ -2,6 +2,7 @@
 
 namespace App\Service\Map\Railroad;
 
+use App\Enum\MovementType;
 use App\Helper\Coordinates;
 use App\Interface\MapCellInterface;
 use App\Interface\MapInterface;
@@ -10,8 +11,6 @@ class Map implements MapInterface
 {
     /** @var Cell[][] $cells */
     private array $cells = [];
-    
-    private string $movementType = MapInterface::MOVEMENT_TYPE_1D;
 
     public function getCells(): array
     {
@@ -28,7 +27,7 @@ class Map implements MapInterface
         $rooms = [];
 
         array_walk_recursive(
-            $this->cells, 
+            $this->cells,
             function (MapCellInterface $cell) use (&$rooms) {
                 if ($cell->getType() === Room::TYPE) {
                     $rooms[] = $cell;
@@ -59,7 +58,7 @@ class Map implements MapInterface
     {
         $coordinates = Coordinates::fromIntegers($this->getLength(), 0);
         $cell->setCoordinates($coordinates);
-        
+
         $this->cells[] = [$cell];
 
         return $this;
@@ -69,9 +68,9 @@ class Map implements MapInterface
     {
         return count($this->cells);
     }
-    
-    public function getMovementType(): string
+
+    public function getMovementType(): MovementType
     {
-        return $this->movementType;
+        return MovementType::OneDimension;
     }
 }
