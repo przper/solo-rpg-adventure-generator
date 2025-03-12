@@ -4,9 +4,9 @@ namespace App\Service\Game;
 
 use App\Enum\MovementType;
 use App\Helper\Coordinates;
-use App\Interface\MapCellInterface;
 use App\Service\EncountersPlanner\EncountersPlan;
 use App\Service\Map\Core\Map;
+use App\Service\Map\Core\Tile;
 
 class Game
 {
@@ -87,7 +87,7 @@ class Game
         return $this;
     }
 
-    /** @return MapCellInterface[] */
+    /** @return Tile[] */
     public function getVisitedCells(): array
     {
         return $this->visitedCells;

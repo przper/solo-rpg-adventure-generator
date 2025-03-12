@@ -3,9 +3,8 @@
 namespace App\Service\Map\Core;
 
 use App\Helper\Coordinates;
-use App\Interface\MapCellInterface;
 
-abstract readonly class Tile implements MapCellInterface
+abstract readonly class Tile
 {
     public function __construct(
         private Coordinates $coordinates,
