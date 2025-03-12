@@ -38,7 +38,7 @@ final readonly class Map
         return $this->tiles[$coordinates->getY()][$coordinates->getX()] ?? null;
     }
 
-    public function getTilesByType(TileTypes ...$type): array
+    public function getTilesByType(TileType ...$type): array
     {
         $result = [];
 

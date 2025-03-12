@@ -3,7 +3,7 @@
 namespace App\Tests\Integration\RailroadMapGenerator;
 
 use App\Service\Map\Core\Map;
-use App\Service\Map\Core\TileTypes;
+use App\Service\Map\Core\TileType;
 use App\Service\Map\Railroad\RailroadMapBuilder;
 use App\Tests\DebugsMap;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -32,7 +32,7 @@ class RailroadMapBuilderTest extends KernelTestCase
     {
         $map = $this->builder->setMaxRoomsCount(5)->create();
 
-        $this->assertEquals(5, count($map->getTilesByType(TileTypes::Room)));
+        $this->assertEquals(5, count($map->getTilesByType(TileType::Room)));
     }
 
     /** @test */
@@ -45,9 +45,9 @@ class RailroadMapBuilderTest extends KernelTestCase
             ->setMaxCorridorLength(5)
             ->create();
 
-        $this->assertGreaterThanOrEqual(2, count($map->getTilesByType(TileTypes::Corridor)));
-        $this->assertLessThanOrEqual(5, count($map->getTilesByType(TileTypes::Corridor)));
-        $this->assertGreaterThanOrEqual(4, count($map->getTilesByType(...TileTypes::cases())));
-        $this->assertLessThanOrEqual(7, count($map->getTilesByType(...TileTypes::cases())));
+        $this->assertGreaterThanOrEqual(2, count($map->getTilesByType(TileType::Corridor)));
+        $this->assertLessThanOrEqual(5, count($map->getTilesByType(TileType::Corridor)));
+        $this->assertGreaterThanOrEqual(4, count($map->getTilesByType(...TileType::cases())));
+        $this->assertLessThanOrEqual(7, count($map->getTilesByType(...TileType::cases())));
     }
 }

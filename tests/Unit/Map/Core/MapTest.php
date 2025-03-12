@@ -5,8 +5,10 @@ namespace App\Tests\Unit\Map\Core;
 use App\Enum\MovementType;
 use App\Helper\Coordinates;
 use App\Service\Map\Core\Map;
-use App\Service\Map\Core\TileTypes;
+use App\Service\Map\Core\TileType;
 use App\Tests\DebugsMap;
+use App\Tests\Unit\Map\Core\Fixtures\DummyCorridor;
+use App\Tests\Unit\Map\Core\Fixtures\DummyRoom;
 use PHPUnit\Framework\TestCase;
 
 class MapTest extends TestCase
@@ -105,9 +107,9 @@ class MapTest extends TestCase
 
     public function test_it_filters_Tiles_by_TileType(): void
     {
-        $this->assertCount(2, $this->sut->getTilesByType(TileTypes::Room));
-        $this->assertCount(4, $this->sut->getTilesByType(TileTypes::Corridor));
-        $this->assertCount(0, $this->sut->getTilesByType(TileTypes::Wall));
-        $this->assertCount(6, $this->sut->getTilesByType(TileTypes::Room, TileTypes::Corridor));
+        $this->assertCount(2, $this->sut->getTilesByType(TileType::Room));
+        $this->assertCount(4, $this->sut->getTilesByType(TileType::Corridor));
+        $this->assertCount(0, $this->sut->getTilesByType(TileType::Wall));
+        $this->assertCount(6, $this->sut->getTilesByType(TileType::Room, TileType::Corridor));
     }
 }

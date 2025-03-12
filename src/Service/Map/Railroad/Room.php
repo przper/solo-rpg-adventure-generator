@@ -8,7 +8,7 @@ use App\Interface\HasEnemies;
 use App\Interface\HasTreasure;
 use App\Interface\TreasureInterface;
 use App\Service\Map\Core\Tile;
-use App\Service\Map\Core\TileTypes;
+use App\Service\Map\Core\TileType;
 
 final readonly class Room extends Tile implements HasEnemies, HasTreasure
 {
@@ -21,9 +21,9 @@ final readonly class Room extends Tile implements HasEnemies, HasTreasure
         parent::__construct($coordinates);
     }
 
-    public function getType(): TileTypes
+    public function getType(): TileType
     {
-        return TileTypes::Room;
+        return TileType::Room;
     }
 
     public function getEnemies(): array
