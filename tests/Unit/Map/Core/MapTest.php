@@ -5,6 +5,7 @@ namespace App\Tests\Unit\Map\Core;
 use App\Enum\MovementType;
 use App\Helper\Coordinates;
 use App\Service\Map\Core\Map;
+use App\Service\Map\Core\TileTypes;
 use PHPUnit\Framework\TestCase;
 
 class MapTest extends TestCase
@@ -17,20 +18,20 @@ class MapTest extends TestCase
          * Plain text example:
          *
          * R # # # #
-         * R # # # #
-         * R R R # #
+         * C # # # #
+         * C C C # #
          * # # R # #
          */
         $this->sut = new Map(
             width: 5,
             height: 4,
             tiles: [
-                new DummyTile(Coordinates::fromIntegers(0, 0)),
-                new DummyTile(Coordinates::fromIntegers(0, 1)),
-                new DummyTile(Coordinates::fromIntegers(0, 2)),
-                new DummyTile(Coordinates::fromIntegers(1, 2)),
-                new DummyTile(Coordinates::fromIntegers(2, 2)),
-                new DummyTile(Coordinates::fromIntegers(2, 3)),
+                new DummyRoom(Coordinates::fromIntegers(0, 0)),
+                new DummyCorridor(Coordinates::fromIntegers(0, 1)),
+                new DummyCorridor(Coordinates::fromIntegers(0, 2)),
+                new DummyCorridor(Coordinates::fromIntegers(1, 2)),
+                new DummyCorridor(Coordinates::fromIntegers(2, 2)),
+                new DummyRoom(Coordinates::fromIntegers(2, 3)),
             ],
         );
     }
@@ -50,8 +51,8 @@ class MapTest extends TestCase
     {
         $this->assertSame(
              "R####\n"
-            ."R####\n"
-            ."RRR##\n"
+            ."C####\n"
+            ."CCC##\n"
             ."##R##\n",
             $this->debugMap($this->sut),
         );
@@ -59,7 +60,8 @@ class MapTest extends TestCase
 
     public function test_get_Tile_by_coordinates(): void
     {
-        $this->assertInstanceOf(DummyTile::class, $this->sut->getTile(Coordinates::fromIntegers(0, 0)));
+        $this->assertInstanceOf(DummyRoom::class, $this->sut->getTile(Coordinates::fromIntegers(0, 0)));
+        $this->assertInstanceOf(DummyCorridor::class, $this->sut->getTile(Coordinates::fromIntegers(0, 1)));
         $this->assertNull($this->sut->getTile(Coordinates::fromIntegers(1, 0)));
     }
 
@@ -104,11 +106,19 @@ class MapTest extends TestCase
 
         foreach ($map->tiles as $column) {
             foreach ($column as $tile) {
-                $result .= is_null($tile) ? "#" : strtoupper(substr($tile->getType(), 0, 1));
+                $result .= is_null($tile) ? "#" : strtoupper(substr($tile->getType()->name, 0, 1));
             }
             $result .= "\n";
         }
 
         return $result;
+    }
+
+    public function test_it_filters_Tiles_by_TileType(): void
+    {
+        $this->assertCount(2, $this->sut->getTilesByType(TileTypes::Room));
+        $this->assertCount(4, $this->sut->getTilesByType(TileTypes::Corridor));
+        $this->assertCount(0, $this->sut->getTilesByType(TileTypes::Wall));
+        $this->assertCount(6, $this->sut->getTilesByType(TileTypes::Room, TileTypes::Corridor));
     }
 }

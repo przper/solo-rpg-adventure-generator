@@ -11,7 +11,7 @@ final readonly class Map
      * First index: y coordinate (row)
      * Second index: x coordinate (column)
      *
-     * @var Tile[][]
+     * @var array<array<?Tile>>
      */
     public array $tiles;
 
@@ -36,6 +36,21 @@ final readonly class Map
     public function getTile(Coordinates $coordinates): ?Tile
     {
         return $this->tiles[$coordinates->getY()][$coordinates->getX()] ?? null;
+    }
+
+    public function getTilesByType(TileTypes ...$type): array
+    {
+        $result = [];
+
+        foreach ($this->tiles as $row) {
+            foreach ($row as $tile) {
+                if ($tile instanceof Tile && in_array($tile->getType(), $type)) {
+                    $result[] = $tile;
+                }
+            }
+        }
+
+        return $result;
     }
 
     /** @param Tile[] $tiles */

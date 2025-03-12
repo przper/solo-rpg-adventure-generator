@@ -17,5 +17,5 @@ abstract readonly class Tile implements MapCellInterface
         return $this->coordinates;
     }
 
-    abstract public function getType(): string;
+    abstract public function getType(): TileTypes;
 }
