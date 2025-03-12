@@ -3,49 +3,36 @@
 namespace App\Service\Map\Roguelike;
 
 use App\Helper\Coordinates;
+use App\Interface\EnemyInterface;
 use App\Interface\HasEnemies;
 use App\Interface\HasTreasure;
-use App\Interface\MapCellInterface;
 use App\Interface\TreasureInterface;
+use App\Service\Map\Core\Tile;
+use App\Service\Map\Core\TileType;
 
-class Room implements MapCellInterface, HasTreasure, HasEnemies
+final readonly class Room extends Tile implements HasEnemies, HasTreasure
 {
-    final public const TYPE = 'ROOM';
-
-    private ?TreasureInterface $treasure = null;
-
+    /** @param EnemyInterface[] $enemies */
     public function __construct(
-        private Coordinates $coordinates
+        Coordinates $coordinates,
+        private ?TreasureInterface $treasure = null,
+        private array $enemies = [],
     ) {
-        //
+        parent::__construct($coordinates);
     }
 
-    public function getCoordinates(): Coordinates
+    public function getType(): TileType
     {
-        return $this->coordinates;
+        return TileType::Room;
     }
 
-    public function getType(): string
+    public function getEnemies(): array
     {
-        return self::TYPE;
+        return $this->enemies;
     }
 
     public function getTreasure(): ?TreasureInterface
     {
         return $this->treasure;
-    }
-
-    public function getEnemies(): array
-    {
-        return [];
-    }
-
-    public static function createWithRandomCoordinates(int $maxX, int $maxY): self
-    {
-        $coordinates = Coordinates::fromIntegers(rand(0, $maxX), rand(0, $maxY));
-
-        $room = new self($coordinates);
-
-        return $room;
     }
 }

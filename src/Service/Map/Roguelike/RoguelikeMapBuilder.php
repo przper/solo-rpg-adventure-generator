@@ -2,19 +2,17 @@
 
 namespace App\Service\Map\Roguelike;
 
-use App\Interface\MapInterface;
 use App\Interface\MapGeneratorInterface;
+use App\Service\Map\Core\Map;
 
 class RoguelikeMapBuilder implements MapGeneratorInterface
 {
     private int $rowsCount;
     private int $columnsCount;
 
-    private int $roomsCount;
-
-    public function create(): MapInterface
+    public function create(): Map
     {
-        $map = new Map($this->rowsCount, $this->columnsCount, $this->roomsCount);
+        $map = new Map($this->rowsCount, $this->columnsCount);
 
         return $map;
     }

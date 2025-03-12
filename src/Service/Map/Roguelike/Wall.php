@@ -3,25 +3,18 @@
 namespace App\Service\Map\Roguelike;
 
 use App\Helper\Coordinates;
-use App\Interface\MapCellInterface;
+use App\Service\Map\Core\Tile;
+use App\Service\Map\Core\TileType;
 
-class Wall implements MapCellInterface
+final readonly class Wall extends Tile
 {
-    final public const TYPE = 'WALL';
-
-    public function __construct(
-        private Coordinates $coordinates
-    ) {
-        //
+    public function __construct(Coordinates $coordinates)
+    {
+        parent::__construct($coordinates);
     }
 
-    public function getCoordinates(): Coordinates
+    public function getType(): TileType
     {
-        return $this->coordinates;
-    }
-
-    public function getType(): string
-    {
-        return self::TYPE;
+        return TileType::Wall;
     }
 }
