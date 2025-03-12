@@ -32,6 +32,11 @@ final readonly class Coordinates implements JsonSerializable
         return new self($this->x + $deltaX, $this->y + $deltaY);
     }
 
+    public function isSame(Coordinates $coordinates): bool
+    {
+        return $this->x === $coordinates->x && $this->y === $coordinates->y;
+    }
+
     public function jsonSerialize(): mixed
     {
         return [

@@ -63,31 +63,12 @@ class Game
         return $this->map;
     }
 
-    public function setMap(Map $map): self
-    {
-        $this->map = $map;
-
-        return $this;
-    }
-
     public function getPlayerPosition(): PlayerPosition
     {
         return $this->playerPosition;
     }
 
-    public function setPlayerPosition(PlayerPosition $position): self
-    {
-        if (! $this->isRunning()) {
-            throw new \Exception('Game is not running!');
-        }
-
-        $this->playerPosition = $position;
-        $this->visitedCells[] = clone $position->getCoordinates();
-
-        return $this;
-    }
-
-    /** @return Tile[] */
+    /** @return Coordinates[] */
     public function getVisitedCells(): array
     {
         return $this->visitedCells;

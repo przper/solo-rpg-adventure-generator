@@ -1,3 +1,13 @@
+{#<div class="flex items-center justify-center">#}
+{#    {% for movementDirection in game.actions.movement %}#}
+{#        <form class="mr-4">#}
+{#            <input type="hidden" name="direction" value="{{ movementDirection.value }}">#}
+{#            <button type="submit" class="p-2 rounded bg-gray-200 hover:bg-gray-300">#}
+{#                {{  movementDirection.name }}#}
+{#            </button>#}
+{#        </form>#}
+{#    {% endfor %}#}
+{#</div>#}
 {% if game.movementType == enum('App\\Enum\\MovementType').OneDimension  %}
     <div class="flex items-center justify-center">
         <form class="mr-4">

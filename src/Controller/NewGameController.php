@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\Game\Game;
 use App\Service\Game\GameFactory;
 use App\Service\Map\Grid\GridMapBuilder;
 use App\Service\Map\Railroad\RailroadMapBuilder;
@@ -73,6 +74,10 @@ class NewGameController extends AbstractController
                         ->setCorridorLength(4)
                 )
                 ->create();
+        }
+
+        if (!isset($game) || !$game instanceof Game) {
+            throw new \InvalidArgumentException("Not known dungeon type: $type");
         }
 
         $game->start();

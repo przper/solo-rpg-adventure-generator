@@ -13,29 +13,4 @@
     >
         C
     </span>
-    
-    {# Show connection indicators for rooms in each direction #}
-    {% if cell.hasConnection('north') and cell.connections.north == 'ROOM' %}
-        <div class="absolute -top-1 inset-x-0 flex justify-center">
-            <span class="h-1 w-1 bg-blue-500 rounded-full"></span>
-        </div>
-    {% endif %}
-    
-    {% if cell.hasConnection('east') and cell.connections.east == 'ROOM' %}
-        <div class="absolute -right-1 inset-y-0 flex items-center">
-            <span class="w-1 h-1 bg-blue-500 rounded-full"></span>
-        </div>
-    {% endif %}
-    
-    {% if cell.hasConnection('south') and cell.connections.south == 'ROOM' %}
-        <div class="absolute -bottom-1 inset-x-0 flex justify-center">
-            <span class="h-1 w-1 bg-blue-500 rounded-full"></span>
-        </div>
-    {% endif %}
-    
-    {% if cell.hasConnection('west') and cell.connections.west == 'ROOM' %}
-        <div class="absolute -left-1 inset-y-0 flex items-center">
-            <span class="w-1 h-1 bg-blue-500 rounded-full"></span>
-        </div>
-    {% endif %}
 </div>

@@ -1,6 +1,5 @@
 <?php
 
-
 use App\Enum\DungeonLength;
 use App\Tests\SessionHelper;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -15,13 +14,12 @@ class NewGameControllerTest extends WebTestCase
         $client = static::createClient();
         $session = $this->createSession($client);
 
-        $client->request('GET', '/new');
+        $client->request('GET', '/play/new');
 
         $this->assertResponseIsSuccessful();
 
-        $client->submitForm('Submit', [
-            'game[type]' => 'railroad',
-            'game[length]' => DungeonLength::SHORT->value,
+        $client->submitForm('Railroad', [
+            'type' => 'railroad',
         ]);
 
         $this->assertResponseRedirects('/play');

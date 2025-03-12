@@ -4,7 +4,7 @@ namespace App\Tests\Unit\MapRenderer;
 
 use App\Service\MapRenderer\CellWrapper;
 use App\Service\MapRenderer\MapRender;
-use App\Tests\Unit\MapRenderer\Fixtures\DummyMapCell;
+use App\Tests\Unit\MapRenderer\Fixtures\DummyRoom;
 use PHPUnit\Framework\TestCase;
 
 class MapRenderTest extends TestCase
@@ -12,7 +12,7 @@ class MapRenderTest extends TestCase
     /** @test */
     public function it_has_cells()
     {
-        $cell = new CellWrapper(new DummyMapCell());
+        $cell = CellWrapper::fromTile(new DummyRoom());
         $html = '<h1>test</h1>';
 
         $mapRender = new MapRender([[$cell]], $html);

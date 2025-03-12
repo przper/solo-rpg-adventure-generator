@@ -4,14 +4,10 @@ namespace App\Controller;
 
 use App\Enum\MovementDirection;
 use App\Service\Game\Game;
-use App\Service\Game\GameFactory;
-use App\Service\Map\Grid\GridMapBuilder;
 use App\Service\Game\Movement;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\Map\Railroad\RailroadMapBuilder;
-use App\Service\Map\Roguelike\RoguelikeMapBuilder;
 use App\Service\MapRenderer\MapRenderer;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,8 +39,6 @@ class PlayController extends AbstractController
         $map = $this->mapRenderer->render($game->getMap(), $game);
 
         $session->set('game', $game);
-
-        dump($game);
 
         return $this->render('play/index.html.twig', [
             'heading' => 'Survive, brave adventurer...',

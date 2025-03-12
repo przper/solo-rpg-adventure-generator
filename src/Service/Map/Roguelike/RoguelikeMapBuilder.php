@@ -9,12 +9,11 @@ class RoguelikeMapBuilder implements MapGeneratorInterface
 {
     private int $rowsCount;
     private int $columnsCount;
+    private int $roomsCount;
 
     public function create(): Map
     {
-        $map = new Map($this->rowsCount, $this->columnsCount);
-
-        return $map;
+        return new Map($this->rowsCount, $this->columnsCount);
     }
 
     public function setRowsCount(int $count): self

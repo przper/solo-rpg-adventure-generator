@@ -51,7 +51,7 @@ class PlayControllerTest extends WebTestCase
             ->setMapBuilder(
                 self::getContainer()
                     ->get(RailroadMapBuilder::class)
-                    ->setRoomsCount(1)
+                    ->setMaxRoomsCount(1)
             )
             ->create();
 
@@ -76,7 +76,7 @@ class PlayControllerTest extends WebTestCase
             ->setMapBuilder(
                 self::getContainer()
                     ->get(RailroadMapBuilder::class)
-                    ->setRoomsCount(1)
+                    ->setMaxRoomsCount(2)
             )
             ->create();
         $playerPositionBefore = $game->getPlayerPosition();

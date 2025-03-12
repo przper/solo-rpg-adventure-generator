@@ -18,9 +18,7 @@ class CellWrapper
 
     private bool $hasPlayer = false;
 
-    private bool $isVisited = false;
-
-    private array $connections = [];
+    private bool $wasVisited = false;
 
     public function __construct(
         readonly public TileType $type,
@@ -52,19 +50,19 @@ class CellWrapper
         return $this;
     }
 
-    public function getIsVisited(): bool
+    public function getWasVisited(): bool
     {
-        return $this->isVisited;
+        return $this->wasVisited;
     }
 
-    public function setIsVisited(bool $isVisited): self
+    public function setWasVisited(bool $wasVisited): self
     {
-        $this->isVisited = $isVisited;
+        $this->wasVisited = $wasVisited;
 
         return $this;
     }
 
-    public function getType(): string
+    public function getType(): TileType
     {
         return $this->type;
     }
@@ -74,35 +72,9 @@ class CellWrapper
         return $this->treasure;
     }
 
-    /**
-     * Gets the cell's connections
-     *
-     * @return array<string, string> Map of directions to connection types
-     */
-    public function getConnections(): array
-    {
-        return $this->connections;
-    }
-
-    /**
-     * Check if the cell has a connection in a specific direction
-     */
-    public function hasConnection(string $direction): bool
-    {
-        return isset($this->connections[$direction]);
-    }
-
-    /**
-     * Get the connection type in a specific direction
-     */
-    public function getConnectionType(string $direction): ?string
-    {
-        return $this->connections[$direction] ?? null;
-    }
-
     public function getTemplate(): string
     {
-        if (! $this->isVisited) {
+        if (! $this->wasVisited) {
             return self::WALL_TEMPLATE;
         }
 
@@ -116,16 +88,16 @@ class CellWrapper
     public function applyGameState(Game $game): void
     {
         $this->hasPlayer = false;
-        $this->isVisited = false;
+        $this->wasVisited = false;
 
-        $position = $game->getPlayerPosition();
+        $playerPosition = $game->getPlayerPosition();
 
-        if ($this->coordinates == $position->getCoordinates()) {
+        if ($this->coordinates->isSame($playerPosition->getCoordinates())) {
             $this->hasPlayer = true;
         }
 
         if (in_array($this->coordinates, $game->getVisitedCells())) {
-            $this->isVisited = true;
+            $this->wasVisited = true;
         }
     }
 }

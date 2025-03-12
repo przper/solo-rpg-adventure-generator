@@ -2,9 +2,11 @@
 
 namespace App\Tests\Unit\Game;
 
+use App\Enum\MovementDirection;
 use App\Helper\Coordinates;
 use App\Service\EncountersPlanner\EncountersPlan;
 use App\Service\Game\Game;
+use App\Service\Game\Movement;
 use App\Service\Map\Core\Map;
 use PHPUnit\Framework\TestCase;
 use App\Service\Game\PlayerPosition;
@@ -37,7 +39,8 @@ class GameTest extends TestCase
     {
         $game = new Game(new Map(10, 10), new EncountersPlan());
 
-        $game->movePlayerByIntegers(1, 1);
+        $game->movePlayer(Movement::new()->add(MovementDirection::East)->add(MovementDirection::South));
+
         $this->assertEquals(
             Coordinates::fromIntegers(1, 1),
             $game->getPlayerPosition()->getCoordinates()
@@ -59,17 +62,17 @@ class GameTest extends TestCase
             $game->getVisitedCells()[0]
         );
 
-        $game->movePlayerByIntegers(1, 1);
+        $game->movePlayer(Movement::new()->add(MovementDirection::East)->add(MovementDirection::South));
         $this->assertCount(2, $game->getVisitedCells());
         $this->assertEquals(
             Coordinates::fromIntegers(1, 1),
             $game->getVisitedCells()[1]
         );
 
-        $game->movePlayerByIntegers(-1, -1);
+        $game->movePlayer(Movement::new()->add(MovementDirection::West)->add(MovementDirection::North));
         $this->assertCount(2, $game->getVisitedCells());
 
-        $game->movePlayerByIntegers(2, 2);
+        $game->movePlayer(Movement::new()->add(MovementDirection::East, 2)->add(MovementDirection::South, 2));
         $this->assertCount(3, $game->getVisitedCells());
         $this->assertEquals(
             Coordinates::fromIntegers(2, 2),

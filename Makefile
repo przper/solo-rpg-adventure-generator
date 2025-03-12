@@ -15,7 +15,7 @@ clean:
 
 # Testing application
 .PHONY: test
-test: lint unit-tests integration-tests
+test: lint unit-tests integration-tests application-tests
 
 lint: vendor
 	vendor/bin/phpstan analyse -c phpstan.neon
@@ -25,3 +25,6 @@ unit-tests: vendor
 
 integration-tests: vendor
 	vendor/bin/phpunit --testsuite=integration
+
+application-tests: vendor
+	vendor/bin/phpunit --testsuite=application

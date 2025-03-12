@@ -2,6 +2,7 @@
 
 namespace App\Tests\Integration\GridMapGenerator;
 
+use App\Service\Map\Core\Map;
 use App\Service\Map\Grid\GridMapBuilder;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -15,7 +16,7 @@ class GridMapBuilderTest extends KernelTestCase
     }
 
     /** @test */
-    public function it_build_map(): void
+    public function it_builds_map(): void
     {
         $map = $this
             ->builder
@@ -25,7 +26,6 @@ class GridMapBuilderTest extends KernelTestCase
             ->setCorridorLength(4)
             ->create();
 
-        $map->dumpRaw();
-//        dump($map);
+        $this->assertInstanceOf(Map::class, $map);
     }
 }
