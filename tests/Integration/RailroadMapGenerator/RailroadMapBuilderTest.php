@@ -2,13 +2,16 @@
 
 namespace App\Tests\Integration\RailroadMapGenerator;
 
-use App\Interface\MapInterface;
-use App\Service\Map\Railroad\Map;
+use App\Service\Map\Core\Map;
+use App\Service\Map\Core\TileTypes;
 use App\Service\Map\Railroad\RailroadMapBuilder;
+use App\Tests\DebugsMap;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class RailroadMapBuilderTest extends KernelTestCase
 {
+    use DebugsMap;
+
     private RailroadMapBuilder $builder;
 
     public function setUp(): void
@@ -19,35 +22,32 @@ class RailroadMapBuilderTest extends KernelTestCase
     /** @test */
     public function it_builds_map()
     {
-        $map = $this->builder->setRoomsCount(1)->create();
+        $map = $this->builder->create();
 
-        $this->assertInstanceOf(MapInterface::class, $map);
+        $this->assertInstanceOf(Map::class, $map);
     }
 
     /** @test */
     public function rooms_counter_can_be_set()
     {
-        $this->builder->setRoomsCount(5);
+        $map = $this->builder->setMaxRoomsCount(5)->create();
 
-        /** @var Map $map */
-        $map = $this->builder->create();
-
-        $this->assertEquals(5, count($map->getRooms()));
+        $this->assertEquals(5, count($map->getTilesByType(TileTypes::Room)));
     }
 
     /** @test */
     public function corridors_length_range_can_be_set()
     {
-        $this->builder->setRoomsCount(2);
-        $this->builder->setMinCorridorLength(2);
-        $this->builder->setMaxCorridorLength(5);
+        $map = $this
+            ->builder
+            ->setMaxRoomsCount(2)
+            ->setMinCorridorLength(2)
+            ->setMaxCorridorLength(5)
+            ->create();
 
-        /** @var Map $map */
-        $map = $this->builder->create();
-
-        $this->assertGreaterThanOrEqual(2, count($map->getCorridors()));
-        $this->assertLessThanOrEqual(5, count($map->getCorridors()));
-        $this->assertGreaterThanOrEqual(4, $map->getLength());
-        $this->assertLessThanOrEqual(7, $map->getLength());
+        $this->assertGreaterThanOrEqual(2, count($map->getTilesByType(TileTypes::Corridor)));
+        $this->assertLessThanOrEqual(5, count($map->getTilesByType(TileTypes::Corridor)));
+        $this->assertGreaterThanOrEqual(4, count($map->getTilesByType(...TileTypes::cases())));
+        $this->assertLessThanOrEqual(7, count($map->getTilesByType(...TileTypes::cases())));
     }
 }

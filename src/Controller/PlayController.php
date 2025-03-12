@@ -60,7 +60,7 @@ class PlayController extends AbstractController
             $game = $this->gameFactory
                 ->setMapBuilder(
                     $this->railroadGenerator
-                        ->setRoomsCount($roomsCount)
+                        ->setMaxRoomsCount($roomsCount)
                         ->setMinCorridorLength(2)
                         ->setMaxCorridorLength(5)
                 )

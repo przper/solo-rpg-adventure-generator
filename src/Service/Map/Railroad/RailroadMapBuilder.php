@@ -2,26 +2,28 @@
 
 namespace App\Service\Map\Railroad;
 
-use App\Interface\MapInterface;
+use App\Helper\Coordinates;
 use App\Interface\MapGeneratorInterface;
+use App\Service\Map\Core\Map;
 
 class RailroadMapBuilder implements MapGeneratorInterface
 {
-    private int $roomsCount;
-
+    private int $maxRoomsCount = 2;
     private int $minCorridorLength = 1;
     private int $maxCorridorLength = 1;
 
+    /** Internal property to keep track of dungeon length, to properly assign new room's coordinates */
+    private int $tileIndex = 0;
+
     public function __construct(
         private RoomGenerator $roomGenerator,
-        private CorridorGenerator $corridorGenerator
+        private CorridorGenerator $corridorGenerator,
     ) {
-        //
     }
 
-    public function setRoomsCount(int $roomsCount): self
+    public function setMaxRoomsCount(int $maxRoomsCount): self
     {
-        $this->roomsCount = $roomsCount;
+        $this->maxRoomsCount = $maxRoomsCount;
 
         return $this;
     }
@@ -40,36 +42,46 @@ class RailroadMapBuilder implements MapGeneratorInterface
         return $this;
     }
 
-    public function create(): MapInterface
+    public function create(): Map
     {
-        $map = new Map();
+        $tiles[] = $this->roomGenerator->starter();
 
-        $starterRoom = $this->roomGenerator
-            ->setEnemyPercentageChanceInInt(0)
-            ->setTreasurePercentageChanceInInt(0)
-            ->generate();
+        $this->tileIndex = 1;
+        $roomCount = 1;
 
-        $map->addCell($starterRoom);
+        while($roomCount < $this->maxRoomsCount) {
+            array_push($tiles, ...$this->generateCorridorSet());
 
-        while(count($map->getRooms()) < $this->roomsCount) {
-            $this->addCorridorToMap($map);
-
-            $map->addCell($this->roomGenerator->generate());
+            $tiles[] = $this->roomGenerator->generate(Coordinates::fromIntegers($this->tileIndex, 0));
+            $roomCount++;
+            $this->tileIndex++;
         }
+        $map = new Map(
+            $this->tileIndex,
+            1,
+            $tiles,
+        );
+
+        $this->tileIndex = 0;
 
         return $map;
     }
 
-    private function addCorridorToMap(Map $map): void
+    /** @return Corridor[] */
+    private function generateCorridorSet(): array
     {
         $min = $this->minCorridorLength;
         $max = rand($this->minCorridorLength, $this->maxCorridorLength);
 
-        for ($i = $min; $i <= $max + 1; $i++) {
-            $corridor = $this->corridorGenerator->generate();
+        $corridors = [];
 
-            $map->addCell($corridor);
+        for ($i = $min; $i <= $max + 1; $i++) {
+            $corridor = $this->corridorGenerator->generate(Coordinates::fromIntegers($this->tileIndex, 0));
+
+            $corridors[] = $corridor;
+            $this->tileIndex++;
         }
+
+        return $corridors;
     }
-    
 }

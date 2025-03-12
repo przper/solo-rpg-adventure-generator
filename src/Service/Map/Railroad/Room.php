@@ -3,22 +3,36 @@
 namespace App\Service\Map\Railroad;
 
 use App\Helper\Coordinates;
+use App\Interface\EnemyInterface;
+use App\Interface\HasEnemies;
+use App\Interface\HasTreasure;
+use App\Interface\TreasureInterface;
+use App\Service\Map\Core\Tile;
+use App\Service\Map\Core\TileTypes;
 
-class Room extends Cell
+final readonly class Room extends Tile implements HasEnemies, HasTreasure
 {
-    final public const TYPE = 'ROOM';
-
-    public function getType(): string
-    {
-        return self::TYPE;
+    /** @param EnemyInterface[] $enemies */
+    public function __construct(
+        Coordinates $coordinates,
+        private ?TreasureInterface $treasure = null,
+        private array $enemies = [],
+    ) {
+        parent::__construct($coordinates);
     }
 
-    public static function fromCoordinates(Coordinates $coordinates): self
+    public function getType(): TileTypes
     {
-        $room = new self();
+        return TileTypes::Room;
+    }
 
-        $room->setCoordinates($coordinates);
+    public function getEnemies(): array
+    {
+        return $this->enemies;
+    }
 
-        return $room;
+    public function getTreasure(): ?TreasureInterface
+    {
+        return $this->treasure;
     }
 }

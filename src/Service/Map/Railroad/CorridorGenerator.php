@@ -2,6 +2,7 @@
 
 namespace App\Service\Map\Railroad;
 
+use App\Helper\Coordinates;
 use App\Interface\EnemyGeneratorInterface;
 use App\Interface\TreasureGeneratorInterface;
 
@@ -18,37 +19,19 @@ class CorridorGenerator
         //
     }
 
-    public function setTreasurePercentageChanceInInt(int $treasurePercentageChanceInInt): self
+    public function generate(Coordinates $coordinates): Corridor
     {
-        $this->treasurePercentageChanceInInt = $treasurePercentageChanceInInt;
-
-        return $this;
-    }
-
-    public function setEnemyPercentageChanceInInt(int $enemyPercentageChanceInInt): self
-    {
-        $this->enemyPercentageChanceInInt = $enemyPercentageChanceInInt;
-
-        return $this;
-    }
-
-    public function generate(): Corridor
-    {
-        $corridor = new Corridor();
+        $treasure = null;
+        $enemies = [];
 
         if (rand(0, 100) < $this->treasurePercentageChanceInInt) {
             $treasure = $this->treasureGenerator->generate();
-            $corridor->setTreasure($treasure);
         }
 
         if (rand(0, 100) < $this->enemyPercentageChanceInInt) {
             $enemies = $this->enemyGenerator->generateMany(rand(1, 3));
-            $corridor->setEnemies($enemies);
         }
 
-        $this->setTreasurePercentageChanceInInt(20);
-        $this->setEnemyPercentageChanceInInt(30);
-
-        return $corridor;
+        return new Corridor($coordinates, $treasure, $enemies);
     }
 }
