@@ -3,14 +3,13 @@
 namespace App\Service\Game;
 
 use App\Helper\Coordinates;
-use App\Interface\MapCellInterface;
+use App\Service\Map\Core\Tile;
 
 class PlayerPosition
 {
     public function __construct(
         private Coordinates $coordinates
     ) {
-      //
     }
 
     public function getX(): int
@@ -28,22 +27,15 @@ class PlayerPosition
         return $this->coordinates;
     }
 
-    public function setCoordinates(Coordinates $coordinates): self
+    public function movePlayer(Movement $move): self
     {
-        $this->coordinates = $coordinates;
+        $this->coordinates = $this->coordinates->moveBy($move->deltaX, $move->deltaY);
 
         return $this;
     }
 
-    public function moveBy(int $deltaX, int $deltaY): self
+    public static function fromTile(Tile $tile): self
     {
-        $this->coordinates = $this->coordinates->moveBy($deltaX, $deltaY);
-
-        return $this;
-    }
-
-    public static function fromCell(MapCellInterface $cell): self
-    {
-        return new self(clone $cell->getCoordinates());
+        return new self(clone $tile->getCoordinates());
     }
 }

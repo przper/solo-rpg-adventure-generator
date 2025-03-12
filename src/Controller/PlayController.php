@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Enum\MovementDirection;
 use App\Service\Game\Game;
 use App\Service\Game\GameFactory;
 use App\Service\Map\Grid\GridMapBuilder;
+use App\Service\Game\Movement;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,12 +34,10 @@ class PlayController extends AbstractController
         $game = $session->get('game');
 
         if ($direction = $request->get('direction')) {
-            match ($direction) {
-                'forward', 'east' => $game->movePlayerByIntegers(1, 0),
-                'backward', 'west' => $game->movePlayerByIntegers(-1, 0),
-                'north' => $game->movePlayerByIntegers(0, -1),  // Moving north decreases y-coordinate (going up in the grid)
-                'south' => $game->movePlayerByIntegers(0, 1)    // Moving south increases y-coordinate (going down in the grid)
-            };
+            $direction = MovementDirection::from($direction);
+
+            $movement = Movement::new()->add($direction);
+            $game->movePlayer($movement);
         }
 
         $map = $this->mapRenderer->render($game->getMap(), $game);

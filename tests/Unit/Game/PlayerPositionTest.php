@@ -2,7 +2,9 @@
 
 namespace App\Tests\Unit\Game;
 
+use App\Enum\MovementDirection;
 use App\Helper\Coordinates;
+use App\Service\Game\Movement;
 use App\Tests\Unit\Map\Core\Fixtures\DummyRoom;
 use PHPUnit\Framework\TestCase;
 use App\Service\Game\PlayerPosition;
@@ -24,22 +26,22 @@ class PlayerPositionTest extends TestCase
     public function it_can_be_moved()
     {
         $position = new PlayerPosition(Coordinates::fromIntegers(10, 10));
-        $position->moveBy(1, 1);
+        $position->movePlayer(Movement::new()->add(MovementDirection::East)->add(MovementDirection::South));
 
         $this->assertEquals(
             Coordinates::fromIntegers(11, 11),
-            $position->getCoordinates()
+            $position->getCoordinates(),
         );
     }
 
     /** @test */
-    public function it_can_be_created_from_MapCell()
+    public function it_can_be_created_from_Tile()
     {
-        $position = PlayerPosition::fromCell(new DummyRoom(Coordinates::fromIntegers(0, 0)));
+        $position = PlayerPosition::fromTile(new DummyRoom(Coordinates::fromIntegers(0, 0)));
 
         $this->assertEquals(
             Coordinates::fromIntegers(0, 0),
-            $position->getCoordinates()
+            $position->getCoordinates(),
         );
     }
 }

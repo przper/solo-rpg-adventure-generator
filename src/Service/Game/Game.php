@@ -29,9 +29,9 @@ class Game
         $this->playerPosition = new PlayerPosition(Coordinates::fromIntegers(0, 0));
     }
 
-    public function movePlayerByIntegers(int $deltaX, int $deltaY): self
+    public function movePlayer(Movement $move): self
     {
-        $this->playerPosition->moveBy($deltaX, $deltaY);
+        $this->playerPosition->movePlayer($move);
 
         $newPositionCoordinates = $this->playerPosition->getCoordinates();
 
