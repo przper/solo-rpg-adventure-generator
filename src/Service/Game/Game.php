@@ -2,11 +2,11 @@
 
 namespace App\Service\Game;
 
+use App\Enum\MovementDirection;
 use App\Enum\MovementType;
 use App\Helper\Coordinates;
 use App\Service\EncountersPlanner\EncountersPlan;
 use App\Service\Map\Core\Map;
-use App\Service\Map\Core\Tile;
 
 class Game
 {
@@ -20,6 +20,7 @@ class Game
 
     private PlayerPosition $playerPosition;
 
+    public AvailableActions $actions;
 
     public function __construct(
         private Map $map,
@@ -27,6 +28,7 @@ class Game
     ) {
         $this->status = self::STATUS_READY;
         $this->playerPosition = new PlayerPosition(Coordinates::fromIntegers(0, 0));
+        $this->actions = $this->checkAvailableActions();
     }
 
     public function movePlayer(Movement $move): self
@@ -38,6 +40,8 @@ class Game
         if (! in_array($newPositionCoordinates, $this->visitedCells)) {
             $this->visitedCells[] = clone $newPositionCoordinates;
         }
+
+        $this->actions = $this->checkAvailableActions();
 
         return $this;
     }
@@ -87,5 +91,47 @@ class Game
     public function getMovementType(): MovementType
     {
         return $this->map->movementType;
+    }
+
+    private function checkAvailableActions(): AvailableActions
+    {
+        $movement = $this->getAvailableMoves();
+
+        return new AvailableActions(
+            movement: $movement,
+        );
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getAvailableMoves(): array
+    {
+        $playerTileCoordinates = $this->playerPosition->getCoordinates();
+        $moves = [];
+
+        $nearbyTiles = $this->map->getNearbyTiles($playerTileCoordinates);
+        foreach ($nearbyTiles as $nearbyTile) {
+            if ($nearbyTile->getCoordinates()->getX() < $playerTileCoordinates->getX()) {
+                $moves[] = MovementDirection::West;
+            }
+
+            if ($nearbyTile->getCoordinates()->getX() > $playerTileCoordinates->getX()) {
+                $moves[] = MovementDirection::East;
+            }
+
+            if ($nearbyTile->getCoordinates()->getY() < $playerTileCoordinates->getY()) {
+                $moves[] = MovementDirection::North;
+            }
+
+            if ($nearbyTile->getCoordinates()->getY() > $playerTileCoordinates->getY()) {
+                $moves[] = MovementDirection::South;
+            }
+        }
+
+        return array_map(
+            fn(MovementDirection $m) => $m->value,
+            $moves,
+        );
     }
 }

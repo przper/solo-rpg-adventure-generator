@@ -5,7 +5,7 @@ namespace App\Tests\Unit\Game;
 use App\Enum\MovementDirection;
 use App\Helper\Coordinates;
 use App\Service\Game\Movement;
-use App\Tests\Unit\Map\Core\Fixtures\DummyRoom;
+use App\Tests\Unit\Game\Fixtures\DummyRoom;
 use PHPUnit\Framework\TestCase;
 use App\Service\Game\PlayerPosition;
 

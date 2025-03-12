@@ -1,6 +1,7 @@
 <?php
 
-use App\Enum\DungeonLength;
+namespace App\Tests\Application;
+
 use App\Tests\SessionHelper;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

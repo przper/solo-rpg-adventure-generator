@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Map\Core\Fixtures;
+namespace App\Tests\Unit\Game\Fixtures;
 
 use App\Service\Map\Core\Tile;
 use App\Service\Map\Core\TileType;

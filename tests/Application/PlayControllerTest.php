@@ -14,23 +14,6 @@ class PlayControllerTest extends WebTestCase
     use SessionHelper;
 
     /** @test */
-    public function new_game()
-    {
-        $client = static::createClient();
-        $session = $this->createSession($client);
-
-        $client->request('GET', '/play/new');
-
-        $this->assertResponseIsSuccessful();
-
-        $client->request('GET', '/play/new?type=railroad');
-        $this->assertResponseRedirects('/play');
-        $client->followRedirect();
-
-        $this->assertBrowserHasCookie($session->getName());
-    }
-
-    /** @test */
     public function play_redirect_if_no_game_in_session()
     {
         $client = static::createClient();
