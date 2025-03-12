@@ -6,10 +6,13 @@ use App\Enum\MovementType;
 use App\Helper\Coordinates;
 use App\Service\Map\Core\Map;
 use App\Service\Map\Core\TileTypes;
+use App\Tests\DebugsMap;
 use PHPUnit\Framework\TestCase;
 
 class MapTest extends TestCase
 {
+    use DebugsMap;
+
     private Map $sut;
 
     protected function setUp(): void
@@ -98,20 +101,6 @@ class MapTest extends TestCase
         yield [-1, 5, false];
         yield [5, -1, false];
         yield [-1, -1, false];
-    }
-
-    private function debugMap(Map $map): string
-    {
-        $result = "";
-
-        foreach ($map->tiles as $column) {
-            foreach ($column as $tile) {
-                $result .= is_null($tile) ? "#" : strtoupper(substr($tile->getType()->name, 0, 1));
-            }
-            $result .= "\n";
-        }
-
-        return $result;
     }
 
     public function test_it_filters_Tiles_by_TileType(): void
