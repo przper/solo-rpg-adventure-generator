@@ -5,15 +5,15 @@ namespace App\Tests\Unit\Game;
 use App\Helper\Coordinates;
 use App\Service\EncountersPlanner\EncountersPlan;
 use App\Service\Game\Game;
+use App\Service\Map\Core\Map;
 use PHPUnit\Framework\TestCase;
 use App\Service\Game\PlayerPosition;
-use App\Tests\Unit\Game\Fixtures\DummyMap;
 
 class GameTest extends TestCase
 {
     public function test_it_have_status(): void
     {
-        $game = new Game(new DummyMap(), new EncountersPlan());
+        $game = new Game(new Map(10, 10), new EncountersPlan());
 
         $this->assertSame('ready', $game->getStatus());
         $this->assertFalse($game->isRunning());
@@ -27,7 +27,7 @@ class GameTest extends TestCase
     /** @test */
     public function it_has_player_position()
     {
-        $game = new Game(new DummyMap(), new EncountersPlan());
+        $game = new Game(new Map(10, 10), new EncountersPlan());
 
         $this->assertInstanceOf(PlayerPosition::class, $game->getPlayerPosition());
     }
@@ -35,7 +35,7 @@ class GameTest extends TestCase
     /** @test */
     public function player_position_can_be_moved()
     {
-        $game = new Game(new DummyMap(), new EncountersPlan());
+        $game = new Game(new Map(10, 10), new EncountersPlan());
 
         $game->movePlayerByIntegers(1, 1);
         $this->assertEquals(
@@ -47,7 +47,7 @@ class GameTest extends TestCase
     /** @test */
     public function it_stores_visited_cells()
     {
-        $game = new Game(new DummyMap(), new EncountersPlan());
+        $game = new Game(new Map(10, 10), new EncountersPlan());
 
         $this->assertCount(0, $game->getVisitedCells());
 

@@ -37,15 +37,13 @@ class PlayerPosition
 
     public function moveBy(int $deltaX, int $deltaY): self
     {
-        $this->coordinates->moveBy($deltaX, $deltaY);
+        $this->coordinates = $this->coordinates->moveBy($deltaX, $deltaY);
 
         return $this;
     }
 
     public static function fromCell(MapCellInterface $cell): self
     {
-        $position = new self(clone $cell->getCoordinates());
-
-        return $position;
+        return new self(clone $cell->getCoordinates());
     }
 }

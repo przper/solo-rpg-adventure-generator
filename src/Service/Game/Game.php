@@ -5,8 +5,8 @@ namespace App\Service\Game;
 use App\Enum\MovementType;
 use App\Helper\Coordinates;
 use App\Interface\MapCellInterface;
-use App\Interface\MapInterface;
 use App\Service\EncountersPlanner\EncountersPlan;
+use App\Service\Map\Core\Map;
 
 class Game
 {
@@ -22,8 +22,8 @@ class Game
 
 
     public function __construct(
-        private MapInterface $map,
-        private EncountersPlan $encountersPlan
+        private Map $map,
+        private EncountersPlan $encountersPlan,
     ) {
         $this->status = self::STATUS_READY;
         $this->playerPosition = new PlayerPosition(Coordinates::fromIntegers(0, 0));
@@ -58,12 +58,12 @@ class Game
         return $this->status === self::STATUS_RUNNING;
     }
 
-    public function getMap(): MapInterface
+    public function getMap(): Map
     {
         return $this->map;
     }
 
-    public function setMap(MapInterface $map): self
+    public function setMap(Map $map): self
     {
         $this->map = $map;
 
@@ -105,6 +105,6 @@ class Game
 
     public function getMovementType(): MovementType
     {
-        return $this->map->getMovementType();
+        return $this->map->movementType;
     }
 }

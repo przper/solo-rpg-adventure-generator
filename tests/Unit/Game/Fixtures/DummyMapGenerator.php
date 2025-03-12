@@ -3,12 +3,12 @@
 namespace App\Tests\Unit\Game\Fixtures;
 
 use App\Interface\MapGeneratorInterface;
-use App\Interface\MapInterface;
+use App\Service\Map\Core\Map;
 
 class DummyMapGenerator implements MapGeneratorInterface
 {
-    public function create(): MapInterface
+    public function create(): Map
     {
-        return new DummyMap();
+        return new Map(10, 10);
     }
 }

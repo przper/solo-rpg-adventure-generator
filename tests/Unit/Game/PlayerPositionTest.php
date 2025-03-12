@@ -3,9 +3,9 @@
 namespace App\Tests\Unit\Game;
 
 use App\Helper\Coordinates;
+use App\Tests\Unit\Map\Core\Fixtures\DummyRoom;
 use PHPUnit\Framework\TestCase;
 use App\Service\Game\PlayerPosition;
-use App\Tests\Unit\Game\Fixtures\DummyMapCell;
 
 class PlayerPositionTest extends TestCase
 {
@@ -35,8 +35,7 @@ class PlayerPositionTest extends TestCase
     /** @test */
     public function it_can_be_created_from_MapCell()
     {
-        $cell = new DummyMapCell();
-        $position = PlayerPosition::fromCell($cell);
+        $position = PlayerPosition::fromCell(new DummyRoom(Coordinates::fromIntegers(0, 0)));
 
         $this->assertEquals(
             Coordinates::fromIntegers(0, 0),
