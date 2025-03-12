@@ -1,13 +1,10 @@
-<div class="mb-4 p-4 rounded-xl shadow-sm bg-white flex items-center justify-center">
-    <div class="p-6 text-xs flex items-center justify-center bg-gray-800">
+<div class="mb-4 p-4 rounded-xl shadow-sm bg-white">
+    <div class="p-6 text-xs bg-gray-800">
         {% for column in cells %}
-            <div class="">
-                {# <p class="mb-2">X={{ loop.index0 }}</p> #}
+            <div class="flex items-center justify-center">
                 {% for cell in column %}
-                    <div class="w-4 h-4 flex items-center justify-center">
+                    <div class="w-8 h-8 flex items-center justify-center">
                         {{ include(cell.template) }}
-                        {# <span>{{ cell.type | first | upper }}</span> #}
-                        {# <span>[{{ cell.xCoordinate }}, {{ cell.yCoordinate }}]</span> #}
                     </div>
                 {% endfor %}
             </div>

@@ -5,16 +5,13 @@ namespace App\Service\MapRenderer;
 use App\Helper\Coordinates;
 use App\Interface\HasEnemies;
 use App\Interface\HasTreasure;
-use App\Interface\MapCellInterface;
 use App\Interface\TreasureInterface;
 use App\Service\Game\Game;
+use App\Service\Map\Core\Tile;
+use App\Service\Map\Core\TileType;
 
 class CellWrapper
 {
-    final public const ROOM_TYPE = 'ROOM';
-    final public const CORRIDOR_TYPE = 'CORRIDOR';
-    final public const WALL_TYPE = 'WALL';
-
     final public const ROOM_TEMPLATE = 'map/_room.html.twig';
     final public const CORRIDOR_TEMPLATE = 'map/_corridor.html.twig';
     final public const WALL_TEMPLATE = 'map/_wall.html.twig';
@@ -23,27 +20,24 @@ class CellWrapper
 
     private bool $isVisited = false;
 
-    readonly public string $type;
-
-    readonly public Coordinates $coordinates;
-
-    readonly public ?TreasureInterface $treasure;
-
-    readonly public array $enemies;
-    
     private array $connections = [];
 
-    public function __construct(MapCellInterface $baseCell)
+    public function __construct(
+        readonly public TileType $type,
+        readonly public Coordinates $coordinates,
+        readonly public ?TreasureInterface $treasure= null,
+        readonly public array $enemies = [],
+    ) {
+    }
+
+    public static function fromTile(Tile $tile): self
     {
-        $this->type = $baseCell->getType();
-        $this->coordinates = $baseCell->getCoordinates();
-        $this->treasure = $baseCell instanceof HasTreasure ? $baseCell->getTreasure() : null;
-        $this->enemies = $baseCell instanceof HasEnemies ? $baseCell->getEnemies() : [];
-        
-        // Store connections if available
-        if (method_exists($baseCell, 'getConnections')) {
-            $this->connections = $baseCell->getConnections();
-        }
+        return new self(
+            type: $tile->getType(),
+            coordinates: $tile->getCoordinates(),
+            treasure: $tile instanceof HasTreasure ? $tile->getTreasure() : null,
+            enemies: $tile instanceof HasEnemies ? $tile->getEnemies() : [],
+        );
     }
 
     public function getHasPlayer(): bool
@@ -79,7 +73,7 @@ class CellWrapper
     {
         return $this->treasure;
     }
-    
+
     /**
      * Gets the cell's connections
      *
@@ -89,7 +83,7 @@ class CellWrapper
     {
         return $this->connections;
     }
-    
+
     /**
      * Check if the cell has a connection in a specific direction
      */
@@ -97,7 +91,7 @@ class CellWrapper
     {
         return isset($this->connections[$direction]);
     }
-    
+
     /**
      * Get the connection type in a specific direction
      */
@@ -113,9 +107,9 @@ class CellWrapper
         }
 
         return match ($this->type) {
-            self::ROOM_TYPE => self::ROOM_TEMPLATE,
-            self::CORRIDOR_TYPE => self::CORRIDOR_TEMPLATE,
-            self::WALL_TYPE => self::WALL_TEMPLATE
+            TileType::Room => self::ROOM_TEMPLATE,
+            TileType::Corridor => self::CORRIDOR_TEMPLATE,
+            TileType::Wall => self::WALL_TEMPLATE
         };
     }
 
