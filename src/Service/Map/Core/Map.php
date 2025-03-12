@@ -2,7 +2,7 @@
 
 namespace App\Service\Map\Core;
 
-use App\Enum\MovementType;
+use App\Enum\MapDimension;
 use App\Helper\Coordinates;
 
 final readonly class Map
@@ -15,7 +15,7 @@ final readonly class Map
      */
     public array $tiles;
 
-    public MovementType $movementType;
+    public MapDimension $dimension;
 
     /**
      * @param positive-int $width: x coordinate (column)
@@ -98,12 +98,12 @@ final readonly class Map
 
     private function determineMovementType(): void
     {
-        $movementType = MovementType::TwoDimension;
+        $movementType = MapDimension::TwoDimension;
 
         if ($this->width == 1 || $this->height == 1) {
-            $movementType = MovementType::OneDimension;
+            $movementType = MapDimension::OneDimension;
         }
 
-        $this->movementType = $movementType;
+        $this->dimension = $movementType;
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Tests\Unit\Map\Core;
 
-use App\Enum\MovementType;
+use App\Enum\MapDimension;
 use App\Helper\Coordinates;
 use App\Service\Map\Core\Map;
 use App\Service\Map\Core\TileType;
@@ -70,12 +70,12 @@ class MapTest extends TestCase
         $this->assertNull($this->sut->getTile(Coordinates::fromIntegers(1, 0)));
     }
 
-    public function test_Map_has_correct_MovementType_assigned(): void
+    public function test_Map_has_correct_MapDimension_assigned(): void
     {
-        $this->assertEquals(MovementType::TwoDimension, $this->sut->movementType);
+        $this->assertEquals(MapDimension::TwoDimension, $this->sut->dimension);
 
-        $this->assertEquals(MovementType::OneDimension, (new Map(5, 1))->movementType);
-        $this->assertEquals(MovementType::OneDimension, (new Map(1, 5))->movementType);
+        $this->assertEquals(MapDimension::OneDimension, (new Map(5, 1))->dimension);
+        $this->assertEquals(MapDimension::OneDimension, (new Map(1, 5))->dimension);
     }
 
     /** @dataProvider guardDimensions */

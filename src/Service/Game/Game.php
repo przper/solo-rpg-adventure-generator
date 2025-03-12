@@ -3,7 +3,6 @@
 namespace App\Service\Game;
 
 use App\Enum\MovementDirection;
-use App\Enum\MovementType;
 use App\Helper\Coordinates;
 use App\Service\EncountersPlanner\EncountersPlan;
 use App\Service\Map\Core\Map;
@@ -86,11 +85,6 @@ class Game
     public function setEncountersPlan(EncountersPlan $encountersPlan): void
     {
         $this->encountersPlan = $encountersPlan;
-    }
-
-    public function getMovementType(): MovementType
-    {
-        return $this->map->movementType;
     }
 
     private function checkAvailableActions(): AvailableActions

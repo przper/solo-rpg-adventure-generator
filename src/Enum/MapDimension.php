@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum MovementType
+enum MapDimension
 {
     case OneDimension;
     case TwoDimension;
