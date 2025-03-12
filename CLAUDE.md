@@ -1,15 +1,11 @@
 # Solo RPG Adventure Generator - Development Guide
 
 ## Commands
-- **Run all tests**: `make test` or `./bin/phpunit`
+- **Run all tests**: `make test`
 - **Run specific test**: `make test filter=TestName testsuite=unit|integration|application`
 - **Static analysis**: `vendor/bin/phpstan analyse src tests`
-- **Start dev server**: `make start` (starts Docker containers)
 - **Build assets**: `npm run dev`
 - **Watch assets**: `npm run watch`
-- **Clear cache**: `make cc`
-- **Run Symfony command**: `make sf c='command'`
-- **Run in container**: `make sh`
 
 ## Code Style Guidelines
 - **Naming**: Classes use PascalCase, methods/properties use camelCase
