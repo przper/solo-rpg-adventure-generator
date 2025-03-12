@@ -3,45 +3,36 @@
 namespace App\Service\Map\Grid;
 
 use App\Helper\Coordinates;
+use App\Interface\EnemyInterface;
+use App\Interface\HasEnemies;
+use App\Interface\HasTreasure;
+use App\Interface\TreasureInterface;
+use App\Service\Map\Core\Tile;
+use App\Service\Map\Core\TileType;
 
-class Corridor extends Cell
+final readonly class Corridor extends Tile implements HasEnemies, HasTreasure
 {
-    public const TYPE = 'CORRIDOR';
-    
-    /** @var array<string, string> Connections in each direction (north, east, south, west) */
-    private array $connections = [];
+    /** @param EnemyInterface[] $enemies */
+    public function __construct(
+        Coordinates $coordinates,
+        private ?TreasureInterface $treasure = null,
+        private array $enemies = [],
+    ) {
+        parent::__construct($coordinates);
+    }
 
-    public function __construct(Coordinates $coordinates)
+    public function getType(): TileType
     {
-        parent::__construct($coordinates, self::TYPE);
+        return TileType::Corridor;
     }
-    
-    /**
-     * Add a connection in a specific direction
-     * 
-     * @param string $direction north, east, south, or west
-     * @param string $type The type of cell this connects to
-     */
-    public function addConnection(string $direction, string $type): void
+
+    public function getEnemies(): array
     {
-        $this->connections[$direction] = $type;
+        return $this->enemies;
     }
-    
-    /**
-     * Get all connections
-     * 
-     * @return array<string, string> Map of directions to connection types
-     */
-    public function getConnections(): array
+
+    public function getTreasure(): ?TreasureInterface
     {
-        return $this->connections;
-    }
-    
-    /**
-     * Check if there's a connection in a specific direction
-     */
-    public function hasConnection(string $direction): bool
-    {
-        return isset($this->connections[$direction]);
+        return $this->treasure;
     }
 }

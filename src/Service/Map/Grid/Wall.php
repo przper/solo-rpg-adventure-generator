@@ -3,13 +3,18 @@
 namespace App\Service\Map\Grid;
 
 use App\Helper\Coordinates;
+use App\Service\Map\Core\Tile;
+use App\Service\Map\Core\TileType;
 
-class Wall extends Cell
+final readonly class Wall extends Tile
 {
-    public const TYPE = 'WALL';
-
     public function __construct(Coordinates $coordinates)
     {
-        parent::__construct($coordinates, self::TYPE);
+        parent::__construct($coordinates);
+    }
+
+    public function getType(): TileType
+    {
+        return TileType::Wall;
     }
 }

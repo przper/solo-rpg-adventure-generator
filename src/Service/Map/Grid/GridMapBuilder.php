@@ -5,6 +5,7 @@ namespace App\Service\Map\Grid;
 use App\Helper\Coordinates;
 use App\Interface\MapGeneratorInterface;
 use App\Interface\MapInterface;
+use App\Service\Map\Core\Map;
 
 class GridMapBuilder implements MapGeneratorInterface
 {
@@ -64,8 +65,12 @@ class GridMapBuilder implements MapGeneratorInterface
         return $this;
     }
 
-    public function create(): MapInterface
+    public function create(): Map
     {
+        return new Map($this->gridWidth, $this->gridHeight, [
+            new Room(Coordinates::fromIntegers(0, 0)),
+        ]);
+
         $map = new Map();
 
         // Generate grid map structure
