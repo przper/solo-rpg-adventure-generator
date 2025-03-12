@@ -1,52 +1,49 @@
-{#<div class="flex items-center justify-center">#}
-{#    {% for movementDirection in game.actions.movement %}#}
-{#        <form class="mr-4">#}
-{#            <input type="hidden" name="direction" value="{{ movementDirection.value }}">#}
-{#            <button type="submit" class="p-2 rounded bg-gray-200 hover:bg-gray-300">#}
-{#                {{  movementDirection.name }}#}
-{#            </button>#}
-{#        </form>#}
-{#    {% endfor %}#}
-{#</div>#}
-{% if game.movementType == enum('App\\Enum\\MovementType').OneDimension  %}
-    <div class="flex items-center justify-center">
-        <form class="mr-4">
-            <input type="hidden" name="direction" value="backward">
-            <button type="submit" class="p-2 rounded bg-gray-200 hover:bg-gray-300">
-                Backward...
-            </button>
-        </form>
-        <form class="mr-4">
-            <input type="hidden" name="direction" value="forward">
-            <button type="submit" class="p-2 rounded bg-gray-200 hover:bg-gray-300">
-                Forward!
-            </button>
-        </form>
-    </div>
-{% endif %}
-
-{% if game.movementType == enum('App\\Enum\\MovementType').TwoDimension  %}
     <div class="grid grid-cols-3 gap-2">
-        <div></div>
-        <form>
-            <input type="hidden" name="direction" value="north">
-            <button type="submit" class="w-full p-2 rounded">North</button>
-        </form>
-        <div></div>
-        <form>
-            <input type="hidden" name="direction" value="west">
-            <button type="submit" class="w-full p-2 rounded">West</button>
-        </form>
-        <div></div>
-        <form>
-            <input type="hidden" name="direction" value="east">
-            <button type="submit" class="w-full p-2 rounded">East</button>
-        </form>
-        <div></div>
-        <form>
-            <input type="hidden" name="direction" value="south">
-            <button type="submit" class="w-full p-2 rounded">South</button>
-        </form>
-        <div></div>
+        {% if game.movementType == enum('App\\Enum\\MovementType').TwoDimension  %}
+            <div></div>
+            {% if 'north' in game.actions.movement %}
+                <form>
+                    <input type="hidden" name="direction" value="north">
+                    <button type="submit" class="w-full p-2 rounded bg-gray-300">North</button>
+                </form>
+            {% else %}
+                <button class="w-full p-2 bg-gray-200 text-gray-400 cursor-not-allowed" disabled>North</button>
+            {% endif %}
+            <div></div>
+        {% endif %}
+
+        {% if 'west' in game.actions.movement %}
+            <form>
+                <input type="hidden" name="direction" value="west">
+                <button type="submit" class="w-full p-2 rounded bg-gray-300">West</button>
+            </form>
+        {% else %}
+            <button class="w-full p-2 bg-gray-200 text-gray-400 cursor-not-allowed" disabled>West</button>
+        {% endif %}
+
+        {% if game.movementType == enum('App\\Enum\\MovementType').TwoDimension  %}
+            <div></div>
+        {% endif %}
+
+        {% if 'east' in game.actions.movement %}
+            <form>
+                <input type="hidden" name="direction" value="east">
+                <button type="submit" class="w-full p-2 rounded bg-gray-300">East</button>
+            </form>
+        {% else %}
+            <button class="w-full p-2 bg-gray-200 text-gray-400 cursor-not-allowed" disabled>East</button>
+        {% endif %}
+
+        {% if game.movementType == enum('App\\Enum\\MovementType').TwoDimension  %}
+            <div></div>
+            {% if 'south' in game.actions.movement %}
+                <form>
+                    <input type="hidden" name="direction" value="south">
+                    <button type="submit" class="w-full p-2 rounded bg-gray-300">South</button>
+                </form>
+            {% else %}
+                <button class="w-full p-2 bg-gray-200 text-gray-400 cursor-not-allowed" disabled>South</button>
+            {% endif %}
+            <div></div>
+        {% endif %}
     </div>
-{% endif %}

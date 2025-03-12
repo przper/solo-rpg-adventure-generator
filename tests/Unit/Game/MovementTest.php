@@ -23,14 +23,10 @@ class MovementTest extends TestCase
 
     public function providerTestAdd()
     {
-        yield [MovementDirection::Forward, 2, 2, 0];
-        yield [MovementDirection::Backward, 2, -2, 0];
         yield [MovementDirection::West, 2, -2, 0];
         yield [MovementDirection::East, 2, 2, 0];
         yield [MovementDirection::North, 2, 0, -2];
         yield [MovementDirection::South, 2, 0, 2];
-        yield [MovementDirection::Forward, 3, 3, 0];
-        yield [MovementDirection::Backward, 3, -3, 0];
     }
 
     public function test_new()

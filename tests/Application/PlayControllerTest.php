@@ -84,7 +84,7 @@ class PlayControllerTest extends WebTestCase
         $session->set('game', $game);
         $session->save();
 
-        $client->request('GET', '/play?direction=forward');
+        $client->request('GET', '/play?direction=east');
 
         $this->assertResponseIsSuccessful();
 

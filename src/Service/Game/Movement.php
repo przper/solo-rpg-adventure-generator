@@ -23,8 +23,6 @@ final readonly class Movement
         $newDeltaY = 0;
 
         match ($direction) {
-            MovementDirection::Forward => $newDeltaX += $value,
-            MovementDirection::Backward => $newDeltaX -= $value,
             MovementDirection::West => $newDeltaX -= $value,
             MovementDirection::East => $newDeltaX += $value,
             MovementDirection::North => $newDeltaY -= $value,
