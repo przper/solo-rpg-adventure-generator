@@ -112,4 +112,21 @@ class MapTest extends TestCase
         $this->assertCount(0, $this->sut->getTilesByType(TileType::Wall));
         $this->assertCount(6, $this->sut->getTilesByType(TileType::Room, TileType::Corridor));
     }
+
+    public function test_getNearbyTiles(): void
+    {
+        $nearbyTiles1 = $this->sut->getNearbyTiles(Coordinates::fromIntegers(1, 0));
+
+        $this->assertCount(1, $nearbyTiles1);
+        $this->assertEquals(TileType::Room, $nearbyTiles1[0]->getType());
+        $this->assertTrue($nearbyTiles1[0]->getCoordinates()->isSame(Coordinates::fromIntegers(0, 0)));
+
+        $nearbyTiles2 = $this->sut->getNearbyTiles(Coordinates::fromIntegers(2, 2));
+
+        $this->assertCount(2, $nearbyTiles2);
+        $this->assertEquals(TileType::Corridor, $nearbyTiles2[0]->getType());
+        $this->assertTrue($nearbyTiles2[0]->getCoordinates()->isSame(Coordinates::fromIntegers(1, 2)));
+        $this->assertEquals(TileType::Room, $nearbyTiles2[1]->getType());
+        $this->assertTrue($nearbyTiles2[1]->getCoordinates()->isSame(Coordinates::fromIntegers(2, 3)));
+    }
 }

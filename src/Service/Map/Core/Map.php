@@ -38,6 +38,22 @@ final readonly class Map
         return $this->tiles[$coordinates->getY()][$coordinates->getX()] ?? null;
     }
 
+    /**
+     * Skips null (empty) tiles
+     * @return Tile[]
+     */
+    public function getNearbyTiles(Coordinates $coordinates): array
+    {
+        $nearbyTiles = [];
+
+        $nearbyTiles[] = $this->getTile(Coordinates::fromIntegers($coordinates->getX() + 1, $coordinates->getY()));
+        $nearbyTiles[] = $this->getTile(Coordinates::fromIntegers($coordinates->getX() - 1, $coordinates->getY()));
+        $nearbyTiles[] = $this->getTile(Coordinates::fromIntegers($coordinates->getX(), $coordinates->getY() + 1));
+        $nearbyTiles[] = $this->getTile(Coordinates::fromIntegers($coordinates->getX(), $coordinates->getY() - 1));
+
+        return array_values(array_filter($nearbyTiles));
+    }
+
     public function getTilesByType(TileType ...$type): array
     {
         $result = [];
