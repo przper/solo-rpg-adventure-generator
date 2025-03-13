@@ -19,7 +19,6 @@ final class GridMapBuilder implements MapGeneratorInterface
     // Map elements
     private const ROOM = 'ROOM';
     private const CORRIDOR = 'CORRIDOR';
-    private const EMPTY_SPACE = 'empty';
 
     private int $gridWidth = self::DEFAULT_GRID_WIDTH;
     private int $gridHeight = self::DEFAULT_GRID_HEIGHT;
@@ -59,27 +58,27 @@ final class GridMapBuilder implements MapGeneratorInterface
     public function create(): Map
     {
         $maxAttempts = 10;
-        
+
         for ($attempt = 1; $attempt <= $maxAttempts; $attempt++) {
             // Generate grid map structure
             $gridMap = $this->generateGridMap();
-    
+
             // Get dimensions from the grid map
             $mapHeight = count($gridMap);
             $mapWidth = $mapHeight > 0 ? count($gridMap[0]) : 0;
-    
+
             // Generate tiles for the map
             $tiles = $this->buildTilesFromGrid($gridMap);
-    
+
             // Create immutable map with all tiles
             $map = new Map($mapWidth, $mapHeight, $tiles);
-            
+
             // Check if all rooms are accessible from the starting room
             if ($this->allRoomsAreAccessible($map)) {
                 return $map;
             }
         }
-        
+
         // If we've made too many attempts without success, throw an exception
         throw new \RuntimeException(
             sprintf(
@@ -100,7 +99,7 @@ final class GridMapBuilder implements MapGeneratorInterface
         $mapHeight = $this->gridHeight * ($this->roomSize) + ($this->gridHeight - 1)* $this->corridorLength;
 
         // Initialize empty map
-        $gridMap = array_fill(0, $mapHeight, array_fill(0, $mapWidth, self::EMPTY_SPACE));
+        $gridMap = array_fill(0, $mapHeight, array_fill(0, $mapWidth, null));
 
         // Room positions tracking
         $rooms = [];
@@ -187,7 +186,7 @@ final class GridMapBuilder implements MapGeneratorInterface
 
             for ($x = $startX; $x < $endX; $x++) {
                 // Only place corridor if the cell is empty
-                if ($gridMap[$y][$x] === self::EMPTY_SPACE) {
+                if ($gridMap[$y][$x] === null) {
                     $gridMap[$y][$x] = self::CORRIDOR;
                 }
             }
@@ -201,7 +200,7 @@ final class GridMapBuilder implements MapGeneratorInterface
 
             for ($y = $startY; $y < $endY; $y++) {
                 // Only place corridor if the cell is empty
-                if ($gridMap[$y][$x] === self::EMPTY_SPACE) {
+                if ($gridMap[$y][$x] === null) {
                     $gridMap[$y][$x] = self::CORRIDOR;
                 }
             }
@@ -302,7 +301,7 @@ final class GridMapBuilder implements MapGeneratorInterface
 
         for ($x = $startX; $x < $endX; $x++) {
             // Only place corridor if the cell is empty
-            if ($gridMap[$y][$x] === self::EMPTY_SPACE) {
+            if ($gridMap[$y][$x] === null) {
                 $gridMap[$y][$x] = self::CORRIDOR;
             }
         }
@@ -323,7 +322,7 @@ final class GridMapBuilder implements MapGeneratorInterface
 
         for ($y = $startY; $y < $endY; $y++) {
             // Only place corridor if the cell is empty
-            if ($gridMap[$y][$x] === self::EMPTY_SPACE) {
+            if ($gridMap[$y][$x] === null) {
                 $gridMap[$y][$x] = self::CORRIDOR;
             }
         }
@@ -349,15 +348,13 @@ final class GridMapBuilder implements MapGeneratorInterface
                     $tiles[] = $this->roomGenerator->generate($coordinates);
                 } elseif ($cellType === self::CORRIDOR) {
                     $tiles[] = $this->corridorGenerator->generate($coordinates);
-                } else {
-                    $tiles[] = new Wall($coordinates);
                 }
             }
         }
 
         return $tiles;
     }
-    
+
     /**
      * Checks if all rooms in the map are accessible from the starting room at (0,0)
      */
@@ -368,32 +365,32 @@ final class GridMapBuilder implements MapGeneratorInterface
         if (empty($roomTiles)) {
             return false;
         }
-        
+
         // Get the starting coordinates
         $startCoordinates = Coordinates::fromIntegers(0, 0);
         $startTile = $map->getTile($startCoordinates);
-        
+
         // Make sure the starting tile is a room
         if ($startTile === null || $startTile->getType() !== TileType::Room) {
             return false;
         }
-        
+
         // Find all reachable tiles using breadth-first search
         $reachableTiles = $this->findReachableTiles($map, $startCoordinates);
-        
+
         // Check if all rooms are reachable
         foreach ($roomTiles as $room) {
             $coords = $room->getCoordinates();
             $key = $coords->getX() . ',' . $coords->getY();
-            
+
             if (!in_array($key, $reachableTiles)) {
                 return false;
             }
         }
-        
+
         return true;
     }
-    
+
     /**
      * Uses breadth-first search to find all tiles reachable from the given starting coordinates
      *
@@ -405,28 +402,28 @@ final class GridMapBuilder implements MapGeneratorInterface
     {
         $queue = new \SplQueue();
         $queue->enqueue($start);
-        
+
         $visited = [
             $start->getX() . ',' . $start->getY() => true
         ];
-        
+
         while (!$queue->isEmpty()) {
             /** @var Coordinates $current */
             $current = $queue->dequeue();
             $currentTile = $map->getTile($current);
-            
+
             // Skip if the tile doesn't exist or is a wall
             if ($currentTile === null || $currentTile->getType() === TileType::Wall) {
                 continue;
             }
-            
+
             // Get neighbors (adjacent tiles)
             $nearbyTiles = $map->getNearbyTiles($current);
-            
+
             foreach ($nearbyTiles as $tile) {
                 $coords = $tile->getCoordinates();
                 $key = $coords->getX() . ',' . $coords->getY();
-                
+
                 // If we haven't visited this tile yet
                 if (!isset($visited[$key])) {
                     $visited[$key] = true;
@@ -434,7 +431,7 @@ final class GridMapBuilder implements MapGeneratorInterface
                 }
             }
         }
-        
+
         return array_keys($visited);
     }
 
