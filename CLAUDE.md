@@ -14,6 +14,7 @@
 - **Classes**: One class per file, match filename to class name
 - **Imports**: Organize by PSR standards (PHP core, external, project)
 - **Formatting**: Use 4 spaces for indentation, PHP 8.2+ syntax
+- **Modern PHP**: Use constructor property promotion, mark classes as `final` when appropriate, and use `readonly` properties for immutable data
 - **Testing**: Test method names use `it_*` pattern for readability
 - **Error handling**: Use exceptions with meaningful messages
 - **Architecture**: Follow Symfony best practices and dependency injection
