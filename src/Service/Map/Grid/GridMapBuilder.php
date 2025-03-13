@@ -6,6 +6,7 @@ use App\Helper\Coordinates;
 use App\Interface\MapGeneratorInterface;
 use App\Service\Map\Core\Map;
 use App\Service\Map\Core\Tile;
+use App\Service\Map\Core\TileType;
 
 final class GridMapBuilder implements MapGeneratorInterface
 {
@@ -57,18 +58,39 @@ final class GridMapBuilder implements MapGeneratorInterface
 
     public function create(): Map
     {
-        // Generate grid map structure
-        $gridMap = $this->generateGridMap();
-
-        // Get dimensions from the test grid map
-        $mapHeight = count($gridMap);
-        $mapWidth = $mapHeight > 0 ? count($gridMap[0]) : 0;
-
-        // Generate tiles for the map
-        $tiles = $this->buildTilesFromGrid($gridMap);
-
-        // Create immutable map with all tiles
-        return new Map($mapWidth, $mapHeight, $tiles);
+        $maxAttempts = 10;
+        
+        for ($attempt = 1; $attempt <= $maxAttempts; $attempt++) {
+            // Generate grid map structure
+            $gridMap = $this->generateGridMap();
+    
+            // Get dimensions from the grid map
+            $mapHeight = count($gridMap);
+            $mapWidth = $mapHeight > 0 ? count($gridMap[0]) : 0;
+    
+            // Generate tiles for the map
+            $tiles = $this->buildTilesFromGrid($gridMap);
+    
+            // Create immutable map with all tiles
+            $map = new Map($mapWidth, $mapHeight, $tiles);
+            
+            // Check if all rooms are accessible from the starting room
+            if ($this->allRoomsAreAccessible($map)) {
+                return $map;
+            }
+        }
+        
+        // If we've made too many attempts without success, throw an exception
+        throw new \RuntimeException(
+            sprintf(
+                'Failed to generate a connected map after %d attempts with configuration: grid %dx%d, room size %d, corridor length %d',
+                $maxAttempts,
+                $this->gridWidth,
+                $this->gridHeight,
+                $this->roomSize,
+                $this->corridorLength
+            )
+        );
     }
 
     private function generateGridMap(): array
@@ -334,6 +356,86 @@ final class GridMapBuilder implements MapGeneratorInterface
         }
 
         return $tiles;
+    }
+    
+    /**
+     * Checks if all rooms in the map are accessible from the starting room at (0,0)
+     */
+    private function allRoomsAreAccessible(Map $map): bool
+    {
+        // Get all room tiles
+        $roomTiles = $map->getTilesByType(TileType::Room);
+        if (empty($roomTiles)) {
+            return false;
+        }
+        
+        // Get the starting coordinates
+        $startCoordinates = Coordinates::fromIntegers(0, 0);
+        $startTile = $map->getTile($startCoordinates);
+        
+        // Make sure the starting tile is a room
+        if ($startTile === null || $startTile->getType() !== TileType::Room) {
+            return false;
+        }
+        
+        // Find all reachable tiles using breadth-first search
+        $reachableTiles = $this->findReachableTiles($map, $startCoordinates);
+        
+        // Check if all rooms are reachable
+        foreach ($roomTiles as $room) {
+            $coords = $room->getCoordinates();
+            $key = $coords->getX() . ',' . $coords->getY();
+            
+            if (!in_array($key, $reachableTiles)) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
+     * Uses breadth-first search to find all tiles reachable from the given starting coordinates
+     *
+     * @param Map $map
+     * @param Coordinates $start
+     * @return array List of reachable coordinates in "x,y" format
+     */
+    private function findReachableTiles(Map $map, Coordinates $start): array
+    {
+        $queue = new \SplQueue();
+        $queue->enqueue($start);
+        
+        $visited = [
+            $start->getX() . ',' . $start->getY() => true
+        ];
+        
+        while (!$queue->isEmpty()) {
+            /** @var Coordinates $current */
+            $current = $queue->dequeue();
+            $currentTile = $map->getTile($current);
+            
+            // Skip if the tile doesn't exist or is a wall
+            if ($currentTile === null || $currentTile->getType() === TileType::Wall) {
+                continue;
+            }
+            
+            // Get neighbors (adjacent tiles)
+            $nearbyTiles = $map->getNearbyTiles($current);
+            
+            foreach ($nearbyTiles as $tile) {
+                $coords = $tile->getCoordinates();
+                $key = $coords->getX() . ',' . $coords->getY();
+                
+                // If we haven't visited this tile yet
+                if (!isset($visited[$key])) {
+                    $visited[$key] = true;
+                    $queue->enqueue($coords);
+                }
+            }
+        }
+        
+        return array_keys($visited);
     }
 
 }
