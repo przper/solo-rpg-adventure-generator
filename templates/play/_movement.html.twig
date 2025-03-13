@@ -1,9 +1,8 @@
     <div class="grid grid-cols-3 gap-2">
         {% if game.map.dimension == enum('App\\Enum\\MapDimension').TwoDimension  %}
             <div></div>
-            {% if 'north' in game.actions.movement %}
-                <form>
             {% if 'north' in game.availableActions.movement %}
+                <form method="post">
                     <input type="hidden" name="direction" value="north">
                     <button type="submit" class="w-full p-2 rounded bg-gray-300">North</button>
                 </form>
@@ -13,9 +12,8 @@
             <div></div>
         {% endif %}
 
-        {% if 'west' in game.actions.movement %}
-            <form>
         {% if 'west' in game.availableActions.movement %}
+            <form method="post">
                 <input type="hidden" name="direction" value="west">
                 <button type="submit" class="w-full p-2 rounded bg-gray-300">West</button>
             </form>
@@ -27,9 +25,8 @@
             <div></div>
         {% endif %}
 
-        {% if 'east' in game.actions.movement %}
-            <form>
         {% if 'east' in game.availableActions.movement %}
+            <form method="post">
                 <input type="hidden" name="direction" value="east">
                 <button type="submit" class="w-full p-2 rounded bg-gray-300">East</button>
             </form>
@@ -39,9 +36,8 @@
 
         {% if game.map.dimension == enum('App\\Enum\\MapDimension').TwoDimension  %}
             <div></div>
-            {% if 'south' in game.actions.movement %}
-                <form>
             {% if 'south' in game.availableActions.movement %}
+                <form method="post">
                     <input type="hidden" name="direction" value="south">
                     <button type="submit" class="w-full p-2 rounded bg-gray-300">South</button>
                 </form>
