@@ -14,7 +14,7 @@ class Game
 
     private PlayerPosition $playerPosition;
 
-    public AvailableActions $actions;
+    private AvailableActions $actions;
 
     public function __construct(
         private Map $map,
@@ -68,6 +68,11 @@ class Game
     public function setEncountersPlan(EncountersPlan $encountersPlan): void
     {
         $this->encountersPlan = $encountersPlan;
+    }
+
+    public function getAvailableActions(): AvailableActions
+    {
+        return $this->actions;
     }
 
     private function checkAvailableActions(): AvailableActions

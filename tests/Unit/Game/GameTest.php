@@ -95,14 +95,14 @@ class GameTest extends TestCase
 
     public function test_it_checks_available_moves(): void
     {
-        $this->assertCount(2, $this->sut->actions->movement);
-        $this->assertContains('south', $this->sut->actions->movement);
-        $this->assertContains('east', $this->sut->actions->movement);
+        $this->assertCount(2, $this->sut->getAvailableActions()->movement);
+        $this->assertContains('south', $this->sut->getAvailableActions()->movement);
+        $this->assertContains('east', $this->sut->getAvailableActions()->movement);
 
         $this->sut->movePlayer(Movement::new()->add(MovementDirection::East, 2)->add(MovementDirection::South, 2));
 
-        $this->assertCount(2, $this->sut->actions->movement);
-        $this->assertContains('north', $this->sut->actions->movement);
-        $this->assertContains('west', $this->sut->actions->movement);
+        $this->assertCount(2, $this->sut->getAvailableActions()->movement);
+        $this->assertContains('north', $this->sut->getAvailableActions()->movement);
+        $this->assertContains('west', $this->sut->getAvailableActions()->movement);
     }
 }
