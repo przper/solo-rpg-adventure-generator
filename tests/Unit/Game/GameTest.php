@@ -45,17 +45,6 @@ class GameTest extends TestCase
         $this->sut = new Game($map, new EncountersPlan());
     }
 
-    public function test_it_have_status(): void
-    {
-        $this->assertSame('ready', $this->sut->getStatus());
-        $this->assertFalse($this->sut->isRunning());
-
-        $this->sut->start();
-
-        $this->assertSame('running', $this->sut->getStatus());
-        $this->assertTrue($this->sut->isRunning());
-    }
-
     /** @test */
     public function it_has_player_position()
     {

@@ -9,11 +9,6 @@ use App\Service\Map\Core\Map;
 
 class Game
 {
-    public const STATUS_READY = 'ready';
-    public const STATUS_RUNNING = 'running';
-
-    private string $status;
-
     /** @var Coordinates[] */
     private array $visitedCells = [];
 
@@ -25,7 +20,6 @@ class Game
         private Map $map,
         private EncountersPlan $encountersPlan,
     ) {
-        $this->status = self::STATUS_READY;
         $this->playerPosition = new PlayerPosition(Coordinates::fromIntegers(0, 0));
         $this->actions = $this->checkAvailableActions();
     }
@@ -48,17 +42,6 @@ class Game
     public function start(): void
     {
         $this->visitedCells[] = clone $this->playerPosition->getCoordinates();
-        $this->status = 'running';
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function isRunning(): bool
-    {
-        return $this->status === self::STATUS_RUNNING;
     }
 
     public function getMap(): Map
