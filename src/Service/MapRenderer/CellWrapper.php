@@ -96,7 +96,7 @@ class CellWrapper
             $this->hasPlayer = true;
         }
 
-        if (in_array($this->coordinates, $game->getVisitedCells())) {
+        if ($game->isVisited($this->coordinates)) {
             $this->wasVisited = true;
         }
     }

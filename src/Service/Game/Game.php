@@ -9,30 +9,23 @@ use App\Service\Map\Core\Map;
 
 class Game
 {
-    /** @var Coordinates[] */
-    private array $visitedCells = [];
-
     private PlayerPosition $playerPosition;
-
     private AvailableActions $actions;
+    private FogOfWar $fogOfWar;
 
     public function __construct(
         private Map $map,
         private EncountersPlan $encountersPlan,
     ) {
         $this->playerPosition = new PlayerPosition(Coordinates::fromIntegers(0, 0));
+        $this->fogOfWar = new FogOfWar($map);
         $this->actions = $this->checkAvailableActions();
     }
 
     public function movePlayer(Movement $move): self
     {
         $this->playerPosition->movePlayer($move);
-
-        $newPositionCoordinates = $this->playerPosition->getCoordinates();
-
-        if (! in_array($newPositionCoordinates, $this->visitedCells)) {
-            $this->visitedCells[] = clone $newPositionCoordinates;
-        }
+        $this->fogOfWar->visit($this->playerPosition->getCoordinates());
 
         $this->actions = $this->checkAvailableActions();
 
@@ -41,7 +34,7 @@ class Game
 
     public function start(): void
     {
-        $this->visitedCells[] = clone $this->playerPosition->getCoordinates();
+        $this->fogOfWar->visit($this->playerPosition->getCoordinates());
     }
 
     public function getMap(): Map
@@ -54,10 +47,14 @@ class Game
         return $this->playerPosition;
     }
 
-    /** @return Coordinates[] */
-    public function getVisitedCells(): array
+    public function isVisited(Coordinates $coordinates): bool
     {
-        return $this->visitedCells;
+        return $this->fogOfWar->isVisited($coordinates);
+    }
+
+    public function isKnown(Coordinates $coordinates): bool
+    {
+        return $this->fogOfWar->isKnown($coordinates);
     }
 
     public function getEncountersPlan(): EncountersPlan

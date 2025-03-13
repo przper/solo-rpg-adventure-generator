@@ -62,37 +62,6 @@ class GameTest extends TestCase
         );
     }
 
-    /** @test */
-    public function it_stores_visited_cells()
-    {
-        $this->assertCount(0, $this->sut->getVisitedCells());
-
-        $this->sut->start();
-
-        $this->assertCount(1, $this->sut->getVisitedCells());
-        $this->assertEquals(
-            Coordinates::fromIntegers(0, 0),
-            $this->sut->getVisitedCells()[0]
-        );
-
-        $this->sut->movePlayer(Movement::new()->add(MovementDirection::East)->add(MovementDirection::South));
-        $this->assertCount(2, $this->sut->getVisitedCells());
-        $this->assertEquals(
-            Coordinates::fromIntegers(1, 1),
-            $this->sut->getVisitedCells()[1]
-        );
-
-        $this->sut->movePlayer(Movement::new()->add(MovementDirection::West)->add(MovementDirection::North));
-        $this->assertCount(2, $this->sut->getVisitedCells());
-
-        $this->sut->movePlayer(Movement::new()->add(MovementDirection::East, 2)->add(MovementDirection::South, 2));
-        $this->assertCount(3, $this->sut->getVisitedCells());
-        $this->assertEquals(
-            Coordinates::fromIntegers(2, 2),
-            $this->sut->getVisitedCells()[2]
-        );
-    }
-
     public function test_it_checks_available_moves(): void
     {
         $this->assertCount(2, $this->sut->getAvailableActions()->movement);

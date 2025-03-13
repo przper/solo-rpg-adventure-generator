@@ -72,7 +72,12 @@ class CellWrapperTest extends TestCase
 
         $game = $this->createMock(Game::class);
         $game->method('getPlayerPosition')->willReturn(new PlayerPosition(Coordinates::fromIntegers(1, 0)));
-        $game->method('getVisitedCells')->willReturn([$room1->getCoordinates(), $corridor->getCoordinates()]);
+
+        $game
+            ->method('isVisited')
+            ->willReturnCallback(function(Coordinates $coords) use ($room1, $corridor) {
+                return $coords->isSame($room1->getCoordinates()) || $coords->isSame($corridor->getCoordinates());
+            });
 
         $wrappedRoom1 = CellWrapper::fromTile($room1);
         $wrappedRoom1->applyGameState($game);
