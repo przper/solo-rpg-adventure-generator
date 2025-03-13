@@ -6,39 +6,31 @@ use App\Helper\Coordinates;
 use App\Interface\EnemyGeneratorInterface;
 use App\Interface\TreasureGeneratorInterface;
 
-class RoomGenerator
+final readonly class RoomGenerator
 {
-    private TreasureGeneratorInterface $treasureGenerator;
-    private EnemyGeneratorInterface $enemyGenerator;
-    private float $treasureProbability;
-    private float $enemyProbability;
-
     public function __construct(
-        TreasureGeneratorInterface $treasureGenerator,
-        EnemyGeneratorInterface $enemyGenerator,
-        float $treasureProbability = 0.3,
-        float $enemyProbability = 0.3
+        private TreasureGeneratorInterface $treasureGenerator,
+        private EnemyGeneratorInterface $enemyGenerator,
+        private float $treasureProbability = 0.3,
+        private float $enemyProbability = 0.3
     ) {
-        $this->treasureGenerator = $treasureGenerator;
-        $this->enemyGenerator = $enemyGenerator;
-        $this->treasureProbability = $treasureProbability;
-        $this->enemyProbability = $enemyProbability;
     }
 
     public function generate(Coordinates $coordinates): Room
     {
-        $room = new Room($coordinates);
-
-        // Add treasure with probability
+        // Generate treasure based on probability
+        $treasure = null;
         if (mt_rand() / mt_getrandmax() < $this->treasureProbability) {
-            $room->setTreasure($this->treasureGenerator->generate());
+            $treasure = $this->treasureGenerator->generate();
         }
 
-        // Add enemies with probability
+        // Generate enemies based on probability
+        $enemies = [];
         if (mt_rand() / mt_getrandmax() < $this->enemyProbability) {
-            $room->setEnemies([$this->enemyGenerator->generate()]);
+            $enemies = [$this->enemyGenerator->generate()];
         }
 
-        return $room;
+        // Create immutable room with all necessary properties
+        return new Room($coordinates, $treasure, $enemies);
     }
 }
