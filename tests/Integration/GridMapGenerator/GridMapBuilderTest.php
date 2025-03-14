@@ -6,6 +6,7 @@ use App\Helper\Coordinates;
 use App\Service\Map\Core\Map;
 use App\Service\Map\Core\TileType;
 use App\Service\Map\Grid\GridMapBuilder;
+use App\Service\Map\Grid\Room;
 use App\Tests\DebugsMap;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -227,5 +228,24 @@ class GridMapBuilderTest extends KernelTestCase
         }
 
         return array_keys($visited);
+    }
+
+    public function test_starter_room_is_always_empty(): void
+    {
+        for ($i = 0; $i < 100; $i++) {
+            $map = $this
+                ->builder
+                ->setGridHeight(3)
+                ->setGridWidth(3)
+                ->setRoomSize(3)
+                ->setCorridorLength(1)
+                ->create();
+
+            $starterRoom = $map->getTile(Coordinates::fromIntegers(0, 0));
+
+            $this->assertInstanceOf(Room::class, $starterRoom);
+            $this->assertNull($starterRoom->getTreasure());
+            $this->assertEquals([], $starterRoom->getEnemies());
+        }
     }
 }

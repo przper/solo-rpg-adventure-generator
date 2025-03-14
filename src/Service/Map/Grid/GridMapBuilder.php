@@ -345,7 +345,12 @@ final class GridMapBuilder implements MapGeneratorInterface
                 $coordinates = Coordinates::fromIntegers($x, $y);
 
                 if ($cellType === self::ROOM) {
-                    $tiles[] = $this->roomGenerator->generate($coordinates);
+                    // For the starter room at (0,0), create an empty room with no enemies or treasure
+                    if ($x === 0 && $y === 0) {
+                        $tiles[] = new Room($coordinates);
+                    } else {
+                        $tiles[] = $this->roomGenerator->generate($coordinates);
+                    }
                 } elseif ($cellType === self::CORRIDOR) {
                     $tiles[] = $this->corridorGenerator->generate($coordinates);
                 }
