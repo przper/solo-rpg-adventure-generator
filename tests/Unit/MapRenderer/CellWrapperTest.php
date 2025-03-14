@@ -35,15 +35,16 @@ class CellWrapperTest extends TestCase
     public function it_resolves_templates()
     {
         $roomWrapper = CellWrapper::fromTile(new DummyRoom());
-        $roomWrapper->setWasVisited(true);
+        $this->assertEquals(CellWrapper::WALL_TEMPLATE, $roomWrapper->getTemplate());
 
-        $this->assertTrue($roomWrapper->wasVisited());
+        $roomWrapper->setIsKnown(true);
         $this->assertEquals(CellWrapper::ROOM_TEMPLATE, $roomWrapper->getTemplate());
 
         $corridorWrapper = CellWrapper::fromTile(new DummyCorridor());
-        $corridorWrapper->setWasVisited(true);
+        $this->assertEquals(CellWrapper::WALL_TEMPLATE, $corridorWrapper->getTemplate());
 
-        $this->assertTrue($corridorWrapper->wasVisited());
+        $corridorWrapper->setIsKnown(true);
+
         $this->assertEquals(CellWrapper::CORRIDOR_TEMPLATE, $corridorWrapper->getTemplate());
     }
 

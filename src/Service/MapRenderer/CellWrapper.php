@@ -60,6 +60,13 @@ class CellWrapper
         return $this->isKnown;
     }
 
+    public function setIsKnown(bool $isKnown): self
+    {
+        $this->isKnown = $isKnown;
+
+        return $this;
+    }
+
     public function getType(): TileType
     {
         return $this->type;
