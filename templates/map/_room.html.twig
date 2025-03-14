@@ -1,17 +1,17 @@
-<div class="relative">
-    <span
-        class=" {{ html_classes(
-            'w-full',
-            'flex items-center justify-center',
-            'bg-white',
-            'scale-125',
-            {
-                'bg-yellow-300 border border-yellow-300': cell.treasure,
-                'bg-red-500': cell.enemies,
-                'animate-pulse': cell.hasPlayer
-            }
-        ) }}"
-    >
-        R
-    </span>
-</div>
+<span
+    class=" {{ html_classes(
+        'w-full h-full scale-125 z-50',
+        'flex items-center justify-center',
+        {
+            'bg-gray-700': cell.isKnown and not cell.wasVisited,
+            'bg-gray-500': cell.wasVisited and cell.enemies is empty,
+            'bg-red-700': cell.wasVisited and cell.enemies is not empty,
+            'border-4 border-double border-gray-400': not cell.treasure,
+            'border-4 border-double border-yellow-300': cell.wasVisited and cell.treasure,
+        }
+    ) }}"
+>
+    {% if cell.hasPlayer %}
+        <span class="text-white animate-pulse">@</span>
+    {% endif %}
+</span>

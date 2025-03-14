@@ -17,7 +17,7 @@ class CellWrapper
     final public const WALL_TEMPLATE = 'map/_wall.html.twig';
 
     private bool $hasPlayer = false;
-
+    private bool $isKnown = false;
     private bool $wasVisited = false;
 
     public function __construct(
@@ -38,19 +38,12 @@ class CellWrapper
         );
     }
 
-    public function getHasPlayer(): bool
+    public function hasPlayer(): bool
     {
         return $this->hasPlayer;
     }
 
-    public function setHasPlayer(bool $hasPlayer): self
-    {
-        $this->hasPlayer = $hasPlayer;
-
-        return $this;
-    }
-
-    public function getWasVisited(): bool
+    public function wasVisited(): bool
     {
         return $this->wasVisited;
     }
@@ -60,6 +53,11 @@ class CellWrapper
         $this->wasVisited = $wasVisited;
 
         return $this;
+    }
+
+    public function isKnown(): bool
+    {
+        return $this->isKnown;
     }
 
     public function getType(): TileType
@@ -74,7 +72,7 @@ class CellWrapper
 
     public function getTemplate(): string
     {
-        if (! $this->wasVisited) {
+        if (! $this->isKnown) {
             return self::WALL_TEMPLATE;
         }
 
@@ -87,13 +85,10 @@ class CellWrapper
 
     public function applyGameState(Game $game): void
     {
-        $this->hasPlayer = false;
-        $this->wasVisited = false;
+        $this->hasPlayer = $this->coordinates->isSame($game->getPlayerPosition()->getCoordinates());
 
-        $playerPosition = $game->getPlayerPosition();
-
-        if ($this->coordinates->isSame($playerPosition->getCoordinates())) {
-            $this->hasPlayer = true;
+        if ($game->isKnown($this->coordinates)) {
+            $this->isKnown = true;
         }
 
         if ($game->isVisited($this->coordinates)) {
