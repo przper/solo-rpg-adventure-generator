@@ -4,17 +4,11 @@ namespace App\Service\Map\Core;
 
 use App\Helper\Coordinates;
 
-abstract readonly class Tile
+final readonly class Tile
 {
     public function __construct(
-        private Coordinates $coordinates,
+        public Coordinates $coordinates,
+        public TileType $type, // determine what should be visible on map
     ) {
     }
-
-    public function getCoordinates(): Coordinates
-    {
-        return $this->coordinates;
-    }
-
-    abstract public function getType(): TileType;
 }

@@ -4,11 +4,12 @@ namespace App\Tests\Unit\Map\Core;
 
 use App\Enum\MapDimension;
 use App\Helper\Coordinates;
+use App\Service\Map\Core\Corridor;
 use App\Service\Map\Core\Map;
+use App\Service\Map\Core\Room;
+use App\Service\Map\Core\Tile;
 use App\Service\Map\Core\TileType;
 use App\Tests\DebugsMap;
-use App\Tests\Unit\Map\Core\Fixtures\DummyCorridor;
-use App\Tests\Unit\Map\Core\Fixtures\DummyRoom;
 use PHPUnit\Framework\TestCase;
 
 class MapTest extends TestCase
@@ -30,13 +31,15 @@ class MapTest extends TestCase
         $this->sut = new Map(
             width: 5,
             height: 4,
-            tiles: [
-                new DummyRoom(Coordinates::fromIntegers(0, 0)),
-                new DummyCorridor(Coordinates::fromIntegers(0, 1)),
-                new DummyCorridor(Coordinates::fromIntegers(0, 2)),
-                new DummyCorridor(Coordinates::fromIntegers(1, 2)),
-                new DummyCorridor(Coordinates::fromIntegers(2, 2)),
-                new DummyRoom(Coordinates::fromIntegers(2, 3)),
+            elements: [
+                Room::create([Coordinates::fromIntegers(0, 0)]),
+                Corridor::create([
+                    Coordinates::fromIntegers(0, 1),
+                    Coordinates::fromIntegers(0, 2),
+                    Coordinates::fromIntegers(1, 2),
+                    Coordinates::fromIntegers(2, 2),
+                ]),
+                Room::create([Coordinates::fromIntegers(2, 3)]),
             ],
         );
     }
@@ -65,8 +68,14 @@ class MapTest extends TestCase
 
     public function test_get_Tile_by_coordinates(): void
     {
-        $this->assertInstanceOf(DummyRoom::class, $this->sut->getTile(Coordinates::fromIntegers(0, 0)));
-        $this->assertInstanceOf(DummyCorridor::class, $this->sut->getTile(Coordinates::fromIntegers(0, 1)));
+        $tile1 =$this->sut->getTile(Coordinates::fromIntegers(0, 0));
+        $this->assertInstanceOf(Tile::class, $tile1);
+        $this->assertSame(TileType::Room, $tile1->type);
+
+        $tile2 =$this->sut->getTile(Coordinates::fromIntegers(0, 1));
+        $this->assertInstanceOf(Tile::class, $tile2);
+        $this->assertSame(TileType::Corridor, $tile2->type);
+
         $this->assertNull($this->sut->getTile(Coordinates::fromIntegers(1, 0)));
     }
 
@@ -81,7 +90,6 @@ class MapTest extends TestCase
     /** @dataProvider guardDimensions */
     public function test_Map_is_guarded_against_wrong_dimensions(int $width, int $height, bool $isValid): void
     {
-
         if ($isValid) {
             $map = new Map(width: $width, height: $height);
             $this->assertInstanceOf(Map::class, $map);
@@ -105,6 +113,36 @@ class MapTest extends TestCase
         yield [-1, -1, false];
     }
 
+    public function test_Map_is_guarded_against_overlapping_Coordinates_in_Elements(): void
+    {
+        $map = new Map(
+            width: 5,
+            height: 4,
+            elements: [
+                Room::create([Coordinates::fromIntegers(0, 0)]),
+                Corridor::create([
+                    Coordinates::fromIntegers(1, 0),
+                    Coordinates::fromIntegers(1, 1),
+                ]),
+            ]
+        );
+        $this->assertInstanceOf(Map::class, $map);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("Duplicate Coordinates of [0, 0]");
+        new Map(
+            width: 5,
+            height: 4,
+            elements: [
+                Room::create([Coordinates::fromIntegers(0, 0)]),
+                Corridor::create([
+                    Coordinates::fromIntegers(0, 0),
+                    Coordinates::fromIntegers(1, 0),
+                ]),
+            ]
+        );
+    }
+
     public function test_it_filters_Tiles_by_TileType(): void
     {
         $this->assertCount(2, $this->sut->getTilesByType(TileType::Room));
@@ -118,15 +156,26 @@ class MapTest extends TestCase
         $nearbyTiles1 = $this->sut->getNearbyTiles(Coordinates::fromIntegers(1, 0));
 
         $this->assertCount(1, $nearbyTiles1);
-        $this->assertEquals(TileType::Room, $nearbyTiles1[0]->getType());
-        $this->assertTrue($nearbyTiles1[0]->getCoordinates()->isSame(Coordinates::fromIntegers(0, 0)));
+        $this->assertEquals(TileType::Room, $nearbyTiles1[0]->type);
+        $this->assertTrue($nearbyTiles1[0]->coordinates->isSame(Coordinates::fromIntegers(0, 0)));
 
         $nearbyTiles2 = $this->sut->getNearbyTiles(Coordinates::fromIntegers(2, 2));
 
         $this->assertCount(2, $nearbyTiles2);
-        $this->assertEquals(TileType::Corridor, $nearbyTiles2[0]->getType());
-        $this->assertTrue($nearbyTiles2[0]->getCoordinates()->isSame(Coordinates::fromIntegers(1, 2)));
-        $this->assertEquals(TileType::Room, $nearbyTiles2[1]->getType());
-        $this->assertTrue($nearbyTiles2[1]->getCoordinates()->isSame(Coordinates::fromIntegers(2, 3)));
+        $this->assertEquals(TileType::Corridor, $nearbyTiles2[0]->type);
+        $this->assertTrue($nearbyTiles2[0]->coordinates->isSame(Coordinates::fromIntegers(1, 2)));
+        $this->assertEquals(TileType::Room, $nearbyTiles2[1]->type);
+        $this->assertTrue($nearbyTiles2[1]->coordinates->isSame(Coordinates::fromIntegers(2, 3)));
+    }
+
+    public function test_getElementByCoordinates_handles_correct_and_empty_tiles(): void
+    {
+        $room = $this->sut->getElementByCoordinates(Coordinates::fromIntegers(0, 0));
+        $this->assertInstanceOf(Room::class, $room);
+
+        $corridor = $this->sut->getElementByCoordinates(Coordinates::fromIntegers(0, 1));
+        $this->assertInstanceOf(Corridor::class, $corridor);
+
+        $this->assertNull($this->sut->getElementByCoordinates(Coordinates::fromIntegers(1, 0)));
     }
 }
