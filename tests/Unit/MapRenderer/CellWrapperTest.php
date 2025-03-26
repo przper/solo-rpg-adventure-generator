@@ -5,9 +5,8 @@ namespace App\Tests\Unit\MapRenderer;
 use App\Helper\Coordinates;
 use App\Service\Game\Game;
 use App\Service\Game\PlayerPosition;
+use App\Service\Map\Core\Tile;
 use App\Service\Map\Core\TileType;
-use App\Tests\Unit\MapRenderer\Fixtures\DummyCorridor;
-use App\Tests\Unit\MapRenderer\Fixtures\DummyRoom;
 use PHPUnit\Framework\TestCase;
 use App\Service\MapRenderer\CellWrapper;
 
@@ -16,7 +15,7 @@ class CellWrapperTest extends TestCase
     /** @test */
     public function it_gets_attributes_from_baseCell()
     {
-        $wrapper = CellWrapper::fromTile(new DummyRoom());
+        $wrapper = CellWrapper::fromTile(new Tile(Coordinates::fromIntegers(0, 0), TileType::Room));
 
         $this->assertEquals(TileType::Room, $wrapper->type);
 
@@ -34,13 +33,13 @@ class CellWrapperTest extends TestCase
     /** @test */
     public function it_resolves_templates()
     {
-        $roomWrapper = CellWrapper::fromTile(new DummyRoom());
+        $roomWrapper = CellWrapper::fromTile(new Tile(Coordinates::fromIntegers(0, 0), TileType::Room));
         $this->assertEquals(CellWrapper::WALL_TEMPLATE, $roomWrapper->getTemplate());
 
         $roomWrapper->setIsKnown(true);
         $this->assertEquals(CellWrapper::ROOM_TEMPLATE, $roomWrapper->getTemplate());
 
-        $corridorWrapper = CellWrapper::fromTile(new DummyCorridor());
+        $corridorWrapper = CellWrapper::fromTile(new Tile(Coordinates::fromIntegers(0, 0), TileType::Corridor));
         $this->assertEquals(CellWrapper::WALL_TEMPLATE, $corridorWrapper->getTemplate());
 
         $corridorWrapper->setIsKnown(true);
@@ -51,12 +50,12 @@ class CellWrapperTest extends TestCase
     /** @test */
     public function not_visited_cells_are_hidden()
     {
-        $roomWrapper = CellWrapper::fromTile(new DummyRoom());
+        $roomWrapper = CellWrapper::fromTile(new Tile(Coordinates::fromIntegers(0, 0), TileType::Room));
 
         $this->assertFalse($roomWrapper->wasVisited());
         $this->assertEquals(CellWrapper::WALL_TEMPLATE, $roomWrapper->getTemplate());
 
-        $corridorWrapper = CellWrapper::fromTile(new DummyCorridor());
+        $corridorWrapper = CellWrapper::fromTile(new Tile(Coordinates::fromIntegers(0, 0), TileType::Corridor));
 
         $this->assertFalse($corridorWrapper->wasVisited());
         $this->assertEquals(CellWrapper::WALL_TEMPLATE, $corridorWrapper->getTemplate());
@@ -67,11 +66,11 @@ class CellWrapperTest extends TestCase
      */
     public function game_state_can_be_applied_to_CellWrapper()
     {
-        $room1 = new DummyRoom(0, 0);
-        $corridor1 = new DummyCorridor(1, 0);
-        $room2 = new DummyRoom(2, 0);
-        $corridor2 = new DummyCorridor(3, 0);
-        $room3 = new DummyRoom(3, 0);
+        $room1 = new Tile(Coordinates::fromIntegers(0, 0), TileType::Room);
+        $corridor1 = new Tile(Coordinates::fromIntegers(1, 0), TileType::Corridor);
+        $room2 = new Tile(Coordinates::fromIntegers(2, 0), TileType::Room);
+        $corridor2 = new Tile(Coordinates::fromIntegers(3, 0), TileType::Corridor);
+        $room3 = new Tile(Coordinates::fromIntegers(3, 0), TileType::Room);
 
         $game = $this->createMock(Game::class);
         $game->method('getPlayerPosition')->willReturn(new PlayerPosition(Coordinates::fromIntegers(1, 0)));
@@ -79,21 +78,21 @@ class CellWrapperTest extends TestCase
         $game
             ->method('isVisited')
             ->willReturnCallback(function(Coordinates $coords) use ($room1, $corridor1) {
-                return $coords->isSame($room1->getCoordinates()) || $coords->isSame($corridor1->getCoordinates());
+                return $coords->isSame($room1->coordinates) || $coords->isSame($corridor1->coordinates);
             });
 
         $game
             ->method('isKnown')
             ->willReturnCallback(function(Coordinates $coords) use ($room1, $corridor1, $room2) {
-                if ($coords->isSame($room1->getCoordinates())) {
+                if ($coords->isSame($room1->coordinates)) {
                     return true;
                 }
 
-                if ($coords->isSame($corridor1->getCoordinates())) {
+                if ($coords->isSame($corridor1->coordinates)) {
                     return true;
                 }
 
-                if ($coords->isSame($room2->getCoordinates())) {
+                if ($coords->isSame($room2->coordinates)) {
                     return true;
                 }
 

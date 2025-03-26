@@ -8,7 +8,7 @@ use App\Service\EncountersPlanner\EncountersPlan;
 use App\Service\Game\Game;
 use App\Service\Game\Movement;
 use App\Service\Map\Core\Map;
-use App\Tests\Unit\Game\Fixtures\DummyRoom;
+use App\Service\Map\Core\Room;
 use PHPUnit\Framework\TestCase;
 use App\Service\Game\PlayerPosition;
 
@@ -29,16 +29,18 @@ class GameTest extends TestCase
         $map = new Map(
             width: 5,
             height: 5,
-            tiles: [
-                new DummyRoom(Coordinates::fromIntegers(0, 0)),
-                new DummyRoom(Coordinates::fromIntegers(1, 0)),
-                new DummyRoom(Coordinates::fromIntegers(2, 0)),
-                new DummyRoom(Coordinates::fromIntegers(0, 1)),
-                new DummyRoom(Coordinates::fromIntegers(1, 1)),
-                new DummyRoom(Coordinates::fromIntegers(2, 1)),
-                new DummyRoom(Coordinates::fromIntegers(0, 2)),
-                new DummyRoom(Coordinates::fromIntegers(1, 2)),
-                new DummyRoom(Coordinates::fromIntegers(2, 2)),
+            elements: [
+                Room::create([
+                    Coordinates::fromIntegers(0, 0),
+                    Coordinates::fromIntegers(1, 0),
+                    Coordinates::fromIntegers(2, 0),
+                    Coordinates::fromIntegers(0, 1),
+                    Coordinates::fromIntegers(1, 1),
+                    Coordinates::fromIntegers(2, 1),
+                    Coordinates::fromIntegers(0, 2),
+                    Coordinates::fromIntegers(1, 2),
+                    Coordinates::fromIntegers(2, 2),
+                ]),
             ],
         );
 

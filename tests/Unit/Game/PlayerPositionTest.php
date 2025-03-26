@@ -33,15 +33,4 @@ class PlayerPositionTest extends TestCase
             $position->getCoordinates(),
         );
     }
-
-    /** @test */
-    public function it_can_be_created_from_Tile()
-    {
-        $position = PlayerPosition::fromTile(new DummyRoom(Coordinates::fromIntegers(0, 0)));
-
-        $this->assertEquals(
-            Coordinates::fromIntegers(0, 0),
-            $position->getCoordinates(),
-        );
-    }
 }

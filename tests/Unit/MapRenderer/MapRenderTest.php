@@ -2,9 +2,11 @@
 
 namespace App\Tests\Unit\MapRenderer;
 
+use App\Helper\Coordinates;
+use App\Service\Map\Core\Tile;
+use App\Service\Map\Core\TileType;
 use App\Service\MapRenderer\CellWrapper;
 use App\Service\MapRenderer\MapRender;
-use App\Tests\Unit\MapRenderer\Fixtures\DummyRoom;
 use PHPUnit\Framework\TestCase;
 
 class MapRenderTest extends TestCase
@@ -12,7 +14,7 @@ class MapRenderTest extends TestCase
     /** @test */
     public function it_has_cells()
     {
-        $cell = CellWrapper::fromTile(new DummyRoom());
+        $cell = CellWrapper::fromTile(new Tile(Coordinates::fromIntegers(0, 0), TileType::Room));
         $html = '<h1>test</h1>';
 
         $mapRender = new MapRender([[$cell]], $html);

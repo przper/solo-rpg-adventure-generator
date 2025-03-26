@@ -44,44 +44,28 @@ class RailroadMapBuilder implements MapGeneratorInterface
 
     public function create(): Map
     {
-        $tiles[] = $this->roomGenerator->starter();
+        $elements = [$this->roomGenerator->starter()];
 
         $this->tileIndex = 1;
         $roomCount = 1;
 
         while($roomCount < $this->maxRoomsCount) {
-            array_push($tiles, ...$this->generateCorridorSet());
-
-            $tiles[] = $this->roomGenerator->generate(Coordinates::fromIntegers($this->tileIndex, 0));
+            $corridorLength = rand($this->minCorridorLength, $this->maxCorridorLength);
+            $elements[] = $this->corridorGenerator->generate(Coordinates::fromIntegers($this->tileIndex, 0), $corridorLength);
+            $this->tileIndex += $corridorLength;
+            $elements[] = $this->roomGenerator->generate(Coordinates::fromIntegers($this->tileIndex, 0));
             $roomCount++;
             $this->tileIndex++;
         }
+
         $map = new Map(
             $this->tileIndex,
             1,
-            $tiles,
+            $elements,
         );
 
         $this->tileIndex = 0;
 
         return $map;
-    }
-
-    /** @return Corridor[] */
-    private function generateCorridorSet(): array
-    {
-        $min = $this->minCorridorLength;
-        $max = rand($this->minCorridorLength, $this->maxCorridorLength);
-
-        $corridors = [];
-
-        for ($i = $min; $i <= $max + 1; $i++) {
-            $corridor = $this->corridorGenerator->generate(Coordinates::fromIntegers($this->tileIndex, 0));
-
-            $corridors[] = $corridor;
-            $this->tileIndex++;
-        }
-
-        return $corridors;
     }
 }

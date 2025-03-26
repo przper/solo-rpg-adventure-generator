@@ -31,8 +31,8 @@ class CellWrapper
     public static function fromTile(Tile $tile): self
     {
         return new self(
-            type: $tile->getType(),
-            coordinates: $tile->getCoordinates(),
+            type: $tile->type,
+            coordinates: $tile->coordinates,
             treasure: $tile instanceof HasTreasure ? $tile->getTreasure() : null,
             enemies: $tile instanceof HasEnemies ? $tile->getEnemies() : [],
         );

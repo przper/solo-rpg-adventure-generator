@@ -3,7 +3,6 @@
 namespace App\Service\Game;
 
 use App\Helper\Coordinates;
-use App\Service\Map\Core\Tile;
 
 class PlayerPosition
 {
@@ -32,10 +31,5 @@ class PlayerPosition
         $this->coordinates = $this->coordinates->moveBy($move->deltaX, $move->deltaY);
 
         return $this;
-    }
-
-    public static function fromTile(Tile $tile): self
-    {
-        return new self(clone $tile->getCoordinates());
     }
 }
