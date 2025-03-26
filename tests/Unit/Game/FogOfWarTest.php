@@ -131,4 +131,55 @@ class FogOfWarTest extends TestCase
         $this->assertContains('[0, 0]', $revealedTiles); // starter
         $this->assertContains('[1, 0]', $revealedTiles); // first tile of corridor
     }
+
+    public function test_mark_whole_room_as_revealed_upon_entering(): void
+    {
+        $coordinates = [
+            Coordinates::fromIntegers(0, 0),
+            Coordinates::fromIntegers(1, 0),
+            Coordinates::fromIntegers(2, 0),
+            Coordinates::fromIntegers(0, 1),
+            Coordinates::fromIntegers(1, 1),
+            Coordinates::fromIntegers(2, 1),
+            Coordinates::fromIntegers(0, 2),
+            Coordinates::fromIntegers(1, 2),
+            Coordinates::fromIntegers(2, 2),
+        ];
+
+        // Create a map with the following layout:
+        // R R R #
+        // R R R C
+        // R R R #
+        // # C #
+        // Where R = Room, C = Corridor, # = empty
+        $map = new Map(3, 6, [
+            Room::create($coordinates),
+            Corridor::create([
+                Coordinates::fromIntegers(1, 3),
+            ]),
+            Corridor::create([
+                Coordinates::fromIntegers(3, 1),
+            ]),
+        ]);
+
+        $fogOfWar = new FogOfWar($map);
+
+        $fogOfWar->visit(Coordinates::fromIntegers(0, 0)); // enter the first room
+
+        $knownTiles = array_map(fn(Coordinates $c) => (string) $c, $fogOfWar->getKnownCoordinates());
+        $this->assertCount(11, $knownTiles);
+        foreach ($coordinates as $coordinate) {
+            $this->assertContains((string)$coordinate, $knownTiles);
+        }
+        $this->assertContains('[1, 3]', $knownTiles); // right corridor
+        $this->assertContains('[3, 1]', $knownTiles); // bottom corridor
+
+        $revealedTiles = array_map(fn(Coordinates $c) => (string)$c, $fogOfWar->getRevealedCoordinates());
+        foreach ($coordinates as $coordinate) {
+            $this->assertContains((string)$coordinate, $revealedTiles);
+        }
+        $this->assertCount(9, $revealedTiles);
+        $this->assertNotContains('[1, 3]', $revealedTiles); // right corridor
+        $this->assertNotContains('[3, 1]', $revealedTiles); // bottom corridor
+    }
 }

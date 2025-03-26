@@ -3,9 +3,13 @@
 namespace App\Service\Game;
 
 use App\Helper\Coordinates;
-use App\Service\Map\Core\Corridor;
 use App\Service\Map\Core\Map;
+use App\Service\Map\Core\Room;
 
+/**
+ * Entering a Room reveals it fully (it is lit)
+ * Entering a Corridor makes it known whole, but reveals only current tile (it is not lit at all, only our light source)
+ */
 final class FogOfWar implements FogOfWarInterface
 {
     /** @var array<string, Coordinates> */
@@ -28,23 +32,21 @@ final class FogOfWar implements FogOfWarInterface
         $this->knownCoordinates[$coordinates->__toString()] = $coordinates;
         $this->revealedCoordinates[$coordinates->__toString()] = $coordinates;
 
-        $nearbyTiles = $this->map->getNearbyTiles($coordinates);
-        foreach ($nearbyTiles as $tile) {
-            $this->knownCoordinates[$tile->coordinates->__toString()] = $tile->coordinates;
-        }
-
         $currentElement = $this->map->getElementByCoordinates($coordinates);
 
-        // If the current tile is part of a corridor, make all tiles in the corridor known
-        if ($currentElement instanceof Corridor) {
-            foreach ($currentElement->tiles as $tile) {
-                $this->knownCoordinates[(string) $tile->coordinates] = $tile->coordinates;
-                
-                // Also make adjacent tiles to the corridor known
-                $nearbyTiles = $this->map->getNearbyTiles($tile->coordinates);
-                foreach ($nearbyTiles as $nearbyTile) {
-                    $this->knownCoordinates[(string) $nearbyTile->coordinates] = $nearbyTile->coordinates;
-                }
+        if ($currentElement === null) {
+            return;
+        }
+
+        foreach ($currentElement->tiles as $tile) {
+            $this->knownCoordinates[(string) $tile->coordinates] = $tile->coordinates;
+            if ($currentElement instanceof Room) {
+                $this->revealedCoordinates[(string) $tile->coordinates] = $tile->coordinates;
+            }
+
+            $nearbyTiles = $this->map->getNearbyTiles($tile->coordinates);
+            foreach ($nearbyTiles as $nearbyTile) {
+                $this->knownCoordinates[(string) $nearbyTile->coordinates] = $nearbyTile->coordinates;
             }
         }
     }
