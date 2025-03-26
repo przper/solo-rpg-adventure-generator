@@ -3,60 +3,75 @@
 namespace App\Service\Game;
 
 use App\Helper\Coordinates;
+use App\Service\Map\Core\Corridor;
 use App\Service\Map\Core\Map;
 
-final class FogOfWar
+final class FogOfWar implements FogOfWarInterface
 {
     /** @var array<string, Coordinates> */
-    private array $revealedTiles = [];
+    private array $revealedCoordinates = [];
 
     /** @var array<string, Coordinates> */
-    private array $knownTiles = [];
+    private array $knownCoordinates = [];
 
     public function __construct(
-        private Map $map
+        private readonly Map $map,
     ) {
     }
 
     public function visit(Coordinates $coordinates): void
     {
-        // Mark the current tile as revealed
-        $this->revealedTiles[$coordinates->__toString()] = $coordinates;
-        
-        // Current tile is also known
-        $this->knownTiles[$coordinates->__toString()] = $coordinates;
+        if ($this->isVisited($coordinates)) {
+            return;
+        }
 
-        // Mark nearby tiles as known
+        $this->knownCoordinates[$coordinates->__toString()] = $coordinates;
+        $this->revealedCoordinates[$coordinates->__toString()] = $coordinates;
+
         $nearbyTiles = $this->map->getNearbyTiles($coordinates);
         foreach ($nearbyTiles as $tile) {
-            $nearbyCoordinates = $tile->getCoordinates();
-            $this->knownTiles[$nearbyCoordinates->__toString()] = $nearbyCoordinates;
+            $this->knownCoordinates[$tile->coordinates->__toString()] = $tile->coordinates;
+        }
+
+        $currentElement = $this->map->getElementByCoordinates($coordinates);
+
+        // If the current tile is part of a corridor, make all tiles in the corridor known
+        if ($currentElement instanceof Corridor) {
+            foreach ($currentElement->tiles as $tile) {
+                $this->knownCoordinates[(string) $tile->coordinates] = $tile->coordinates;
+                
+                // Also make adjacent tiles to the corridor known
+                $nearbyTiles = $this->map->getNearbyTiles($tile->coordinates);
+                foreach ($nearbyTiles as $nearbyTile) {
+                    $this->knownCoordinates[(string) $nearbyTile->coordinates] = $nearbyTile->coordinates;
+                }
+            }
         }
     }
 
     /**
      * @return Coordinates[]
      */
-    public function getRevealedTiles(): array
+    public function getRevealedCoordinates(): array
     {
-        return array_values($this->revealedTiles);
+        return array_values($this->revealedCoordinates);
     }
 
     /**
      * @return Coordinates[]
      */
-    public function getKnownTiles(): array
+    public function getKnownCoordinates(): array
     {
-        return array_values($this->knownTiles);
+        return array_values($this->knownCoordinates);
     }
-    
+
     public function isVisited(Coordinates $coordinates): bool
     {
-        return array_key_exists($coordinates->__toString(), $this->revealedTiles);
+        return array_key_exists($coordinates->__toString(), $this->revealedCoordinates);
     }
-    
+
     public function isKnown(Coordinates $coordinates): bool
     {
-        return array_key_exists($coordinates->__toString(), $this->knownTiles);
+        return array_key_exists($coordinates->__toString(), $this->knownCoordinates);
     }
 }
