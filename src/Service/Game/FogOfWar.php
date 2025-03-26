@@ -29,8 +29,8 @@ final class FogOfWar implements FogOfWarInterface
             return;
         }
 
-        $this->knownCoordinates[$coordinates->__toString()] = $coordinates;
-        $this->revealedCoordinates[$coordinates->__toString()] = $coordinates;
+        $this->knownCoordinates[(string) $coordinates] = $coordinates;
+        $this->revealedCoordinates[(string) $coordinates] = $coordinates;
 
         $currentElement = $this->map->getElementByCoordinates($coordinates);
 
@@ -69,11 +69,11 @@ final class FogOfWar implements FogOfWarInterface
 
     public function isVisited(Coordinates $coordinates): bool
     {
-        return array_key_exists($coordinates->__toString(), $this->revealedCoordinates);
+        return array_key_exists((string) $coordinates, $this->revealedCoordinates);
     }
 
     public function isKnown(Coordinates $coordinates): bool
     {
-        return array_key_exists($coordinates->__toString(), $this->knownCoordinates);
+        return array_key_exists((string) $coordinates, $this->knownCoordinates);
     }
 }
