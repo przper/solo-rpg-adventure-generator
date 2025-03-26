@@ -3,17 +3,18 @@
 namespace App\Service\EncountersPlanner;
 
 use App\Enum\EncounterDifficulty;
-use App\Helper\MultipleEnemiesEncounterExperienceCountModifier;
-use App\Interface\EnemyInterface;
 
-class Encounter
+/**
+ *
+ */
+final class Encounter
 {
-    private EncounterDifficulty $difficulty;
-
-    /** @var EnemyInterface[] $enemies */
-    private array $enemies = [];
-
-    private TeamChallengeRating $challengeRating;
+    /** @param Enemy[] $enemies */
+    public function __construct(
+        private EncounterDifficulty $difficulty,
+        private array $enemies = [],
+    ) {
+    }
 
     public function getDifficulty(): EncounterDifficulty
     {
@@ -27,46 +28,17 @@ class Encounter
         return $this;
     }
 
-    /** @return EnemyInterface[] */
+    /** @return Enemy[] */
     public function getEnemies(): array
     {
         return $this->enemies;
     }
 
-    /**
-     * @param EnemyInterface[] $enemies
-     *
-     * @return self
-     */
+    /** @param Enemy[] $enemies */
     public function setEnemies(array $enemies): self
     {
         $this->enemies = $enemies;
 
         return $this;
-    }
-
-    public function getChallengeRating(): TeamChallengeRating
-    {
-        return $this->challengeRating;
-    }
-
-    public function setChallengeRating(TeamChallengeRating $challengeRating): self
-    {
-        $this->challengeRating = $challengeRating;
-
-        return $this;
-    }
-
-    public function getRawEnemiesExperienceSum(): int
-    {
-        return array_reduce($this->enemies, fn ($c, EnemyInterface $e) => $c+$e->getExperiencePoints());
-    }
-
-    public function getAdjustedEnemiesExperienceSum(): int
-    {
-        return MultipleEnemiesEncounterExperienceCountModifier::adjustExperiencePoints(
-            count($this->enemies),
-            $this->getRawEnemiesExperienceSum()
-        );
     }
 }

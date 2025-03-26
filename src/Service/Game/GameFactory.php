@@ -4,7 +4,7 @@ namespace App\Service\Game;
 
 use App\Enum\DungeonLength;
 use App\Interface\MapGeneratorInterface;
-use App\Service\EncountersPlanner\EncountersPlanner;
+use App\Service\EncountersPlanner\EncountersPlannerInterface;
 use App\Service\EncountersPlanner\TeamChallengeRating;
 
 class GameFactory
@@ -12,7 +12,7 @@ class GameFactory
     private MapGeneratorInterface $mapBuilder;
 
     public function __construct(
-        private readonly EncountersPlanner $encountersPlanner,
+        private readonly EncountersPlannerInterface $encountersPlanner,
     ) {
     }
 

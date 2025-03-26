@@ -2,47 +2,24 @@
 
 namespace App\Service\EncountersPlanner;
 
-use App\Enum\EncounterDifficulty;
+use IteratorAggregate;
+use Traversable;
 
-class TeamChallengeRating
+readonly class TeamChallengeRating implements IteratorAggregate
 {
-    /** @var int[] */
-    private array $teamLevels;
-
-    public function getTeamLevels(): array
-    {
-        return $this->teamLevels;
-    }
-
-    /**
-     * @param int[] $teamLevels
-     *
-     * @return self
-     */
-    public function setTeamLevels(array $teamLevels): self
-    {
-        $this->teamLevels = $teamLevels;
-
-        return $this;
+    /** @param int[] $teamLevels */
+    final public function __construct(
+        protected array $teamLevels,
+    ) {
     }
 
     public static function fromLevelsAsIntegers(...$levels): self
     {
-        $teamChallengeRating = new self();
-
-        $teamChallengeRating->setTeamLevels($levels);
-
-        return $teamChallengeRating;
+        return new static($levels);
     }
 
-    public function getExperienceTresholdForDifficulty(EncounterDifficulty $difficulty): int
+    public function getIterator(): Traversable
     {
-        $experienceTreshold = 0;
-
-        foreach ($this->teamLevels as $level) {
-            $experienceTreshold += $difficulty->getPlayerExperienceTreshold($level);
-        }
-
-        return $experienceTreshold;
+        return new \ArrayIterator(array_values($this->teamLevels));
     }
 }

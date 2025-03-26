@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Tests\Integration\EncountersPlanner;
+namespace App\Tests\Integration\EncountersPlanner\DungeonsAndDragons5Edition;
 
 use App\Enum\DungeonLength;
+use App\Service\EncountersPlanner\DungeonsAndDragons5Edition\EncountersPlanner;
 use App\Service\EncountersPlanner\EncountersPlan;
-use App\Service\EncountersPlanner\EncountersPlanner;
 use App\Service\EncountersPlanner\TeamChallengeRating;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

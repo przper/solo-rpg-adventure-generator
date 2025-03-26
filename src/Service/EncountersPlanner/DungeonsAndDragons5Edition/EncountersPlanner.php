@@ -1,35 +1,29 @@
 <?php
 
-namespace App\Service\EncountersPlanner;
+namespace App\Service\EncountersPlanner\DungeonsAndDragons5Edition;
 
 use App\Enum\DungeonLength;
 use App\Enum\EncounterDifficulty;
+use App\Service\EncountersPlanner\EncountersPlan;
+use App\Service\EncountersPlanner\EncountersPlannerInterface;
+use App\Service\EncountersPlanner\TeamChallengeRating;
 
-class EncountersPlanner
+final readonly class EncountersPlanner implements EncountersPlannerInterface
 {
     public function __construct(
-        private readonly EncounterGenerator $encounterGenerator
+        private EncounterGenerator $encounterGenerator
     ) {
-        //
     }
 
-    /**
-     * @param DungeonLength $dungeonLength
-     * @param TeamChallengeRating $teamChallengeRating
-     *
-     * @return EncountersPlan
-     */
     public function plan(DungeonLength $dungeonLength, TeamChallengeRating $teamChallengeRating): EncountersPlan
     {
-        $plan = new EncountersPlan();
+        $encounters = [];
 
         foreach ($this->generateEncounterDifficultyList($dungeonLength) as $difficulty) {
-            $encounter = $this->encounterGenerator->create($difficulty, $teamChallengeRating);
-
-            $plan->addEncounter($encounter);
+            $encounters[] = $this->encounterGenerator->create($difficulty, $teamChallengeRating);
         }
 
-        return $plan;
+        return new EncountersPlan($encounters);
     }
 
     private function generateEncounterDifficultyList(DungeonLength $dungeonLength): array

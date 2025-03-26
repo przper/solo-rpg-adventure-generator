@@ -2,20 +2,22 @@
 
 namespace App\Tests\Unit\Game;
 
-use App\Service\EncountersPlanner\EncountersPlanner;
-use App\Service\Game\Game;
-use PHPUnit\Framework\TestCase;
-use App\Service\Game\GameFactory;
 use App\Interface\MapGeneratorInterface;
+use App\Service\EncountersPlanner\EncountersPlan;
+use App\Service\EncountersPlanner\EncountersPlannerInterface;
+use App\Service\Game\Game;
+use App\Service\Game\GameFactory;
 use App\Tests\Unit\Game\Fixtures\DummyMapGenerator;
+use PHPUnit\Framework\TestCase;
 
 class GameFactoryTest extends TestCase
 {
-    private EncountersPlanner $encountersPlanner;
+    private EncountersPlannerInterface $encountersPlanner;
 
     protected function setUp(): void
     {
-        $this->encountersPlanner = $this->createMock(EncountersPlanner::class);
+        $this->encountersPlanner = $this->createMock(EncountersPlannerInterface::class);
+        $this->encountersPlanner->method('plan')->willReturn(new EncountersPlan());
     }
 
     /** @test */
@@ -33,7 +35,8 @@ class GameFactoryTest extends TestCase
     {
         $this->encountersPlanner
             ->expects($this->once())
-            ->method('plan');
+            ->method('plan')
+            ->willReturn(new EncountersPlan());
 
         $factory = new GameFactory($this->encountersPlanner);
         $factory->setMapBuilder(new DummyMapGenerator());

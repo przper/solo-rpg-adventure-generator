@@ -1,25 +1,21 @@
 <?php
 
-namespace App\Service\EnemyGenerator;
+namespace App\Service\EncountersPlanner;
 
 use App\Helper\DiceStack;
-use App\Interface\EnemyInterface;
 
-class Enemy implements EnemyInterface
+final class Enemy
 {
-    private float $challengeRating;
-
-    private int $experiencePoints;
-
-    private string $name;
-
-    private DiceStack $hitDice;
-
-    private int $hitPoints;
-
-    private int $armorClass;
-
-    private DiceStack $damage;
+    public function __construct(
+        private float $challengeRating,
+        private int $experiencePoints,
+        private string $name,
+        private DiceStack $hitDice,
+        private int $totalHitPoints,
+        private int $armorClass,
+        private DiceStack $damage,
+    ) {
+    }
 
     public function getChallengeRating(): float
     {
@@ -69,14 +65,14 @@ class Enemy implements EnemyInterface
         return $this;
     }
 
-    public function getHitPoints(): int
+    public function getTotalHitPoints(): int
     {
-        return $this->hitPoints;
+        return $this->totalHitPoints;
     }
 
-    public function setHitPoints(int $hitPoints): self
+    public function setTotalHitPoints(int $totalHitPoints): self
     {
-        $this->hitPoints = $hitPoints;
+        $this->totalHitPoints = $totalHitPoints;
 
         return $this;
     }
@@ -112,7 +108,7 @@ class Enemy implements EnemyInterface
             'experience_points' => $this->experiencePoints,
             'name' => $this->getName(),
             'hit_dice' => (string) $this->getHitDice(),
-            'hit_points' => $this->getHitPoints(),
+            'hit_points' => $this->getTotalHitPoints(),
             'armor_class' => $this->getArmorClass(),
             'damage' => (string) $this->getDamage()
         ];
