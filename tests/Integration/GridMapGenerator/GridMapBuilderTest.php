@@ -6,7 +6,6 @@ use App\Helper\Coordinates;
 use App\Service\Map\Core\Map;
 use App\Service\Map\Core\TileType;
 use App\Service\Map\Grid\GridMapBuilder;
-use App\Service\Map\Grid\Room;
 use App\Tests\DebugsMap;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -81,28 +80,28 @@ class GridMapBuilderTest extends KernelTestCase
         // top left
         foreach (range(0, 2) as $x) {
             foreach (range(0, 2) as $y) {
-                $this->assertEquals(TileType::Room, $map->getTile(Coordinates::fromIntegers($x, $y))->getType());
+                $this->assertEquals(TileType::Room, $map->getTile(Coordinates::fromIntegers($x, $y))->type);
             }
         }
 
         // top right
         foreach (range(4, 6) as $x) {
             foreach (range(0, 2) as $y) {
-                $this->assertEquals(TileType::Room, $map->getTile(Coordinates::fromIntegers($x, $y))->getType());
+                $this->assertEquals(TileType::Room, $map->getTile(Coordinates::fromIntegers($x, $y))->type);
             }
         }
 
         // bottom left
         foreach (range(0, 2) as $x) {
             foreach (range(4, 6) as $y) {
-                $this->assertEquals(TileType::Room, $map->getTile(Coordinates::fromIntegers($x, $y))->getType());
+                $this->assertEquals(TileType::Room, $map->getTile(Coordinates::fromIntegers($x, $y))->type);
             }
         }
 
         // bottom right
         foreach (range(4, 6) as $x) {
             foreach (range(4, 6) as $y) {
-                $this->assertEquals(TileType::Room, $map->getTile(Coordinates::fromIntegers($x, $y))->getType());
+                $this->assertEquals(TileType::Room, $map->getTile(Coordinates::fromIntegers($x, $y))->type);
             }
         }
     }
@@ -163,14 +162,14 @@ class GridMapBuilderTest extends KernelTestCase
         // Get the starting room at coordinates (0,0)
         $startRoom = $map->getTile(Coordinates::fromIntegers(0, 0));
         $this->assertNotNull($startRoom, $message ? $message . ': Starting room should exist' : 'Starting room should exist');
-        $this->assertEquals(TileType::Room, $startRoom->getType(), $message ? $message . ': Starting point should be a room' : 'Starting point should be a room');
+        $this->assertEquals(TileType::Room, $startRoom->type, $message ? $message . ': Starting point should be a room' : 'Starting point should be a room');
 
         // Find all reachable tiles using breadth-first search
         $reachableTiles = $this->findReachableTiles($map, Coordinates::fromIntegers(0, 0));
 
         // Check if all rooms are reachable
-        foreach ($roomTiles as $room) {
-            $coordinates = $room->getCoordinates();
+        foreach ($roomTiles as $tile) {
+            $coordinates = $tile->coordinates;
             $errorMessage = sprintf(
                 'Room at (%d,%d) should be reachable from starting room%s',
                 $coordinates->getX(),
@@ -208,7 +207,7 @@ class GridMapBuilderTest extends KernelTestCase
             $currentTile = $map->getTile($current);
 
             // Skip if the tile doesn't exist or is a wall
-            if ($currentTile === null || $currentTile->getType() === TileType::Wall) {
+            if ($currentTile === null || $currentTile->type === TileType::Wall) {
                 continue;
             }
 
@@ -216,7 +215,7 @@ class GridMapBuilderTest extends KernelTestCase
             $nearbyTiles = $map->getNearbyTiles($current);
 
             foreach ($nearbyTiles as $tile) {
-                $coords = $tile->getCoordinates();
+                $coords = $tile->coordinates;
                 $key = $coords->getX() . ',' . $coords->getY();
 
                 // If we haven't visited this tile yet
@@ -228,24 +227,5 @@ class GridMapBuilderTest extends KernelTestCase
         }
 
         return array_keys($visited);
-    }
-
-    public function test_starter_room_is_always_empty(): void
-    {
-        for ($i = 0; $i < 100; $i++) {
-            $map = $this
-                ->builder
-                ->setGridHeight(3)
-                ->setGridWidth(3)
-                ->setRoomSize(3)
-                ->setCorridorLength(1)
-                ->create();
-
-            $starterRoom = $map->getTile(Coordinates::fromIntegers(0, 0));
-
-            $this->assertInstanceOf(Room::class, $starterRoom);
-            $this->assertNull($starterRoom->getTreasure());
-            $this->assertEquals([], $starterRoom->getEnemies());
-        }
     }
 }

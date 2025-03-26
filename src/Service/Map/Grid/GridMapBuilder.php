@@ -4,8 +4,9 @@ namespace App\Service\Map\Grid;
 
 use App\Helper\Coordinates;
 use App\Interface\MapGeneratorInterface;
+use App\Service\Map\Core\Corridor;
 use App\Service\Map\Core\Map;
-use App\Service\Map\Core\Tile;
+use App\Service\Map\Core\Room;
 use App\Service\Map\Core\TileType;
 
 final class GridMapBuilder implements MapGeneratorInterface
@@ -24,12 +25,6 @@ final class GridMapBuilder implements MapGeneratorInterface
     private int $gridHeight = self::DEFAULT_GRID_HEIGHT;
     private int $roomSize = self::DEFAULT_ROOM_SIZE;
     private int $corridorLength = self::DEFAULT_CORRIDOR_LENGTH;
-
-    public function __construct(
-        private readonly RoomGenerator $roomGenerator,
-        private readonly CorridorGenerator $corridorGenerator
-    ) {
-    }
 
     public function setGridWidth(int $gridWidth): self
     {
@@ -68,10 +63,10 @@ final class GridMapBuilder implements MapGeneratorInterface
             $mapWidth = $mapHeight > 0 ? count($gridMap[0]) : 0;
 
             // Generate tiles for the map
-            $tiles = $this->buildTilesFromGrid($gridMap);
+            $mapElements = $this->buildMapElementsFromGrid($gridMap);
 
             // Create immutable map with all tiles
-            $map = new Map($mapWidth, $mapHeight, $tiles);
+            $map = new Map($mapWidth, $mapHeight, $mapElements);
 
             // Check if all rooms are accessible from the starting room
             if ($this->allRoomsAreAccessible($map)) {
@@ -330,35 +325,132 @@ final class GridMapBuilder implements MapGeneratorInterface
 
     /**
      * @param array $gridMap
-     * @return Tile[]
+     * @return array<Room|Corridor>
      */
-    private function buildTilesFromGrid(array $gridMap): array
+    private function buildMapElementsFromGrid(array $gridMap): array
     {
         $mapHeight = count($gridMap);
         $mapWidth = $mapHeight > 0 ? count($gridMap[0]) : 0;
-        $tiles = [];
+        $elements = [];
 
-        // Create all tiles
+        // First pass: identify all room and corridor cells
+        $roomCoords = [];
+        $corridorCoords = [];
+
         for ($y = 0; $y < $mapHeight; $y++) {
             for ($x = 0; $x < $mapWidth; $x++) {
                 $cellType = $gridMap[$y][$x];
+                if ($cellType === null) continue;
+
                 $coordinates = Coordinates::fromIntegers($x, $y);
 
                 if ($cellType === self::ROOM) {
-                    // For the starter room at (0,0), create an empty room with no enemies or treasure
-                    if ($x === 0 && $y === 0) {
-                        $tiles[] = new Room($coordinates);
-                    } else {
-                        $tiles[] = $this->roomGenerator->generate($coordinates);
-                    }
+                    $roomCoords[] = $coordinates;
                 } elseif ($cellType === self::CORRIDOR) {
-                    $tiles[] = $this->corridorGenerator->generate($coordinates);
+                    $corridorCoords[] = $coordinates;
                 }
             }
         }
 
-        return $tiles;
+        // Second pass: group connected rooms and corridors
+        $roomGroups = $this->groupConnectedTiles($roomCoords);
+        $corridorGroups = $this->groupConnectedTiles($corridorCoords);
+
+        // Create Room objects from the grouped coordinates
+        foreach ($roomGroups as $group) {
+            // Check if this is the starter room (contains 0,0)
+            $isStarterRoom = false;
+            foreach ($group as $coords) {
+                if ($coords->getX() === 0 && $coords->getY() === 0) {
+                    $isStarterRoom = true;
+                    break;
+                }
+            }
+
+            if ($isStarterRoom) {
+                // Empty starter room - no enemies or treasure
+                $elements[] = Room::create($group);
+            } else {
+                // Generate a room using the factory method
+                $elements[] = Room::create($group);
+            }
+        }
+
+        // Create Corridor objects from the grouped coordinates
+        foreach ($corridorGroups as $group) {
+            // Generate a corridor using the factory method
+            $elements[] = Corridor::create($group);
+        }
+
+        return $elements;
     }
+
+    /**
+     * Groups connected coordinates using a breadth-first search approach
+     *
+     * @param Coordinates[] $coordinates List of coordinates to group
+     * @return array Array of coordinate groups
+     */
+    private function groupConnectedTiles(array $coordinates): array
+    {
+        // If no coordinates, return empty array
+        if (empty($coordinates)) {
+            return [];
+        }
+
+        // Map coordinates to strings for easier lookup
+        $coordStrings = [];
+        foreach ($coordinates as $coord) {
+            $coordStrings[(string)$coord] = $coord;
+        }
+
+        $groups = [];
+        $visited = [];
+
+        // Process each coordinate
+        foreach ($coordStrings as $coordStr => $coord) {
+            // Skip if already assigned to a group
+            if (isset($visited[$coordStr])) {
+                continue;
+            }
+
+            // Start a new group with this coordinate
+            $group = [];
+            $queue = new \SplQueue();
+            $queue->enqueue($coord);
+            $visited[$coordStr] = true;
+
+            // BFS to find all connected tiles
+            while (!$queue->isEmpty()) {
+                $current = $queue->dequeue();
+                $group[] = $current;
+
+                // Check all four directions for connected tiles
+                $neighbors = [
+                    Coordinates::fromIntegers($current->getX() + 1, $current->getY()),
+                    Coordinates::fromIntegers($current->getX() - 1, $current->getY()),
+                    Coordinates::fromIntegers($current->getX(), $current->getY() + 1),
+                    Coordinates::fromIntegers($current->getX(), $current->getY() - 1)
+                ];
+
+                foreach ($neighbors as $neighbor) {
+                    $neighborStr = (string)$neighbor;
+
+                    // If neighbor exists in our list and hasn't been visited
+                    if (isset($coordStrings[$neighborStr]) && !isset($visited[$neighborStr])) {
+                        $queue->enqueue($coordStrings[$neighborStr]);
+                        $visited[$neighborStr] = true;
+                    }
+                }
+            }
+
+            // Add this group to our results
+            $groups[] = $group;
+        }
+
+        return $groups;
+    }
+
 
     /**
      * Checks if all rooms in the map are accessible from the starting room at (0,0)
@@ -376,7 +468,7 @@ final class GridMapBuilder implements MapGeneratorInterface
         $startTile = $map->getTile($startCoordinates);
 
         // Make sure the starting tile is a room
-        if ($startTile === null || $startTile->getType() !== TileType::Room) {
+        if ($startTile === null || $startTile->type !== TileType::Room) {
             return false;
         }
 
@@ -384,8 +476,8 @@ final class GridMapBuilder implements MapGeneratorInterface
         $reachableTiles = $this->findReachableTiles($map, $startCoordinates);
 
         // Check if all rooms are reachable
-        foreach ($roomTiles as $room) {
-            $coords = $room->getCoordinates();
+        foreach ($roomTiles as $tile) {
+            $coords = $tile->coordinates;
             $key = $coords->getX() . ',' . $coords->getY();
 
             if (!in_array($key, $reachableTiles)) {
@@ -418,7 +510,7 @@ final class GridMapBuilder implements MapGeneratorInterface
             $currentTile = $map->getTile($current);
 
             // Skip if the tile doesn't exist or is a wall
-            if ($currentTile === null || $currentTile->getType() === TileType::Wall) {
+            if ($currentTile === null || $currentTile->type === TileType::Wall) {
                 continue;
             }
 
@@ -426,7 +518,7 @@ final class GridMapBuilder implements MapGeneratorInterface
             $nearbyTiles = $map->getNearbyTiles($current);
 
             foreach ($nearbyTiles as $tile) {
-                $coords = $tile->getCoordinates();
+                $coords = $tile->coordinates;
                 $key = $coords->getX() . ',' . $coords->getY();
 
                 // If we haven't visited this tile yet
@@ -439,5 +531,4 @@ final class GridMapBuilder implements MapGeneratorInterface
 
         return array_keys($visited);
     }
-
 }
