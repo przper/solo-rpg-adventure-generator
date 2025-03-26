@@ -91,19 +91,19 @@ class Game
 
         $nearbyTiles = $this->map->getNearbyTiles($playerTileCoordinates);
         foreach ($nearbyTiles as $nearbyTile) {
-            if ($nearbyTile->coordinates->getX() < $playerTileCoordinates->getX()) {
+            if ($nearbyTile->coordinates->x < $playerTileCoordinates->x) {
                 $moves[] = MovementDirection::West;
             }
 
-            if ($nearbyTile->coordinates->getX() > $playerTileCoordinates->getX()) {
+            if ($nearbyTile->coordinates->x > $playerTileCoordinates->x) {
                 $moves[] = MovementDirection::East;
             }
 
-            if ($nearbyTile->coordinates->getY() < $playerTileCoordinates->getY()) {
+            if ($nearbyTile->coordinates->y < $playerTileCoordinates->y) {
                 $moves[] = MovementDirection::North;
             }
 
-            if ($nearbyTile->coordinates->getY() > $playerTileCoordinates->getY()) {
+            if ($nearbyTile->coordinates->y > $playerTileCoordinates->y) {
                 $moves[] = MovementDirection::South;
             }
         }

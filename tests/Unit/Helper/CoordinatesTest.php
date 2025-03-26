@@ -12,8 +12,8 @@ class CoordinatesTest extends TestCase
     {
         $coordinates = Coordinates::fromIntegers(0, 1);
 
-        $this->assertEquals(0, $coordinates->getX());
-        $this->assertEquals(1, $coordinates->getY());
+        $this->assertEquals(0, $coordinates->x);
+        $this->assertEquals(1, $coordinates->y);
     }
 
     /** @test */
@@ -22,8 +22,8 @@ class CoordinatesTest extends TestCase
         $coordinates = Coordinates::fromIntegers(10, 11);
         $coordinates = $coordinates->moveBy(-1, -1);
 
-        $this->assertEquals(9, $coordinates->getX());
-        $this->assertEquals(10, $coordinates->getY());
+        $this->assertEquals(9, $coordinates->x);
+        $this->assertEquals(10, $coordinates->y);
     }
 
     /** @test */

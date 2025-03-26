@@ -172,13 +172,13 @@ class GridMapBuilderTest extends KernelTestCase
             $coordinates = $tile->coordinates;
             $errorMessage = sprintf(
                 'Room at (%d,%d) should be reachable from starting room%s',
-                $coordinates->getX(),
-                $coordinates->getY(),
+                $coordinates->x,
+                $coordinates->y,
                 $message ? ' (' . $message . ')' : ''
             );
 
             $this->assertContains(
-                $coordinates->getX() . ',' . $coordinates->getY(),
+                $coordinates->x . ',' . $coordinates->y,
                 $reachableTiles,
                 $errorMessage
             );
@@ -198,7 +198,7 @@ class GridMapBuilderTest extends KernelTestCase
         $queue->enqueue($start);
 
         $visited = [
-            $start->getX() . ',' . $start->getY() => true
+            $start->x . ',' . $start->y => true
         ];
 
         while (!$queue->isEmpty()) {
@@ -216,7 +216,7 @@ class GridMapBuilderTest extends KernelTestCase
 
             foreach ($nearbyTiles as $tile) {
                 $coords = $tile->coordinates;
-                $key = $coords->getX() . ',' . $coords->getY();
+                $key = $coords->x . ',' . $coords->y;
 
                 // If we haven't visited this tile yet
                 if (!isset($visited[$key])) {

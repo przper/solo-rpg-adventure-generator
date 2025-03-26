@@ -361,7 +361,7 @@ final class GridMapBuilder implements MapGeneratorInterface
             // Check if this is the starter room (contains 0,0)
             $isStarterRoom = false;
             foreach ($group as $coords) {
-                if ($coords->getX() === 0 && $coords->getY() === 0) {
+                if ($coords->x === 0 && $coords->y === 0) {
                     $isStarterRoom = true;
                     break;
                 }
@@ -427,10 +427,10 @@ final class GridMapBuilder implements MapGeneratorInterface
 
                 // Check all four directions for connected tiles
                 $neighbors = [
-                    Coordinates::fromIntegers($current->getX() + 1, $current->getY()),
-                    Coordinates::fromIntegers($current->getX() - 1, $current->getY()),
-                    Coordinates::fromIntegers($current->getX(), $current->getY() + 1),
-                    Coordinates::fromIntegers($current->getX(), $current->getY() - 1)
+                    Coordinates::fromIntegers($current->x + 1, $current->y),
+                    Coordinates::fromIntegers($current->x - 1, $current->y),
+                    Coordinates::fromIntegers($current->x, $current->y + 1),
+                    Coordinates::fromIntegers($current->x, $current->y - 1)
                 ];
 
                 foreach ($neighbors as $neighbor) {
@@ -478,7 +478,7 @@ final class GridMapBuilder implements MapGeneratorInterface
         // Check if all rooms are reachable
         foreach ($roomTiles as $tile) {
             $coords = $tile->coordinates;
-            $key = $coords->getX() . ',' . $coords->getY();
+            $key = $coords->x . ',' . $coords->y;
 
             if (!in_array($key, $reachableTiles)) {
                 return false;
@@ -501,7 +501,7 @@ final class GridMapBuilder implements MapGeneratorInterface
         $queue->enqueue($start);
 
         $visited = [
-            $start->getX() . ',' . $start->getY() => true
+            $start->x . ',' . $start->y => true
         ];
 
         while (!$queue->isEmpty()) {
@@ -519,7 +519,7 @@ final class GridMapBuilder implements MapGeneratorInterface
 
             foreach ($nearbyTiles as $tile) {
                 $coords = $tile->coordinates;
-                $key = $coords->getX() . ',' . $coords->getY();
+                $key = $coords->x . ',' . $coords->y;
 
                 // If we haven't visited this tile yet
                 if (!isset($visited[$key])) {

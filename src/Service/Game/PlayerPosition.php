@@ -13,12 +13,12 @@ class PlayerPosition
 
     public function getX(): int
     {
-        return $this->coordinates->getX();
+        return $this->coordinates->x;
     }
 
     public function getY(): int
     {
-        return $this->coordinates->getY();
+        return $this->coordinates->y;
     }
 
     public function getCoordinates(): Coordinates

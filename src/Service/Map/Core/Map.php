@@ -51,7 +51,7 @@ final readonly class Map
 
     public function getTile(Coordinates $coordinates): ?Tile
     {
-        return $this->tiles[$coordinates->getY()][$coordinates->getX()] ?? null;
+        return $this->tiles[$coordinates->y][$coordinates->x] ?? null;
     }
 
     /**
@@ -62,10 +62,10 @@ final readonly class Map
     {
         $nearbyTiles = [];
 
-        $nearbyTiles[] = $this->getTile(Coordinates::fromIntegers($coordinates->getX() + 1, $coordinates->getY()));
-        $nearbyTiles[] = $this->getTile(Coordinates::fromIntegers($coordinates->getX() - 1, $coordinates->getY()));
-        $nearbyTiles[] = $this->getTile(Coordinates::fromIntegers($coordinates->getX(), $coordinates->getY() + 1));
-        $nearbyTiles[] = $this->getTile(Coordinates::fromIntegers($coordinates->getX(), $coordinates->getY() - 1));
+        $nearbyTiles[] = $this->getTile(Coordinates::fromIntegers($coordinates->x + 1, $coordinates->y));
+        $nearbyTiles[] = $this->getTile(Coordinates::fromIntegers($coordinates->x - 1, $coordinates->y));
+        $nearbyTiles[] = $this->getTile(Coordinates::fromIntegers($coordinates->x, $coordinates->y + 1));
+        $nearbyTiles[] = $this->getTile(Coordinates::fromIntegers($coordinates->x, $coordinates->y - 1));
 
         return array_values(array_filter($nearbyTiles));
     }
@@ -112,7 +112,7 @@ final readonly class Map
 
             foreach ($element->tiles as $tile) {
                 $coordinates = $tile->coordinates;
-                $finalTiles[$coordinates->getY()][$coordinates->getX()] = $tile;
+                $finalTiles[$coordinates->y][$coordinates->x] = $tile;
                 $tileParentElement[(string) $coordinates] = $elementIndex;
             }
         }

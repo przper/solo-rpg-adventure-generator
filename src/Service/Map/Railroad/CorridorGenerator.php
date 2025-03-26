@@ -12,7 +12,7 @@ class CorridorGenerator
         $coordinates = [$start];
 
         for ($i = 1; count($coordinates) < $length; $i++) {
-            $coordinates[] = Coordinates::fromIntegers($start->getX()+$i, $start->getY());
+            $coordinates[] = Coordinates::fromIntegers($start->x+$i, $start->y);
         }
 
         return Corridor::create($coordinates);
