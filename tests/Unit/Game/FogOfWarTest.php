@@ -36,19 +36,19 @@ class FogOfWarTest extends TestCase
     public function test_it_stores_revealed_tiles(): void
     {
         // initial state
-        $this->assertCount(0, $this->sut->getRevealedCoordinates());
+        $this->assertCount(0, $this->sut->getVisitedCoordinates());
 
         // move Player to start position
         $this->sut->visit(Coordinates::fromIntegers(0, 0));
-        $this->assertCount(1, $this->sut->getRevealedCoordinates());
+        $this->assertCount(1, $this->sut->getVisitedCoordinates());
 
         // move Player forward
         $this->sut->visit(Coordinates::fromIntegers(1, 0));
-        $this->assertCount(2, $this->sut->getRevealedCoordinates());
+        $this->assertCount(2, $this->sut->getVisitedCoordinates());
 
         // move Player backward
         $this->sut->visit(Coordinates::fromIntegers(0, 0));
-        $this->assertCount(2, $this->sut->getRevealedCoordinates());
+        $this->assertCount(2, $this->sut->getVisitedCoordinates());
     }
 
     public function test_it_stores_known_tiles(): void
@@ -112,7 +112,7 @@ class FogOfWarTest extends TestCase
         $this->assertContains('[0, 0]', $knownTiles); // starter
         $this->assertContains('[1, 0]', $knownTiles); // first tile of corridor
 
-        $revealedTiles = array_map(fn(Coordinates $c) => (string) $c, $fogOfWar->getRevealedCoordinates());
+        $revealedTiles = array_map(fn(Coordinates $c) => (string) $c, $fogOfWar->getVisitedCoordinates());
         $this->assertCount(1, $revealedTiles);
         $this->assertContains('[0, 0]', $revealedTiles); // starter
 
@@ -126,7 +126,7 @@ class FogOfWarTest extends TestCase
         $this->assertContains('[3, 0]', $knownTiles); // final corridor tile
         $this->assertContains('[4, 0]', $knownTiles); // next room
 
-        $revealedTiles = array_map(fn(Coordinates $c) => (string) $c, $fogOfWar->getRevealedCoordinates());
+        $revealedTiles = array_map(fn(Coordinates $c) => (string) $c, $fogOfWar->getVisitedCoordinates());
         $this->assertCount(2, $revealedTiles);
         $this->assertContains('[0, 0]', $revealedTiles); // starter
         $this->assertContains('[1, 0]', $revealedTiles); // first tile of corridor
@@ -174,7 +174,7 @@ class FogOfWarTest extends TestCase
         $this->assertContains('[1, 3]', $knownTiles); // right corridor
         $this->assertContains('[3, 1]', $knownTiles); // bottom corridor
 
-        $revealedTiles = array_map(fn(Coordinates $c) => (string)$c, $fogOfWar->getRevealedCoordinates());
+        $revealedTiles = array_map(fn(Coordinates $c) => (string)$c, $fogOfWar->getVisitedCoordinates());
         foreach ($coordinates as $coordinate) {
             $this->assertContains((string)$coordinate, $revealedTiles);
         }

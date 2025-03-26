@@ -6,10 +6,6 @@ use App\Helper\Coordinates;
 use App\Service\Map\Core\Map;
 use App\Service\Map\Core\Room;
 
-/**
- * Entering a Room reveals it fully (it is lit)
- * Entering a Corridor makes it known whole, but reveals only current tile (it is not lit at all, only our light source)
- */
 final class FogOfWar implements FogOfWarInterface
 {
     /** @var array<string, Coordinates> */
@@ -54,7 +50,7 @@ final class FogOfWar implements FogOfWarInterface
     /**
      * @return Coordinates[]
      */
-    public function getRevealedCoordinates(): array
+    public function getVisitedCoordinates(): array
     {
         return array_values($this->revealedCoordinates);
     }
