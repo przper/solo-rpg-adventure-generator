@@ -7,6 +7,7 @@ use Symfony\Component\Routing\Exception\InvalidParameterException;
 class DiceStack
 {
     final public const TYPE_D2 = 'd2';
+    final public const TYPE_D4 = 'd4';
     final public const TYPE_D6 = 'd6';
     final public const TYPE_D8 = 'd8';
     final public const TYPE_D10 = 'd10';
@@ -69,6 +70,7 @@ class DiceStack
     {
         return [
             static::TYPE_D2,
+            static::TYPE_D4,
             static::TYPE_D6,
             static::TYPE_D8,
             static::TYPE_D10,
@@ -84,7 +86,7 @@ class DiceStack
         $diceStack->setDicesCount($count);
         $diceStack->setDiceType('d'.$sides);
         $diceStack->setRollModifier($modifier);
-        
+
         return $diceStack;
     }
 
