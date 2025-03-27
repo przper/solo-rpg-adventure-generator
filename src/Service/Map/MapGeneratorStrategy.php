@@ -30,7 +30,11 @@ class MapGeneratorStrategy implements MapGeneratorStrategyInterface
             ->railroadMapBuilder
             ->setMinCorridorLength(2)
             ->setMaxCorridorLength(5)
-            ->setMaxRoomsCount($length->getMaxRoomCount());
+            ->setMaxRoomsCount(match ($length) {
+                DungeonLength::SHORT => rand(3, 4),
+                DungeonLength::MEDIUM => rand(7, 8),
+                DungeonLength::LONG => rand(10, 12),
+            });
     }
 
     private function buildGridMap(DungeonLength $length): MapGeneratorInterface
@@ -42,12 +46,12 @@ class MapGeneratorStrategy implements MapGeneratorStrategyInterface
             ->setGridHeight(match ($length) {
                 DungeonLength::SHORT => 2,
                 DungeonLength::MEDIUM => 3,
-                DungeonLength::LONG => 4,
+                DungeonLength::LONG => 3,
             })
             ->setGridWidth(match ($length) {
                 DungeonLength::SHORT => 3,
-                DungeonLength::MEDIUM => 4,
-                DungeonLength::LONG => 5,
+                DungeonLength::MEDIUM => 3,
+                DungeonLength::LONG => 4,
             })
         ;
     }

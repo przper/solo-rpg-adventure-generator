@@ -20,7 +20,7 @@ class EncountersPlannerTest extends KernelTestCase
         $encountersPlan = $planner->plan(DungeonLength::MEDIUM, TeamChallengeRating::fromLevelsAsIntegers(2, 2, 2, 2));
 
         $this->assertInstanceOf(EncountersPlan::class, $encountersPlan);
-        $this->assertLessThan(DungeonLength::MEDIUM->getMaxRoomCount(), count($encountersPlan->encounters));
+        $this->assertLessThan(12, count($encountersPlan->encounters));
         $this->assertGreaterThanOrEqual(2, count($encountersPlan->getEncountersByDifficulty(EncounterDifficulty::EASY)));
         $this->assertGreaterThanOrEqual(5, count($encountersPlan->getEncountersByDifficulty(EncounterDifficulty::MEDIUM)));
         $this->assertGreaterThanOrEqual(1, count($encountersPlan->getEncountersByDifficulty(EncounterDifficulty::HARD)));

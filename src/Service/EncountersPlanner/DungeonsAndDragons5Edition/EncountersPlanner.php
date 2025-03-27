@@ -28,7 +28,18 @@ final readonly class EncountersPlanner implements EncountersPlannerInterface
 
     private function generateEncounterDifficultyList(DungeonLength $dungeonLength): array
     {
-        $maxNumberOfEncounters = (int) floor($dungeonLength->getMaxRoomCount() * 0.85);
+        /**
+         * Short is 1 day of traveling (0 long rest)
+         * Medium is 2 day of traveling (1 long rest)
+         * Long is 3 day of traveling (2 long rest)
+         *
+         * Approximately 6 encounters should happen in an adventuring day
+         */
+        $maxNumberOfEncounters = match($dungeonLength) {
+            DungeonLength::SHORT => 6,
+            DungeonLength::MEDIUM => 12,
+            DungeonLength::LONG => 18,
+        };
 
         $mediumEncountersCount = ceil($maxNumberOfEncounters / 2);
         $easyEncountersCount = floor(($maxNumberOfEncounters - $mediumEncountersCount) / 2);
