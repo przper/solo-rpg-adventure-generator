@@ -3,6 +3,7 @@
 namespace App\Tests\Integration\EncountersPlanner\DungeonsAndDragons5Edition;
 
 use App\Enum\DungeonLength;
+use App\Enum\EncounterDifficulty;
 use App\Service\EncountersPlanner\DungeonsAndDragons5Edition\EncountersPlanner;
 use App\Service\EncountersPlanner\EncountersPlan;
 use App\Service\EncountersPlanner\TeamChallengeRating;
@@ -19,10 +20,10 @@ class EncountersPlannerTest extends KernelTestCase
         $encountersPlan = $planner->plan(DungeonLength::MEDIUM, TeamChallengeRating::fromLevelsAsIntegers(2, 2, 2, 2));
 
         $this->assertInstanceOf(EncountersPlan::class, $encountersPlan);
-        $this->assertGreaterThanOrEqual(11, $encountersPlan->count());
-        $this->assertGreaterThanOrEqual(3, $encountersPlan->easyDifficultyCount());
-        $this->assertGreaterThanOrEqual(5, $encountersPlan->mediumDifficultyCount());
-        $this->assertGreaterThanOrEqual(1, $encountersPlan->hardDifficultyCount());
-        $this->assertLessThanOrEqual(1, $encountersPlan->deadlyDifficultyCount());
+        $this->assertLessThan(DungeonLength::MEDIUM->getMaxRoomCount(), count($encountersPlan->encounters));
+        $this->assertGreaterThanOrEqual(2, count($encountersPlan->getEncountersByDifficulty(EncounterDifficulty::EASY)));
+        $this->assertGreaterThanOrEqual(5, count($encountersPlan->getEncountersByDifficulty(EncounterDifficulty::MEDIUM)));
+        $this->assertGreaterThanOrEqual(1, count($encountersPlan->getEncountersByDifficulty(EncounterDifficulty::HARD)));
+        $this->assertLessThanOrEqual(1, count($encountersPlan->getEncountersByDifficulty(EncounterDifficulty::DEADLY)));
     }
 }

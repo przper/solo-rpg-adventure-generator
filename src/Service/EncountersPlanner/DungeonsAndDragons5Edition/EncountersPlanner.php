@@ -28,7 +28,7 @@ final readonly class EncountersPlanner implements EncountersPlannerInterface
 
     private function generateEncounterDifficultyList(DungeonLength $dungeonLength): array
     {
-        $maxNumberOfEncounters = $dungeonLength->getMaxRoomCount();
+        $maxNumberOfEncounters = (int) floor($dungeonLength->getMaxRoomCount() * 0.85);
 
         $mediumEncountersCount = ceil($maxNumberOfEncounters / 2);
         $easyEncountersCount = floor(($maxNumberOfEncounters - $mediumEncountersCount) / 2);
