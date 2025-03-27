@@ -14,8 +14,11 @@ final readonly class EncountersPlan
     ) {
     }
 
-    public function getEncountersByDifficulty(EncounterDifficulty $difficulty): array
+    public function getEncountersByDifficulty(EncounterDifficulty ...$difficulty): array
     {
-        return array_keys(array_filter($this->encounters, fn (Encounter $e) => $e->getDifficulty() === $difficulty));
+        return array_keys(array_filter(
+            $this->encounters,
+            fn (Encounter $e) => in_array($e->getDifficulty(), $difficulty))
+        );
     }
 }
