@@ -20,8 +20,8 @@ final readonly class Map
 
     public MapDimension $dimension;
 
-    /** @var array<Room|Corridor> $elements */
-    private array $elements;
+    /** @var MapElement[] $elements */
+    public array $elements;
 
     /**
      * Bind Coordinates to "parent" Element of each Tile. It allows to get Element by providing coordinates
@@ -85,7 +85,7 @@ final readonly class Map
         return $result;
     }
 
-    public function getElementByCoordinates(Coordinates $coordinates): Room|Corridor|null
+    public function getElementByCoordinates(Coordinates $coordinates): ?MapElement
     {
         $elementId = $this->tileParentElement[(string) $coordinates] ?? null;
         return $this->elements[$elementId] ?? null;
