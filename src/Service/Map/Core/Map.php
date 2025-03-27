@@ -91,6 +91,18 @@ final readonly class Map
         return $this->elements[$elementId] ?? null;
     }
 
+    /** @return Room[] */
+    public function getRooms(): array
+    {
+        return array_values(array_filter($this->elements, fn (MapElement $element) => $element instanceof Room));
+    }
+
+    /** @return Corridor[] */
+    public function getCorridors(): array
+    {
+        return array_values(array_filter($this->elements, fn(MapElement $element) => $element instanceof Corridor));
+    }
+
     /** @param array<Room, Corridor> $elements */
     private function initialize(array $elements): void
     {

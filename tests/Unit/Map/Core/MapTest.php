@@ -178,4 +178,21 @@ class MapTest extends TestCase
 
         $this->assertNull($this->sut->getElementByCoordinates(Coordinates::fromIntegers(1, 0)));
     }
+
+    public function test_getRooms_returns_all_rooms(): void
+    {
+        $rooms = $this->sut->getRooms();
+
+        $this->assertCount(2, $rooms);
+        $this->assertInstanceOf(Room::class, $rooms[0]);
+        $this->assertInstanceOf(Room::class, $rooms[1]);
+    }
+
+    public function test_getCorridors_returns_all_corridors(): void
+    {
+        $corridors = $this->sut->getCorridors();
+
+        $this->assertCount(1, $corridors);
+        $this->assertInstanceOf(Corridor::class, $corridors[0]);
+    }
 }
