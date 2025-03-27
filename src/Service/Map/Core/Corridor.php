@@ -2,16 +2,9 @@
 
 namespace App\Service\Map\Core;
 
-final readonly class Corridor
+final readonly class Corridor extends MapElement
 {
-    /** @param Tile[] $tiles */
-    private function __construct(
-        public array $tiles = [],
-    ) {
-        $this->guard();
-    }
-
-    public static function create(array $coordinates): self
+    public static function create(array $coordinates): static
     {
         $tiles = [];
 
@@ -20,13 +13,5 @@ final readonly class Corridor
         }
 
         return new self($tiles);
-    }
-
-    private function guard(): void
-    {
-        $coordinates = array_map(fn(Tile $tile) => $tile->coordinates, $this->tiles);
-        if (count($coordinates) !== count(array_unique($coordinates, SORT_REGULAR))) {
-            throw new \InvalidArgumentException('Duplicate coordinates found in the provided tiles.');
-        }
     }
 }

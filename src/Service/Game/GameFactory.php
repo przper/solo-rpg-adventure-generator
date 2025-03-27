@@ -2,36 +2,26 @@
 
 namespace App\Service\Game;
 
-use App\Enum\DungeonLength;
-use App\Interface\MapGeneratorInterface;
 use App\Service\EncountersPlanner\EncountersPlannerInterface;
 use App\Service\EncountersPlanner\TeamChallengeRating;
+use App\Service\Map\MapGeneratorStrategyInterface;
 
 class GameFactory
 {
-    private MapGeneratorInterface $mapBuilder;
-
     public function __construct(
-        private readonly EncountersPlannerInterface $encountersPlanner,
+        private MapGeneratorStrategyInterface $mapGeneratorStrategy,
+        private EncountersPlannerInterface $encountersPlanner,
     ) {
     }
 
-    public function getMapBuilder(): MapGeneratorInterface
+    public function create(NewGameDTO $newGame): Game
     {
-        return $this->mapBuilder;
-    }
-
-    public function setMapBuilder(MapGeneratorInterface $mapBuilder): self
-    {
-        $this->mapBuilder = $mapBuilder;
-
-        return $this;
-    }
-
-    public function create(): Game
-    {
-        $map = $this->mapBuilder->create();
-        $encounterPlan = $this->encountersPlanner->plan(DungeonLength::MEDIUM, TeamChallengeRating::fromLevelsAsIntegers(1, 1, 1, 1));
+        $mapGenerator = $this->mapGeneratorStrategy->get($newGame->mapType, $newGame->length);
+        $map = $mapGenerator->create();
+        $encounterPlan = $this->encountersPlanner->plan(
+            $newGame->length,
+            TeamChallengeRating::fromLevelsAsIntegers(1, 1, 1, 1),
+        );
 
         return new Game($map, $encounterPlan);
     }

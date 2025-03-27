@@ -19,8 +19,10 @@ class NewGameControllerTest extends WebTestCase
 
         $this->assertResponseIsSuccessful();
 
-        $client->submitForm('Railroad', [
-            'type' => 'railroad',
+        $client->submitForm('Begin adventure!', [
+            'new_game[length]' => 'short',
+            'new_game[mapType]' => 'Railroad',
+            'new_game[system]' => 'DnD_5E',
         ]);
 
         $this->assertResponseRedirects('/play');
