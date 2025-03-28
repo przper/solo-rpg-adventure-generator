@@ -94,22 +94,6 @@ class EncountersTest extends TestCase
     }
 
     /** @group EncountersPlacement */
-    public function test_non_easy_encounters_should_be_placed_in_rooms(): void
-    {
-        $map = new Map(5, 5, [
-            Room::create([Coordinates::fromIntegers(0, 0)]),
-            Corridor::create([Coordinates::fromIntegers(1, 0)]),
-            Room::create([Coordinates::fromIntegers(2, 0)]),
-        ]);
-        $encounter = new Encounter(EncounterDifficulty::DEADLY, []);
-        $sut = new Encounters($map, new EncountersPlan([$encounter]));
-
-        $this->assertNull($sut->getEncounter(Coordinates::fromIntegers(0, 0)));
-        $this->assertSame($encounter, $sut->getEncounter(Coordinates::fromIntegers(2, 0)));
-        $this->assertNull($sut->getEncounter(Coordinates::fromIntegers(1, 0)));
-    }
-
-    /** @group EncountersPlacement */
     public function test_easy_encounters_should_be_placed_in_corridors_if_possible(): void
     {
         $map = new Map(1, 1, [
@@ -124,7 +108,7 @@ class EncountersTest extends TestCase
         $sut = new Encounters($map, $plan);
 
         $this->assertNull($sut->getEncounter(Coordinates::fromIntegers(0, 0)));
-        $this->assertSame($encounter, $sut->getEncounter(Coordinates::fromIntegers(1, 0)));
+        $this->assertEquals($encounter, $sut->getEncounter(Coordinates::fromIntegers(1, 0)));
         $this->assertNull($sut->getEncounter(Coordinates::fromIntegers(2, 0)));
     }
 
@@ -145,19 +129,54 @@ class EncountersTest extends TestCase
 
         $sut = new Encounters($map, $plan);
 
-        $hasEncounter = false;
-        for ($x = 0; $x <= 1; $x++) {
-            for ($y = 0; $y <= 1; $y++) {
-                $coords = Coordinates::fromIntegers($x, $y);
-                if ($sut->getEncounter($coords) === $encounter) {
-                    $hasEncounter = true;
-                    break 2;
-                }
-            }
-        }
-
         $this->assertNull($sut->getEncounter(Coordinates::fromIntegers(0, 0)));
-        $this->assertTrue($hasEncounter, 'EASY encounter should be placed in rooms if no corridors are available');
+        $this->assertEquals($encounter, $sut->getEncounter(Coordinates::fromIntegers(1, 0)));
+    }
+
+    /** @group EncountersPlacement */
+    public function test_hard_encounters_should_always_be_placed_in_rooms(): void
+    {
+        $map = new Map(5, 5, [
+            Room::create([Coordinates::fromIntegers(0, 0)]),
+            Corridor::create([Coordinates::fromIntegers(1, 0)]),
+            Room::create([Coordinates::fromIntegers(2, 0)]),
+        ]);
+        $encounter = new Encounter(EncounterDifficulty::HARD, []);
+
+        for ($i = 0; $i < 50; $i++) {
+            $sut = new Encounters($map, new EncountersPlan([$encounter]));
+
+            $this->assertNull($sut->getEncounter(Coordinates::fromIntegers(0, 0)));
+            $this->assertEquals($encounter, $sut->getEncounter(Coordinates::fromIntegers(2, 0)));
+            $this->assertNull($sut->getEncounter(Coordinates::fromIntegers(1, 0)));
+        }
+    }
+
+    /** @group EncountersPlacement */
+    public function test_deadly_encounters_should_always_be_placed_in_furthest_room(): void
+    {
+        /**
+         * R C R
+         * # # C
+         * # # R
+         */
+        $map = new Map(3, 3, [
+            Room::create([Coordinates::fromIntegers(0, 0)]),
+            Corridor::create([Coordinates::fromIntegers(1, 0)]),
+            Room::create([Coordinates::fromIntegers(2, 0)]),
+            Corridor::create([Coordinates::fromIntegers(2, 1)]),
+            Room::create([Coordinates::fromIntegers(2, 2)]),
+        ]);
+
+        $encounter = new Encounter(EncounterDifficulty::DEADLY, []);
+
+        for ($i = 0; $i < 50; $i++) {
+            $encounters = new Encounters($map, new EncountersPlan([$encounter]));
+
+            $this->assertNull($encounters->getEncounter(Coordinates::fromIntegers(0, 0)));
+            $this->assertNull($encounters->getEncounter(Coordinates::fromIntegers(2, 0)));
+            $this->assertEquals($encounter, $encounters->getEncounter(Coordinates::fromIntegers(2, 2)));
+        }
     }
 
     /** @group EncountersPlacement */

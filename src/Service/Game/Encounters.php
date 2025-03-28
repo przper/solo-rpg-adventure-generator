@@ -9,12 +9,17 @@ use App\Service\EncountersPlanner\EncountersPlan;
 use App\Service\Map\Core\Corridor;
 use App\Service\Map\Core\Map;
 use App\Service\Map\Core\Room;
+use InvalidArgumentException;
+use Random\RandomException;
 
 final class Encounters
 {
     /** @var array<string, Encounter> */
     private array $encountersPerCoordinates = [];
 
+    /**
+     * @throws RandomException
+     */
     public function __construct(
         private Map $map,
         private EncountersPlan $encountersPlan,
@@ -32,10 +37,16 @@ final class Encounters
         return $this->encountersPerCoordinates[(string) $coordinates] ?? null;
     }
 
+    /**
+     * @throws RandomException
+     */
     private function placeEncountersOnMap(): void
     {
-        if (count($this->map->elements) - 1 < count($this->encountersPlan->encounters)) { // exclude starter room
-            throw new \InvalidArgumentException("Map Elements count must be greater than Encounters count");
+        if (
+            $this->encountersPlan->encounters != []
+            && count($this->map->elements) - 1 < count($this->encountersPlan->encounters)
+        ) {
+            throw new InvalidArgumentException("Map Elements count must be greater than Encounters count");
         }
 
         $emptyRooms = $this->map->getRooms();
@@ -48,6 +59,15 @@ final class Encounters
             unset($emptyRooms[$starterRoomKey]);
         }
 
+         // Sort Rooms by distance to 0, 0 in ASC order
+        usort($emptyRooms, function (Room $roomA, Room $roomB) {
+            $coordinatesA = $roomA->tiles[0]->coordinates;
+            $coordinatesB = $roomB->tiles[0]->coordinates;
+
+            return $coordinatesA->getDistanceTo(Coordinates::fromIntegers(0, 0))
+                <=> $coordinatesB->getDistanceTo(Coordinates::fromIntegers(0, 0));
+        });
+
         foreach ($this->encountersPlan->getEncountersSortedByDifficulty() as $encounter) {
             $this->placeEncounter($emptyRooms, $emptyCorridors, $encounter);
         }
@@ -56,36 +76,10 @@ final class Encounters
     /**
      * @param Room[] $emptyRooms
      * @param Corridor[] $emptyCorridors
+     * @throws RandomException|InvalidArgumentException
      */
     private function placeEncounter(array &$emptyRooms, array &$emptyCorridors, Encounter $encounter): void
     {
-//        switch ($encounter->getDifficulty()) {
-//            case EncounterDifficulty::DEADLY:
-//            case EncounterDifficulty::HARD:
-//                $emptyElements = &$emptyRooms;
-//                break;
-//            case EncounterDifficulty::MEDIUM:
-//                if ($emptyRooms === []) {
-//                    $emptyElements = &$emptyCorridors;
-//                    break;
-//                }
-//
-//                if ($emptyCorridors === []) {
-//                    $emptyElements = &$emptyRooms;
-//                    break;
-//                }
-//
-//                if (random_int(1, 100) < 67) {
-//                    $emptyElements = &$emptyRooms;
-//                } else {
-//                    $emptyElements = &$emptyCorridors;
-//                }
-//                break;
-//            case EncounterDifficulty::EASY:
-//                $emptyElements = &$emptyCorridors;
-//                break;
-//        }
-
         if ($encounter->getDifficulty() === EncounterDifficulty::EASY) {
             if ($emptyCorridors === []) {
                 $emptyElements = &$emptyRooms;
@@ -95,6 +89,8 @@ final class Encounters
         } else if ($encounter->getDifficulty() === EncounterDifficulty::MEDIUM) {
             if ($emptyCorridors === []) {
                 $emptyElements = &$emptyRooms;
+            } else if ($emptyRooms === []) {
+                $emptyElements = &$emptyCorridors;
             } else {
                 if (random_int(1, 100) < 33) {
                     $emptyElements = &$emptyCorridors;
@@ -107,21 +103,21 @@ final class Encounters
         }
 
         if ($emptyElements === []) {
-            throw new \InvalidArgumentException("No available elements to place the encounter.");
+            throw new InvalidArgumentException("No available elements to place the encounter.");
         }
 
-        $randomKey = array_rand($emptyElements);
-        $randomElement = $emptyElements[$randomKey];
+        if ($encounter->getDifficulty() === EncounterDifficulty::DEADLY) {
+            $elementKey = array_key_last($emptyElements); // furthest Room
+        } else {
+            $elementKey = array_rand($emptyElements);
+        }
 
-        $tiles = $randomElement->tiles;
+        $element = $emptyElements[$elementKey];
+
+        $tiles = $element->tiles;
         $tile = $tiles[array_rand($tiles)];
 
-        $this->encountersPerCoordinates[(string) $tile->coordinates] = $encounter;
-        unset($emptyElements[$randomKey]);
-//        dump(
-//            $encounter->getDifficulty()->name,
-//            "Rooms: " . count($emptyRooms),
-//            "Corridors: " . count($emptyCorridors),
-//        );
+        $this->encountersPerCoordinates[(string) $tile->coordinates] = clone $encounter;
+        unset($emptyElements[$elementKey]);
     }
 }
