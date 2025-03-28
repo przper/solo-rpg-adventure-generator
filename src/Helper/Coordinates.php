@@ -27,6 +27,14 @@ final readonly class Coordinates implements JsonSerializable
         return $this->x === $coordinates->x && $this->y === $coordinates->y;
     }
 
+    public function getDistanceTo(Coordinates $coordinates): float
+    {
+        return round(sqrt(
+            pow($this->x - $coordinates->x, 2) +
+            pow($this->y - $coordinates->y, 2)
+        ), 3);
+    }
+
     public function jsonSerialize(): mixed
     {
         return [

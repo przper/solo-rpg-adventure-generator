@@ -71,4 +71,22 @@ class CoordinatesTest extends TestCase
         yield [0, 0, 1, 0, false];
         yield [1, 1, 2, 2, false];
     }
+
+    /**
+     * @dataProvider distanceProvider
+     */
+    public function test_get_distance_to_coordinates(int $x1, int $y1, int $x2, int $y2, float $expectedDistance): void
+    {
+        $coordinates1 = Coordinates::fromIntegers($x1, $y1);
+        $coordinates2 = Coordinates::fromIntegers($x2, $y2);
+
+        $this->assertEquals($expectedDistance, $coordinates1->getDistanceTo($coordinates2));
+    }
+
+    public function distanceProvider(): \Generator
+    {
+        yield [0, 0, 0, 0, 0.0];
+        yield [0, 0, 3, 4, 5.0];
+        yield [-1, -1, 1, 1, 2.828];
+    }
 }
