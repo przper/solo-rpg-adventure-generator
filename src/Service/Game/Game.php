@@ -4,6 +4,7 @@ namespace App\Service\Game;
 
 use App\Enum\MovementDirection;
 use App\Helper\Coordinates;
+use App\Service\EncountersPlanner\Encounter;
 use App\Service\EncountersPlanner\EncountersPlan;
 use App\Service\Map\Core\Map;
 
@@ -12,13 +13,15 @@ class Game
     private PlayerPosition $playerPosition;
     private AvailableActions $actions;
     private FogOfWar $fogOfWar;
+    private Encounters $encounters;
 
     public function __construct(
         private Map $map,
-        private EncountersPlan $encountersPlan,
+        EncountersPlan $encountersPlan = new EncountersPlan(),
     ) {
         $this->playerPosition = new PlayerPosition(Coordinates::fromIntegers(0, 0));
         $this->fogOfWar = new FogOfWar($map);
+        $this->encounters = new Encounters($map, $encountersPlan);
         $this->actions = $this->checkAvailableActions();
     }
 
@@ -42,6 +45,16 @@ class Game
         return $this->map;
     }
 
+    public function getEncouter(Coordinates $coordinates): ?Encounter
+    {
+        return $this->encounters->getEncounter($coordinates);
+    }
+
+    public function getCurrentEncounter(): ?Encounter
+    {
+        return $this->encounters->getEncounter($this->playerPosition->getCoordinates());
+    }
+
     public function getPlayerPosition(): PlayerPosition
     {
         return $this->playerPosition;
@@ -55,16 +68,6 @@ class Game
     public function isKnown(Coordinates $coordinates): bool
     {
         return $this->fogOfWar->isKnown($coordinates);
-    }
-
-    public function getEncountersPlan(): EncountersPlan
-    {
-        return $this->encountersPlan;
-    }
-
-    public function setEncountersPlan(EncountersPlan $encountersPlan): void
-    {
-        $this->encountersPlan = $encountersPlan;
     }
 
     public function getAvailableActions(): AvailableActions

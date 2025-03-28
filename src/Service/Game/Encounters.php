@@ -27,11 +27,6 @@ final class Encounters
         $this->placeEncountersOnMap();
     }
 
-    public function getEncountersPlan(): EncountersPlan
-    {
-        return $this->encountersPlan;
-    }
-
     public function getEncounter(Coordinates $coordinates): ?Encounter
     {
         return $this->encountersPerCoordinates[(string) $coordinates] ?? null;
