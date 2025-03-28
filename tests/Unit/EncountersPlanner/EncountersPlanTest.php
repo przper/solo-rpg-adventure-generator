@@ -7,7 +7,7 @@ use App\Service\EncountersPlanner\Encounter;
 use App\Service\EncountersPlanner\EncountersPlan;
 use PHPUnit\Framework\TestCase;
 
-class EncounterPlanTest extends TestCase
+class EncountersPlanTest extends TestCase
 {
     private EncountersPlan $sut;
 
@@ -24,9 +24,10 @@ class EncounterPlanTest extends TestCase
     /**
      * @dataProvider difficultyFilterDataProvider
      */
-    public function test_it_filters_encounters_by_difficulty(array $difficulties, int $expectedCount): void
+    public function test_it_filters_encounters_by_difficulty(array $difficulties, array $expected): void
     {
-        $this->assertCount($expectedCount, $this->sut->getEncountersByDifficulty(...$difficulties));
+        $filteredEncounters = $this->sut->getEncountersByDifficulty(...$difficulties);
+        $this->assertEquals($expected, $filteredEncounters);
     }
 
     public function difficultyFilterDataProvider(): array
@@ -34,15 +35,22 @@ class EncounterPlanTest extends TestCase
         return [
             'Single difficulty filter' => [
                 'difficultyFilter' => [EncounterDifficulty::EASY],
-                'expectedCount' => 2,
+                'expected' => [
+                    new Encounter(EncounterDifficulty::EASY),
+                    new Encounter(EncounterDifficulty::EASY),
+                ],
             ],
             'Multiple difficulty filter' => [
                 'difficultyFilter' => [EncounterDifficulty::EASY, EncounterDifficulty::HARD],
-                'expectedCount' => 3,
+                'expected' => [
+                    new Encounter(EncounterDifficulty::EASY),
+                    new Encounter(EncounterDifficulty::HARD),
+                    new Encounter(EncounterDifficulty::EASY),
+                ],
             ],
             'No match filter' => [
                 'difficultyFilter' => [EncounterDifficulty::DEADLY],
-                'expectedCount' => 0,
+                'expected' => [],
             ],
         ];
     }

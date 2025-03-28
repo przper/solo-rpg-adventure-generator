@@ -16,7 +16,7 @@ final readonly class EncountersPlan
 
     public function getEncountersByDifficulty(EncounterDifficulty ...$difficulty): array
     {
-        return array_keys(array_filter(
+        return array_values(array_filter(
             $this->encounters,
             fn (Encounter $e) => in_array($e->getDifficulty(), $difficulty))
         );
