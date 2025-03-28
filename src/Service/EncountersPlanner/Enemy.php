@@ -6,15 +6,18 @@ use App\Helper\DiceStack;
 
 final class Enemy
 {
+    private int $totalHitPoints;
+
     public function __construct(
         private float $challengeRating,
         private int $experiencePoints,
         private string $name,
         private DiceStack $hitDice,
-        private int $totalHitPoints,
         private int $armorClass,
         private DiceStack $damage,
+        ?int $totalHitPoints = null,
     ) {
+        $this->totalHitPoints = $totalHitPoints ?? $this->hitDice->roll();
     }
 
     public function getChallengeRating(): float
