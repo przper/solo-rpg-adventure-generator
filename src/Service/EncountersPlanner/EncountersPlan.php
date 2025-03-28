@@ -21,4 +21,26 @@ final readonly class EncountersPlan
             fn (Encounter $e) => in_array($e->getDifficulty(), $difficulty))
         );
     }
+
+    /**
+     * @param 'DESC'|'ASC' $direction
+     * @return Encounter[]
+     */
+    public function getEncountersSortedByDifficulty(string $direction = 'DESC'): array
+    {
+        $result = array_values($this->encounters);
+
+        usort($result, function (Encounter $a, Encounter $b) use ($direction) {
+            $order = [
+                'DESC' => [EncounterDifficulty::DEADLY, EncounterDifficulty::HARD, EncounterDifficulty::MEDIUM, EncounterDifficulty::EASY],
+                'ASC' => [EncounterDifficulty::EASY, EncounterDifficulty::MEDIUM, EncounterDifficulty::HARD, EncounterDifficulty::DEADLY],
+            ];
+
+            $difficultyOrder = $order[$direction] ?? $order['DESC'];
+
+            return array_search($a->getDifficulty(), $difficultyOrder) <=> array_search($b->getDifficulty(), $difficultyOrder);
+        });
+
+        return $result;
+    }
 }

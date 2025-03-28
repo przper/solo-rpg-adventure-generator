@@ -54,4 +54,28 @@ class EncountersPlanTest extends TestCase
             ],
         ];
     }
+
+    public function test_it_sorts_encounters_by_difficulty(): void
+    {
+        $sortedAsc = $this->sut->getEncountersSortedByDifficulty('ASC');
+        $this->assertSame(
+            [EncounterDifficulty::EASY, EncounterDifficulty::EASY, EncounterDifficulty::MEDIUM, EncounterDifficulty::HARD],
+            array_map(fn(Encounter $e) => $e->getDifficulty(), $sortedAsc)
+        );
+
+        $sortedDesc = $this->sut->getEncountersSortedByDifficulty('DESC');
+        $this->assertSame(
+            [EncounterDifficulty::HARD, EncounterDifficulty::MEDIUM, EncounterDifficulty::EASY, EncounterDifficulty::EASY],
+            array_map(fn(Encounter $e) => $e->getDifficulty(), $sortedDesc)
+        );
+
+        // Ensure the original order of $this->encounters remains unchanged
+        $originalEncounters = [
+            new Encounter(EncounterDifficulty::EASY),
+            new Encounter(EncounterDifficulty::MEDIUM),
+            new Encounter(EncounterDifficulty::HARD),
+            new Encounter(EncounterDifficulty::EASY),
+        ];
+        $this->assertEquals($originalEncounters, $this->sut->encounters);
+    }
 }
