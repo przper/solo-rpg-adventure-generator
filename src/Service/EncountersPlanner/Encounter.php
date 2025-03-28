@@ -4,9 +4,6 @@ namespace App\Service\EncountersPlanner;
 
 use App\Enum\EncounterDifficulty;
 
-/**
- *
- */
 final class Encounter
 {
     /** @param Enemy[] $enemies */

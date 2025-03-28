@@ -26,6 +26,7 @@ final readonly class EncountersPlanner implements EncountersPlannerInterface
         return new EncountersPlan($encounters);
     }
 
+    /** @return EncounterDifficulty[] */
     private function generateEncounterDifficultyList(DungeonLength $dungeonLength): array
     {
         /**
