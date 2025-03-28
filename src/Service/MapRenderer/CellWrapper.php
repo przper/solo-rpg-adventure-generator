@@ -3,8 +3,6 @@
 namespace App\Service\MapRenderer;
 
 use App\Helper\Coordinates;
-use App\Interface\HasEnemies;
-use App\Interface\HasTreasure;
 use App\Interface\TreasureInterface;
 use App\Service\Game\Game;
 use App\Service\Map\Core\Tile;
@@ -20,11 +18,11 @@ class CellWrapper
     private bool $isKnown = false;
     private bool $wasVisited = false;
 
+    private array $enemies = [];
+
     public function __construct(
         readonly public TileType $type,
         readonly public Coordinates $coordinates,
-        readonly public ?TreasureInterface $treasure= null,
-        readonly public array $enemies = [],
     ) {
     }
 
@@ -33,8 +31,6 @@ class CellWrapper
         return new self(
             type: $tile->type,
             coordinates: $tile->coordinates,
-            treasure: $tile instanceof HasTreasure ? $tile->getTreasure() : null,
-            enemies: $tile instanceof HasEnemies ? $tile->getEnemies() : [],
         );
     }
 
@@ -72,11 +68,6 @@ class CellWrapper
         return $this->type;
     }
 
-    public function getTreasure(): ?TreasureInterface
-    {
-        return $this->treasure;
-    }
-
     public function getTemplate(): string
     {
         if (! $this->isKnown) {
@@ -90,6 +81,16 @@ class CellWrapper
         };
     }
 
+    public function getEnemies(): array
+    {
+        return $this->enemies;
+    }
+
+    public function getTreasure(): ?TreasureInterface
+    {
+        return null;
+    }
+
     public function applyGameState(Game $game): void
     {
         $this->hasPlayer = $this->coordinates->isSame($game->getPlayerPosition()->getCoordinates());
@@ -101,5 +102,8 @@ class CellWrapper
         if ($game->isVisited($this->coordinates)) {
             $this->wasVisited = true;
         }
+
+        $currentEncounter = $game->getEncouter($this->coordinates);
+        $this->enemies = $currentEncounter?->getEnemies() ?? [];
     }
 }

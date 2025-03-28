@@ -24,10 +24,8 @@ class CellWrapperTest extends TestCase
 
         $this->assertEquals(
             Coordinates::fromIntegers(0, 0),
-            $wrapper->coordinates
+            $wrapper->coordinates,
         );
-
-        $this->assertNull($wrapper->treasure);
     }
 
     /** @test */

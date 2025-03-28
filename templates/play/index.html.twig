@@ -18,25 +18,16 @@
         </div>
 
         <div class="p-4 rounded-xl shadow-sm bg-white">
-            {% set currentCell = game.map.getTile(game.playerPosition.coordinates) %}
+            <div>
+                <h2 class="text-3xl">Enemies</h2>
 
-            {% if currentCell %}
-                <div class="mb-2">
-                    <h2 class="text-3xl">Treasure</h2>
-                    <p>{{ currentCell.treasure|json_encode() }}</p>
-                </div>
+                <p class="mt-4">{{ dump(game.currentEncounter) }}</p>
 
-                <div class="mb-2">
-                    <h2 class="text-3xl">Enemies</h2>
-                    <ul>
-                        {% for enemy in currentCell.enemies ?? [] %}
-                            <li>{{ enemy|json_encode() }}</li>
-                        {% else %}
-                            <li>No monster to slay.</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
+                <ul class="list-disc mt-4 ml-4">
+                    <li><span class="font-bold">Kill 'Em All!</span> (Roll the fight manually. If won, click <button class="p-1 bg-gray-300">here</button>)</li>
+                    <li><span class="font-bold">Run you fools!</span> (Try to run. Use movement buttons to came back)</li>
+                </ul>
+            </div>
         </div>
 
 {#        <div class="">#}
