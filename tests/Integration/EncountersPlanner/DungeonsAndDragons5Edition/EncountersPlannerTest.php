@@ -17,13 +17,15 @@ class EncountersPlannerTest extends KernelTestCase
         /** @var EncountersPlanner $planner */
         $planner = static::getContainer()->get(EncountersPlanner::class);
 
-        $encountersPlan = $planner->plan(DungeonLength::MEDIUM, TeamChallengeRating::fromLevelsAsIntegers(2, 2, 2, 2));
+        for ($i = 0; $i < 50; $i++) {
+            $encountersPlan = $planner->plan(DungeonLength::MEDIUM, TeamChallengeRating::fromLevelsAsIntegers(2, 2, 2, 2));
 
-        $this->assertInstanceOf(EncountersPlan::class, $encountersPlan);
-        $this->assertLessThan(12, count($encountersPlan->encounters));
-        $this->assertGreaterThanOrEqual(2, count($encountersPlan->getEncountersByDifficulty(EncounterDifficulty::EASY)));
-        $this->assertGreaterThanOrEqual(5, count($encountersPlan->getEncountersByDifficulty(EncounterDifficulty::MEDIUM)));
-        $this->assertGreaterThanOrEqual(1, count($encountersPlan->getEncountersByDifficulty(EncounterDifficulty::HARD)));
-        $this->assertLessThanOrEqual(1, count($encountersPlan->getEncountersByDifficulty(EncounterDifficulty::DEADLY)));
+            $this->assertInstanceOf(EncountersPlan::class, $encountersPlan);
+            $this->assertLessThanOrEqual(12, count($encountersPlan->encounters));
+            $this->assertGreaterThanOrEqual(2, count($encountersPlan->getEncountersByDifficulty(EncounterDifficulty::EASY)));
+            $this->assertGreaterThanOrEqual(5, count($encountersPlan->getEncountersByDifficulty(EncounterDifficulty::MEDIUM)));
+            $this->assertGreaterThanOrEqual(1, count($encountersPlan->getEncountersByDifficulty(EncounterDifficulty::HARD)));
+            $this->assertLessThanOrEqual(1, count($encountersPlan->getEncountersByDifficulty(EncounterDifficulty::DEADLY)));
+        }
     }
 }

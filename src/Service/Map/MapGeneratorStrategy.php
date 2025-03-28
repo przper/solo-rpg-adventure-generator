@@ -31,9 +31,9 @@ class MapGeneratorStrategy implements MapGeneratorStrategyInterface
             ->setMinCorridorLength(2)
             ->setMaxCorridorLength(5)
             ->setMaxRoomsCount(match ($length) {
-                DungeonLength::SHORT => rand(3, 4),
-                DungeonLength::MEDIUM => rand(7, 8),
-                DungeonLength::LONG => rand(10, 12),
+                DungeonLength::SHORT => rand(5, 6),
+                DungeonLength::MEDIUM => rand(8, 10),
+                DungeonLength::LONG => rand(11, 14),
             });
     }
 
