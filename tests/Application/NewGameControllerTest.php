@@ -25,8 +25,7 @@ class NewGameControllerTest extends WebTestCase
             'new_game[system]' => 'DnD_5E',
             'new_game[playerLevels][0]' => 3,
             'new_game[playerLevels][1]' => 1,
-            'new_game[playerLevels][2]' => 0,
-            'new_game[playerLevels][3]' => null,
+            'new_game[playerLevels][2]' => null,
         ]);
 
         $this->assertResponseRedirects('/play');
