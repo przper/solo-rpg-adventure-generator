@@ -17,56 +17,12 @@
             </div>
         </div>
 
-        <div class="p-4 rounded-xl shadow-sm bg-white">
-            <div>
-                <h2 class="text-3xl">Enemies</h2>
+        {% if game.currentEncounter is not null %}
+            {% set encounter = game.currentEncounter %}
 
-                <p class="mt-4">{{ dump(game.currentEncounter) }}</p>
-
-                <ul class="list-disc mt-4 ml-4">
-                    <li><span class="font-bold">Kill 'Em All!</span> (Roll the fight manually. If won, click <button class="p-1 bg-gray-300">here</button>)</li>
-                    <li><span class="font-bold">Run you fools!</span> (Try to run. Use movement buttons to came back)</li>
-                </ul>
-            </div>
-        </div>
-
-{#        <div class="">#}
-{#            <div class="mr-4 text-xs">#}
-
-{#                <div class="mb-4">#}
-{#                    <div class="">#}
-{#                        <h2 class="text-2xl mb-2">Rooms</h2>#}
-
-{#                        <ul class="flex">#}
-{#                        {% for room in game.map.rooms %}#}
-{#                            <li class="mr-2">#}
-{#                                <h3 class="text-xl">#{{ loop.index }}</h3>#}
-{#                                <p>position: {{ room.coordinates }}#}
-{#                                <p>treasure: {{ room.treasure ? room.treasure | json_encode() : 'nope' }}</p>#}
-{#                                <p>enemies: {{ room.enemies ? room.enemies|length : 'nope' }}</p>#}
-{#                            </li>#}
-{#                        {% endfor %}#}
-{#                        </ul>#}
-{#                    </div>#}
-
-{#                    <div class="">#}
-{#                        <h2 class="text-2xl mb-2">Corridors</h2>#}
-
-{#                        <ul class="flex">#}
-{#                        {% for corridor in game.map.corridors %}#}
-{#                            <li class="mr-2">#}
-{#                                <h3 class="text-xl">#{{ loop.index }}</h3>#}
-{#                                <p>position: {{ corridor.coordinates }}#}
-{#                                <p>treasure: {{ corridor.treasure ? corridor.treasure | json_encode() : 'nope' }}</p>#}
-{#                                <p>enemies: {{ corridor.enemies ? corridor.enemies|length : 'nope' }}</p>#}
-{#                            </li>#}
-{#                        {% endfor %}#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-    <div>
+            {% include 'play/_enemies.html.twig' %}
+        {% endif %}
+    </div>
 </div>
 
 {% endblock %}

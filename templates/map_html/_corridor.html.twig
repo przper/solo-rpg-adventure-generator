@@ -4,8 +4,8 @@
         'flex items-center justify-center',
         {
             'bg-gray-700': cell.isKnown and not cell.wasVisited,
-            'bg-gray-500': cell.wasVisited and cell.enemies is empty,
-            'bg-red-700': cell.wasVisited and cell.enemies is not empty,
+            'bg-gray-500': cell.wasVisited and cell.encounter is null,
+            'bg-red-700': cell.wasVisited and cell.encounter is not null and cell.encounter.enemies is not empty,
             'border border-gray-400': not cell.treasure,
             'border border-yellow-300': cell.wasVisited and cell.treasure,
         }

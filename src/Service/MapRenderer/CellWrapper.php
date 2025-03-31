@@ -4,6 +4,7 @@ namespace App\Service\MapRenderer;
 
 use App\Helper\Coordinates;
 use App\Interface\TreasureInterface;
+use App\Service\EncountersPlanner\Encounter;
 use App\Service\Game\Game;
 use App\Service\Map\Core\Tile;
 use App\Service\Map\Core\TileType;
@@ -18,7 +19,7 @@ class CellWrapper
     private bool $isKnown = false;
     private bool $wasVisited = false;
 
-    private array $enemies = [];
+    private ?Encounter $encounter = null;
 
     public function __construct(
         readonly public TileType $type,
@@ -81,9 +82,9 @@ class CellWrapper
         };
     }
 
-    public function getEnemies(): array
+    public function getEncounter(): ?Encounter
     {
-        return $this->enemies;
+        return $this->encounter;
     }
 
     public function getTreasure(): ?TreasureInterface
@@ -103,7 +104,6 @@ class CellWrapper
             $this->wasVisited = true;
         }
 
-        $currentEncounter = $game->getEncouter($this->coordinates);
-        $this->enemies = $currentEncounter?->getEnemies() ?? [];
+        $this->encounter = $game->getEncouter($this->coordinates);
     }
 }
