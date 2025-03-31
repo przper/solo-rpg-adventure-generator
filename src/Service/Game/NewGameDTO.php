@@ -8,10 +8,12 @@ use App\Enum\TTRPGSystem;
 
 class NewGameDTO
 {
+    /** @param positive-int[] $playerLevels */
     public function __construct(
         public DungeonLength $length = DungeonLength::SHORT,
         public MapType $mapType = MapType::Railroad,
         public TTRPGSystem $system = TTRPGSystem::DungeonAndDragons5Edition,
+        public array $playerLevels = [1, 1, 1, 1],
     ) {
     }
 }

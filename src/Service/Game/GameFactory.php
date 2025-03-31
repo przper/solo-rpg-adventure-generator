@@ -20,7 +20,7 @@ class GameFactory
         $map = $mapGenerator->create();
         $encounterPlan = $this->encountersPlanner->plan(
             $newGame->length,
-            TeamChallengeRating::fromLevelsAsIntegers(1, 1, 1, 1),
+            TeamChallengeRating::fromLevelsAsIntegers(...$newGame->playerLevels),
         );
 
         return new Game($map, $encounterPlan);

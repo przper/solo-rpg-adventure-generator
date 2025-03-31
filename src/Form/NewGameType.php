@@ -7,7 +7,9 @@ use App\Enum\MapType;
 use App\Enum\TTRPGSystem;
 use App\Service\Game\NewGameDTO;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -27,6 +29,17 @@ class NewGameType extends AbstractType
             ->add('system', EnumType::class, [
                 'class' => TTRPGSystem::class,
                 'expanded' => true,
+            ])
+            ->add('playerLevels', CollectionType::class, [
+                'entry_type' => NumberType::class,
+                'entry_options' => [
+                    'scale' => 0,
+                    'html5' => true,
+                    'required' => false,
+                ],
+                'allow_add' => true,
+                'allow_delete' => true,
+                'delete_empty' => true,
             ])
         ;
     }
