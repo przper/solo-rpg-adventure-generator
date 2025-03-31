@@ -38,6 +38,10 @@ class PlayController extends AbstractController
             $game->movePlayer($movement);
         }
 
+        if ($action === 'encounter' && $result = $request->get('result')) {
+            $game->resolveCurrentEncounter($result);
+        }
+
         $map = $this->mapRenderer->render($game->getMap(), $game);
 
         $session->set('game', $game);

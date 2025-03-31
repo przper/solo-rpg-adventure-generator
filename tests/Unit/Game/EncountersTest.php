@@ -198,4 +198,24 @@ class EncountersTest extends TestCase
 
         new Encounters($map, $plan);
     }
+
+    /** @group EncountersResolve */
+    public function test_resolve_properly_updates_encounter()
+    {
+        $coordinates = Coordinates::fromIntegers(1, 0);
+        $map = new Map(3, 3, [
+            Room::create([Coordinates::fromIntegers(0, 0)]),
+            Room::create([$coordinates]),
+        ]);
+
+        $enemy = new Enemy(5, 50, 'Bebok', DiceStack::fromString('4d6'), 13, DiceStack::fromString('1d8'));
+        $encounter = new Encounter(EncounterDifficulty::MEDIUM, [$enemy]);
+
+        $sut = new Encounters($map, new EncountersPlan([$encounter]));
+
+        $sut->resolve($coordinates, 'all_slain');
+
+        $this->assertCount(0, $encounter->getEnemies());
+        $this->assertFalse($enemy->isAlive());
+    }
 }

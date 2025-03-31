@@ -32,6 +32,15 @@ final class Encounters
         return $this->encountersPerCoordinates[(string) $coordinates] ?? null;
     }
 
+    public function resolve(Coordinates $getCoordinates, string $result): void
+    {
+        $encounter = $this->getEncounter($getCoordinates);
+
+        if ($encounter) {
+            $encounter->resolve($result);
+        }
+    }
+
     /**
      * @throws RandomException
      */

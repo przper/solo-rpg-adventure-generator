@@ -116,4 +116,9 @@ class Game
             $moves,
         );
     }
+
+    public function resolveCurrentEncounter(?string $result): void
+    {
+        $this->encounters->resolve($this->playerPosition->getCoordinates(), $result);
+    }
 }

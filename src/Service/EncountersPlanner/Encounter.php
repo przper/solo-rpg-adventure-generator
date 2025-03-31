@@ -13,6 +13,15 @@ final class Encounter
     ) {
     }
 
+    public function resolve(string $result): void
+    {
+        if ($result === 'all_slain') {
+            foreach ($this->enemies as $enemy) {
+                $enemy->slay();
+            }
+        }
+    }
+
     public function getDifficulty(): EncounterDifficulty
     {
         return $this->difficulty;
