@@ -10,9 +10,9 @@ use App\Service\Map\Core\TileType;
 
 class CellWrapper
 {
-    final public const ROOM_TEMPLATE = 'map/_room.html.twig';
-    final public const CORRIDOR_TEMPLATE = 'map/_corridor.html.twig';
-    final public const WALL_TEMPLATE = 'map/_wall.html.twig';
+    final public const ROOM_TEMPLATE = 'map_html/_room.html.twig';
+    final public const CORRIDOR_TEMPLATE = 'map_html/_corridor.html.twig';
+    final public const WALL_TEMPLATE = 'map_html/_wall.html.twig';
 
     private bool $hasPlayer = false;
     private bool $isKnown = false;

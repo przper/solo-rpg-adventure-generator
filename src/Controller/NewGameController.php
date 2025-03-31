@@ -38,7 +38,7 @@ class NewGameController extends AbstractController
             return $this->redirectToRoute('game.play');
         }
 
-        return $this->render('play/new.html.twig', [
+        return $this->render('new/index.html.twig', [
             'form' => $form,
         ]);
     }

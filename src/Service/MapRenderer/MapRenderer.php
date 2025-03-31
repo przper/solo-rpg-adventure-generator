@@ -37,7 +37,7 @@ class MapRenderer
             }
         }
 
-        $html = $this->twig->render('map/map.html.twig', [
+        $html = $this->twig->render('map_html/index.html.twig', [
             'cells' => $cells,
         ]);
 
