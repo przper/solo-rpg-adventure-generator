@@ -3,6 +3,7 @@
             <div></div>
             {% if 'north' in game.availableActions.movement %}
                 <form method="post">
+                    <input type="hidden" name="action" value="move">
                     <input type="hidden" name="direction" value="north">
                     <button type="submit" class="w-full p-2 rounded bg-gray-300">North</button>
                 </form>
@@ -14,6 +15,7 @@
 
         {% if 'west' in game.availableActions.movement %}
             <form method="post">
+                <input type="hidden" name="action" value="move">
                 <input type="hidden" name="direction" value="west">
                 <button type="submit" class="w-full p-2 rounded bg-gray-300">West</button>
             </form>
@@ -27,6 +29,7 @@
 
         {% if 'east' in game.availableActions.movement %}
             <form method="post">
+                <input type="hidden" name="action" value="move">
                 <input type="hidden" name="direction" value="east">
                 <button type="submit" class="w-full p-2 rounded bg-gray-300">East</button>
             </form>
@@ -38,6 +41,7 @@
             <div></div>
             {% if 'south' in game.availableActions.movement %}
                 <form method="post">
+                    <input type="hidden" name="action" value="move">
                     <input type="hidden" name="direction" value="south">
                     <button type="submit" class="w-full p-2 rounded bg-gray-300">South</button>
                 </form>

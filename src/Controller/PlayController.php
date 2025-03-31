@@ -19,7 +19,7 @@ class PlayController extends AbstractController
     ) {
     }
 
-    #[Route('/play', name: 'game.play')]
+    #[Route('/play', name: 'game.play', methods: ['GET', 'POST'])]
     public function __invoke(Request $request, SessionInterface $session): Response
     {
         if (! $session->has('game')) {
@@ -29,7 +29,9 @@ class PlayController extends AbstractController
         /** @var Game $game */
         $game = $session->get('game');
 
-        if ($direction = $request->get('direction')) {
+        $action = $request->get('action');
+
+        if ($action === 'move' && $direction = $request->get('direction')) {
             $direction = MovementDirection::from($direction);
 
             $movement = Movement::new()->add($direction);
