@@ -20,15 +20,15 @@ class NewGameType extends AbstractType
         $builder
             ->add('length', EnumType::class, [
                 'class' => DungeonLength::class,
-                'expanded' => true,
+//                'expanded' => true,
             ])
             ->add('mapType', EnumType::class, [
                 'class' => MapType::class,
-                'expanded' => true,
+//                'expanded' => true,
             ])
             ->add('system', EnumType::class, [
                 'class' => TTRPGSystem::class,
-                'expanded' => true,
+//                'expanded' => true,
             ])
             ->add('playerLevels', CollectionType::class, [
                 'entry_type' => NumberType::class,
@@ -36,6 +36,7 @@ class NewGameType extends AbstractType
                     'scale' => 0,
                     'html5' => true,
                     'required' => false,
+                    'label' => false,
                 ],
                 'allow_add' => true,
                 'allow_delete' => true,

@@ -1,0 +1,10 @@
+{% extends 'tailwind_2_layout.html.twig' %}
+
+{% block submit_widget %}
+    <button
+        type="submit"
+        id="{{ id }}"
+        name="{{ full_name }}"
+        class="p-2 rounded bg-gray-300"
+    >{{- label|default('Submit') -}}</button>
+{% endblock %}
