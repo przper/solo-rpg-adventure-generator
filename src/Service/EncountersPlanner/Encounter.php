@@ -18,15 +18,14 @@ final class Encounter
         return $this->difficulty;
     }
 
-    public function setDifficulty(EncounterDifficulty $difficulty): self
+    /** @return Enemy[] */
+    public function getEnemies(): array
     {
-        $this->difficulty = $difficulty;
-
-        return $this;
+        return array_filter($this->enemies, fn(Enemy $e) => $e->isAlive());
     }
 
     /** @return Enemy[] */
-    public function getEnemies(): array
+    public function getAllEnemies(): array
     {
         return $this->enemies;
     }
