@@ -2,10 +2,12 @@
 
 namespace App\Service\EncountersPlanner;
 
+use App\Enum\EnemyStatus;
 use App\Helper\DiceStack;
 
 final class Enemy
 {
+    private EnemyStatus $status = EnemyStatus::Alive;
     private int $totalHitPoints;
 
     public function __construct(
@@ -20,16 +22,19 @@ final class Enemy
         $this->totalHitPoints = $totalHitPoints ?? $this->hitDice->roll();
     }
 
+    public function slay(): void
+    {
+        $this->status = EnemyStatus::Slain;
+    }
+
+    public function isAlive(): bool
+    {
+        return $this->status === EnemyStatus::Alive;
+    }
+
     public function getChallengeRating(): float
     {
         return $this->challengeRating;
-    }
-
-    public function setChallengeRating(float $challengeRating): self
-    {
-        $this->challengeRating = $challengeRating;
-
-        return $this;
     }
 
     public function getExperiencePoints(): int
@@ -37,23 +42,9 @@ final class Enemy
         return $this->experiencePoints;
     }
 
-    public function setExperiencePoints(int $experiencePoints): self
-    {
-        $this->experiencePoints = $experiencePoints;
-
-        return $this;
-    }
-
     public function getName(): string
     {
         return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     public function getHitDice(): DiceStack
@@ -61,35 +52,14 @@ final class Enemy
         return $this->hitDice;
     }
 
-    public function setHitDice(DiceStack $hitDice): self
-    {
-        $this->hitDice = $hitDice;
-
-        return $this;
-    }
-
     public function getTotalHitPoints(): int
     {
         return $this->totalHitPoints;
     }
 
-    public function setTotalHitPoints(int $totalHitPoints): self
-    {
-        $this->totalHitPoints = $totalHitPoints;
-
-        return $this;
-    }
-
     public function getArmorClass(): int
     {
         return $this->armorClass;
-    }
-
-    public function setArmorClass(int $armorClass): self
-    {
-        $this->armorClass = $armorClass;
-
-        return $this;
     }
 
     public function getDamage(): DiceStack
