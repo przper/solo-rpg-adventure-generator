@@ -2,8 +2,8 @@
 
 namespace App\Tests\Fixtures\Dummies;
 
-use App\Interface\MapGeneratorInterface;
-use App\Service\Map\Core\Map;
+use App\Core\Map\Map;
+use App\MapBuilding\MapGeneratorInterface;
 
 class DummyMapGenerator implements MapGeneratorInterface
 {

@@ -2,15 +2,15 @@
 
 namespace App\Tests\Unit\Game;
 
-use App\Enum\MovementDirection;
-use App\Helper\Coordinates;
-use App\Service\EncountersPlanner\EncountersPlan;
-use App\Service\Game\Game;
-use App\Service\Game\Movement;
-use App\Service\Map\Core\Map;
-use App\Service\Map\Core\Room;
+use App\Core\Helper\Coordinates;
+use App\Core\Map\Map;
+use App\Core\Map\Room;
+use App\EncountersPlanning\EncountersPlan;
+use App\Game\Game;
+use App\Game\Movement;
+use App\Game\MovementDirection;
+use App\Game\PlayerPosition;
 use PHPUnit\Framework\TestCase;
-use App\Service\Game\PlayerPosition;
 
 class GameTest extends TestCase
 {

@@ -2,10 +2,10 @@
 
 namespace App\Tests\Application;
 
-use App\Service\Game\Game;
-use App\Service\Map\Core\Map;
+use App\Core\Map\Map;
+use App\Game\Game;
+use App\Game\PlayerPosition;
 use App\Tests\SessionHelper;
-use App\Service\Game\PlayerPosition;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class PlayControllerTest extends WebTestCase

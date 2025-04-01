@@ -2,9 +2,9 @@
 
 namespace App\Tests\Unit\Game;
 
-use App\Service\Game\Movement;
+use App\Game\Movement;
+use App\Game\MovementDirection;
 use PHPUnit\Framework\TestCase;
-use App\Enum\MovementDirection;
 
 class MovementTest extends TestCase
 {

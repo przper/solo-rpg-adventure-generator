@@ -2,10 +2,10 @@
 
 namespace App\Tests\Fixtures\Dummies;
 
-use App\Enum\DungeonLength;
-use App\Enum\MapType;
-use App\Interface\MapGeneratorInterface;
-use App\Service\Map\MapGeneratorStrategyInterface;
+use App\Core\Enum\DungeonLength;
+use App\Core\Map\MapType;
+use App\MapBuilding\MapGeneratorInterface;
+use App\MapBuilding\MapGeneratorStrategyInterface;
 
 class DummyMapGeneratorStrategy implements MapGeneratorStrategyInterface
 {

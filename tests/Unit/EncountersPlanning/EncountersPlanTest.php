@@ -1,0 +1,81 @@
+<?php
+
+namespace App\Tests\Unit\EncountersPlanning;
+
+use App\EncountersPlanning\Encounter;
+use App\EncountersPlanning\EncounterDifficulty;
+use App\EncountersPlanning\EncountersPlan;
+use PHPUnit\Framework\TestCase;
+
+class EncountersPlanTest extends TestCase
+{
+    private EncountersPlan $sut;
+
+    protected function setUp(): void
+    {
+        $this->sut = new EncountersPlan([
+            new Encounter(EncounterDifficulty::EASY),
+            new Encounter(EncounterDifficulty::MEDIUM),
+            new Encounter(EncounterDifficulty::HARD),
+            new Encounter(EncounterDifficulty::EASY),
+        ]);
+    }
+
+    /**
+     * @dataProvider difficultyFilterDataProvider
+     */
+    public function test_it_filters_encounters_by_difficulty(array $difficulties, array $expected): void
+    {
+        $filteredEncounters = $this->sut->getEncountersByDifficulty(...$difficulties);
+        $this->assertEquals($expected, $filteredEncounters);
+    }
+
+    public function difficultyFilterDataProvider(): array
+    {
+        return [
+            'Single difficulty filter' => [
+                'difficultyFilter' => [EncounterDifficulty::EASY],
+                'expected' => [
+                    new Encounter(EncounterDifficulty::EASY),
+                    new Encounter(EncounterDifficulty::EASY),
+                ],
+            ],
+            'Multiple difficulty filter' => [
+                'difficultyFilter' => [EncounterDifficulty::EASY, EncounterDifficulty::HARD],
+                'expected' => [
+                    new Encounter(EncounterDifficulty::EASY),
+                    new Encounter(EncounterDifficulty::HARD),
+                    new Encounter(EncounterDifficulty::EASY),
+                ],
+            ],
+            'No match filter' => [
+                'difficultyFilter' => [EncounterDifficulty::DEADLY],
+                'expected' => [],
+            ],
+        ];
+    }
+
+    public function test_it_sorts_encounters_by_difficulty(): void
+    {
+        $sortedAsc = $this->sut->getEncountersSortedByDifficulty('ASC');
+        $this->assertSame(
+            [EncounterDifficulty::EASY, EncounterDifficulty::EASY, EncounterDifficulty::MEDIUM, EncounterDifficulty::HARD],
+            array_map(fn(Encounter $e) => $e->getDifficulty(), $sortedAsc)
+        );
+
+        $sortedDesc = $this->sut->getEncountersSortedByDifficulty('DESC');
+        $this->assertSame(
+            [EncounterDifficulty::HARD, EncounterDifficulty::MEDIUM, EncounterDifficulty::EASY, EncounterDifficulty::EASY],
+            array_map(fn(Encounter $e) => $e->getDifficulty(), $sortedDesc)
+        );
+
+        // Ensure the original order of $this->encounters remains unchanged
+        $originalEncounters = [
+            new Encounter(EncounterDifficulty::EASY),
+            new Encounter(EncounterDifficulty::MEDIUM),
+            new Encounter(EncounterDifficulty::HARD),
+            new Encounter(EncounterDifficulty::EASY),
+        ];
+        $this->assertEquals($originalEncounters, $this->sut->encounters);
+    }
+}

@@ -2,10 +2,10 @@
 
 namespace App\Tests\Fixtures\Dummies;
 
-use App\Enum\DungeonLength;
-use App\Service\EncountersPlanner\EncountersPlan;
-use App\Service\EncountersPlanner\EncountersPlannerInterface;
-use App\Service\EncountersPlanner\TeamChallengeRating;
+use App\Core\Enum\DungeonLength;
+use App\EncountersPlanning\EncountersPlan;
+use App\EncountersPlanning\EncountersPlannerInterface;
+use App\EncountersPlanning\TeamChallengeRating;
 
 class EmptyEncounterPlanner implements EncountersPlannerInterface
 {

@@ -1,5 +1,11 @@
-controllers:
+core:
     resource:
-        path: ../src/Controller/
-        namespace: App\Controller
+        path: ../src/Core/Controller/
+        namespace: App\Core\Controller
+    type: attribute
+    
+game:
+    resource:
+        path: ../src/Game/Controller/
+        namespace: App\Game\Controller
     type: attribute

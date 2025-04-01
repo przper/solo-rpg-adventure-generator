@@ -2,7 +2,7 @@
 
 namespace App\Tests;
 
-use App\Service\Map\Core\Map;
+use App\Core\Map\Map;
 
 trait DebugsMap
 {

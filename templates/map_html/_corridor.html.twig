@@ -2,13 +2,12 @@
     class=" {{ html_classes(
         'w-full h-full scale-95',
         'flex items-center justify-center',
+        'border border-gray-400',
         {
             'bg-gray-700': cell.isKnown and not cell.wasVisited,
             'bg-gray-500': cell.wasVisited and cell.encounter is null,
             'bg-teal-700': cell.wasVisited and cell.encounter is not null and cell.encounter.enemies is empty,
             'bg-red-700': cell.wasVisited and cell.encounter is not null and cell.encounter.enemies is not empty,
-            'border border-gray-400': not cell.treasure,
-            'border border-yellow-300': cell.wasVisited and cell.treasure,
         }
     ) }}"
 >

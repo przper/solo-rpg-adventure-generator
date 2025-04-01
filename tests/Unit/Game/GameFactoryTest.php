@@ -2,11 +2,11 @@
 
 namespace App\Tests\Unit\Game;
 
-use App\Service\Game\Game;
-use App\Service\Game\GameFactory;
-use App\Service\Game\NewGameDTO;
-use App\Service\Game\PlayerPosition;
-use App\Service\Map\Core\Map;
+use App\Core\Map\Map;
+use App\Game\Game;
+use App\Game\GameFactory;
+use App\Game\NewGameDTO;
+use App\Game\PlayerPosition;
 use App\Tests\Fixtures\Dummies\DummyMapGeneratorStrategy;
 use App\Tests\Fixtures\Dummies\EmptyEncounterPlanner;
 use PHPUnit\Framework\TestCase;

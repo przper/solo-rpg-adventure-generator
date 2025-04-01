@@ -5,26 +5,22 @@ This idea behind the project is to allow solo player to run solo RPG adventures.
 There is a number of free Dungeon Generators, but they don't **hide their content to the player**. They are a great tool for the Dungeon Master, not for a person who wants/needs to play alone. This application main goal is to generate a Dungeon and store it hidden in memory. The player would be presented with description of the next room only if he decides to enter it. Otherwise it will be hidden.
 
 ## Getting Started
-
-1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/) (v2.10+)
-2. Run `make build` to build fresh images
-3. Run `make up` (the logs will be displayed in the current shell)
-4. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
-5. Run `make down` to stop the Docker containers.
+1. Run `make` to build project
+2. Run `docker compose up -d` to launch docker
+3. Go to [localhost](https://rpg.localhost/)
 
 ## How To Play
-1. Select Dungeon Type at `https://localhost/play/new`
-2. Move using `forward` or `backward` buttons and explore the generated dungeon
+1. Configure Dungeon at [New Dungeon page](https://rpg.localhost/play/new)
+2. Move using buttons and explore the generated dungeon. Resolve encounters manually
 3. Remember that confidence is slow but insidious killer...
 
 ## Features
 
-- Hide Dungeon layout, reveal with advancement **(DONE)**
-- Railroad Dungeon Generation **(WIP)**
+- Dungeon Generation
     - Room & Corridors **(DONE)**
-    - Treasure **(WIP)**
-    - Enemies **(WIP)**
+    - Enemies **(DONE)**: using DnD 5E rools, and soon Shadowdark
+    - Treasure (Planned)
     - Traps (Planned)
-    - Descriptions (Maybe...)
-- Roguelike Dungeon Generation (Planned)
+    - Descriptions (...maybe)
+- For of War **(DONE)**: hide Dungeon layout, reveal with player advancement
 - Simple Diceroller (Planned)

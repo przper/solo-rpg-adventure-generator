@@ -2,12 +2,12 @@
 
 namespace App\Tests\Unit\Game;
 
-use App\Enum\MovementDirection;
-use App\Helper\Coordinates;
-use App\Service\Game\Movement;
+use App\Core\Helper\Coordinates;
+use App\Game\Movement;
+use App\Game\MovementDirection;
+use App\Game\PlayerPosition;
 use App\Tests\Unit\Game\Fixtures\DummyRoom;
 use PHPUnit\Framework\TestCase;
-use App\Service\Game\PlayerPosition;
 
 class PlayerPositionTest extends TestCase
 {

@@ -2,11 +2,11 @@
 
 namespace App\Tests\Unit\Game;
 
-use App\Helper\Coordinates;
-use App\Service\Game\FogOfWar;
-use App\Service\Map\Core\Corridor;
-use App\Service\Map\Core\Map;
-use App\Service\Map\Core\Room;
+use App\Core\Helper\Coordinates;
+use App\Core\Map\Corridor;
+use App\Core\Map\Map;
+use App\Core\Map\Room;
+use App\Game\FogOfWar;
 use PHPUnit\Framework\TestCase;
 
 class FogOfWarTest extends TestCase

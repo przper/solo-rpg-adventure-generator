@@ -2,16 +2,16 @@
 
 namespace App\Tests\Unit\Game;
 
-use App\Enum\EncounterDifficulty;
-use App\Helper\Coordinates;
-use App\Helper\DiceStack;
-use App\Service\EncountersPlanner\Encounter;
-use App\Service\EncountersPlanner\EncountersPlan;
-use App\Service\EncountersPlanner\Enemy;
-use App\Service\Game\Encounters;
-use App\Service\Map\Core\Corridor;
-use App\Service\Map\Core\Map;
-use App\Service\Map\Core\Room;
+use App\Core\Helper\Coordinates;
+use App\Core\Helper\DiceStack;
+use App\Core\Map\Corridor;
+use App\Core\Map\Map;
+use App\Core\Map\Room;
+use App\EncountersPlanning\Encounter;
+use App\EncountersPlanning\EncounterDifficulty;
+use App\EncountersPlanning\EncountersPlan;
+use App\EncountersPlanning\Enemy;
+use App\Game\Encounters;
 use PHPUnit\Framework\TestCase;
 
 class EncountersTest extends TestCase
