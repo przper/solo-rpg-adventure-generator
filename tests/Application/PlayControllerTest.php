@@ -5,6 +5,8 @@ namespace App\Tests\Application;
 use App\Core\Map\Map;
 use App\Game\Game;
 use App\Game\PlayerPosition;
+use App\Tests\Fixtures\Dummies\DummyEncounters;
+use App\Tests\Fixtures\Dummies\DummyFogOfWar;
 use App\Tests\SessionHelper;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -28,7 +30,7 @@ class PlayControllerTest extends WebTestCase
         $client = static::createClient();
         $session = $this->createSession($client);
 
-        $game = new Game(new Map(10, 10));
+        $game = new Game(new Map(10, 10), new DummyFogOfWar(), new DummyEncounters());
 
         $session->set('game', $game);
         $session->save();
@@ -45,7 +47,7 @@ class PlayControllerTest extends WebTestCase
         $client = static::createClient();
         $session = $this->createSession($client);
 
-        $game = new Game(new Map(10, 10));
+        $game = new Game(new Map(10, 10), new DummyFogOfWar(), new DummyEncounters());
         $playerPositionBefore = $game->getPlayerPosition();
 
         $session->set('game', $game);

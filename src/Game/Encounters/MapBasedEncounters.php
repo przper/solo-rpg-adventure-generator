@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Game;
+namespace App\Game\Encounters;
 
 use App\Core\Helper\Coordinates;
 use App\Core\Map\Corridor;
@@ -9,10 +9,14 @@ use App\Core\Map\Room;
 use App\EncountersPlanning\Encounter;
 use App\EncountersPlanning\EncounterDifficulty;
 use App\EncountersPlanning\EncountersPlan;
+use App\Game\EncountersInterface;
 use InvalidArgumentException;
 use Random\RandomException;
 
-final class Encounters
+/**
+ * Upon creation the Encounters from EncountersPlan are placed semi-randomly on Map.
+ */
+final class MapBasedEncounters implements EncountersInterface
 {
     /** @var array<string, Encounter> */
     private array $encountersPerCoordinates = [];
@@ -32,9 +36,9 @@ final class Encounters
         return $this->encountersPerCoordinates[(string) $coordinates] ?? null;
     }
 
-    public function resolve(Coordinates $getCoordinates, string $result): void
+    public function resolve(Coordinates $coordinates, string $result): void
     {
-        $encounter = $this->getEncounter($getCoordinates);
+        $encounter = $this->getEncounter($coordinates);
 
         if ($encounter) {
             $encounter->resolve($result);

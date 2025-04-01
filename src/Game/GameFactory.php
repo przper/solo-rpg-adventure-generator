@@ -4,6 +4,8 @@ namespace App\Game;
 
 use App\EncountersPlanning\EncountersPlannerInterface;
 use App\EncountersPlanning\TeamChallengeRating;
+use App\Game\Encounters\MapBasedEncounters;
+use App\Game\FogOfWar\PersistentFogOfWar;
 use App\MapBuilding\MapGeneratorStrategyInterface;
 
 class GameFactory
@@ -18,11 +20,15 @@ class GameFactory
     {
         $mapGenerator = $this->mapGeneratorStrategy->get($newGame->mapType, $newGame->length);
         $map = $mapGenerator->create();
+
         $encounterPlan = $this->encountersPlanner->plan(
             $newGame->length,
             TeamChallengeRating::fromLevelsAsIntegers(...$newGame->playerLevels),
         );
 
-        return new Game($map, $encounterPlan);
+        $fogOfWar = new PersistentFogOfWar($map);
+        $encounters = new MapBasedEncounters($map, $encounterPlan);
+
+        return new Game($map, $fogOfWar, $encounters);
     }
 }

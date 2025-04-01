@@ -10,6 +10,8 @@ use App\Game\Game;
 use App\Game\Movement;
 use App\Game\MovementDirection;
 use App\Game\PlayerPosition;
+use App\Tests\Fixtures\Dummies\DummyEncounters;
+use App\Tests\Fixtures\Dummies\DummyFogOfWar;
 use PHPUnit\Framework\TestCase;
 
 class GameTest extends TestCase
@@ -44,7 +46,7 @@ class GameTest extends TestCase
             ],
         );
 
-        $this->sut = new Game($map, new EncountersPlan());
+        $this->sut = new Game($map, new DummyFogOfWar(), new DummyEncounters());
     }
 
     /** @test */

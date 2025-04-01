@@ -6,21 +6,20 @@ use App\Core\Helper\Coordinates;
 use App\Core\Map\Map;
 use App\EncountersPlanning\Encounter;
 use App\EncountersPlanning\EncountersPlan;
+use App\Game\Encounters\MapBasedEncounters;
+use App\Game\FogOfWar\PersistentFogOfWar;
 
 class Game
 {
     private PlayerPosition $playerPosition;
     private AvailableActions $actions;
-    private FogOfWar $fogOfWar;
-    private Encounters $encounters;
 
     public function __construct(
         private Map $map,
-        EncountersPlan $encountersPlan = new EncountersPlan(),
+        private FogOfWarInterface $fogOfWar,
+        private EncountersInterface $encounters,
     ) {
         $this->playerPosition = new PlayerPosition(Coordinates::fromIntegers(0, 0));
-        $this->fogOfWar = new FogOfWar($map);
-        $this->encounters = new Encounters($map, $encountersPlan);
         $this->actions = $this->checkAvailableActions();
     }
 

@@ -6,12 +6,12 @@ use App\Core\Helper\Coordinates;
 use App\Core\Map\Corridor;
 use App\Core\Map\Map;
 use App\Core\Map\Room;
-use App\Game\FogOfWar;
+use App\Game\FogOfWar\PersistentFogOfWar;
 use PHPUnit\Framework\TestCase;
 
 class FogOfWarTest extends TestCase
 {
-    private FogOfWar $sut;
+    private PersistentFogOfWar $sut;
 
     protected function setUp(): void
     {
@@ -30,7 +30,7 @@ class FogOfWarTest extends TestCase
          * R # #
          */
 
-        $this->sut = new FogOfWar($map);
+        $this->sut = new PersistentFogOfWar($map);
     }
 
     public function test_it_stores_revealed_tiles(): void
@@ -103,7 +103,7 @@ class FogOfWarTest extends TestCase
             Room::create([Coordinates::fromIntegers(6, 0)]),
         ]);
 
-        $fogOfWar = new FogOfWar($map);
+        $fogOfWar = new PersistentFogOfWar($map);
 
         $fogOfWar->visit(Coordinates::fromIntegers(0, 0)); // start game
 
@@ -162,7 +162,7 @@ class FogOfWarTest extends TestCase
             ]),
         ]);
 
-        $fogOfWar = new FogOfWar($map);
+        $fogOfWar = new PersistentFogOfWar($map);
 
         $fogOfWar->visit(Coordinates::fromIntegers(0, 0)); // enter the first room
 

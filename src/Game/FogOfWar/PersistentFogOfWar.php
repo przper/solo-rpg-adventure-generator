@@ -1,12 +1,18 @@
 <?php
 
-namespace App\Game;
+namespace App\Game\FogOfWar;
 
 use App\Core\Helper\Coordinates;
 use App\Core\Map\Map;
 use App\Core\Map\Room;
+use App\Game\FogOfWarInterface;
 
-final class FogOfWar implements FogOfWarInterface
+/**
+ * Entering a Tile makes it revealed. It will always stay revealed (hence the name).
+ * Entering a Room reveals it fully.
+ * Entering a Corridor reveals current Tile and makes other Tiles known. Together with next Room's first Tile.
+ */
+final class PersistentFogOfWar implements FogOfWarInterface
 {
     /** @var array<string, Coordinates> */
     private array $revealedCoordinates = [];

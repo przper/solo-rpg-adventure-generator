@@ -11,7 +11,7 @@ use App\EncountersPlanning\Encounter;
 use App\EncountersPlanning\EncounterDifficulty;
 use App\EncountersPlanning\EncountersPlan;
 use App\EncountersPlanning\Enemy;
-use App\Game\Encounters;
+use App\Game\Encounters\MapBasedEncounters;
 use PHPUnit\Framework\TestCase;
 
 class EncountersTest extends TestCase
@@ -68,7 +68,7 @@ class EncountersTest extends TestCase
             ]),
         ]);
 
-        $sut = new Encounters($map, $plan);
+        $sut = new MapBasedEncounters($map, $plan);
 
         $this->assertNull($sut->getEncounter(Coordinates::fromIntegers(0, 0)));
     }
@@ -90,7 +90,7 @@ class EncountersTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Map Elements count must be greater than Encounters count');
 
-        new Encounters($map, $plan);
+        new MapBasedEncounters($map, $plan);
     }
 
     /** @group EncountersPlacement */
@@ -105,7 +105,7 @@ class EncountersTest extends TestCase
         $encounter = new Encounter(EncounterDifficulty::EASY, []);
         $plan = new EncountersPlan([$encounter]);
 
-        $sut = new Encounters($map, $plan);
+        $sut = new MapBasedEncounters($map, $plan);
 
         $this->assertNull($sut->getEncounter(Coordinates::fromIntegers(0, 0)));
         $this->assertEquals($encounter, $sut->getEncounter(Coordinates::fromIntegers(1, 0)));
@@ -127,7 +127,7 @@ class EncountersTest extends TestCase
         $encounter = new Encounter(EncounterDifficulty::EASY, []);
         $plan = new EncountersPlan([$encounter]);
 
-        $sut = new Encounters($map, $plan);
+        $sut = new MapBasedEncounters($map, $plan);
 
         $this->assertNull($sut->getEncounter(Coordinates::fromIntegers(0, 0)));
         $this->assertEquals($encounter, $sut->getEncounter(Coordinates::fromIntegers(1, 0)));
@@ -144,7 +144,7 @@ class EncountersTest extends TestCase
         $encounter = new Encounter(EncounterDifficulty::HARD, []);
 
         for ($i = 0; $i < 50; $i++) {
-            $sut = new Encounters($map, new EncountersPlan([$encounter]));
+            $sut = new MapBasedEncounters($map, new EncountersPlan([$encounter]));
 
             $this->assertNull($sut->getEncounter(Coordinates::fromIntegers(0, 0)));
             $this->assertEquals($encounter, $sut->getEncounter(Coordinates::fromIntegers(2, 0)));
@@ -171,7 +171,7 @@ class EncountersTest extends TestCase
         $encounter = new Encounter(EncounterDifficulty::DEADLY, []);
 
         for ($i = 0; $i < 50; $i++) {
-            $encounters = new Encounters($map, new EncountersPlan([$encounter]));
+            $encounters = new MapBasedEncounters($map, new EncountersPlan([$encounter]));
 
             $this->assertNull($encounters->getEncounter(Coordinates::fromIntegers(0, 0)));
             $this->assertNull($encounters->getEncounter(Coordinates::fromIntegers(2, 0)));
@@ -196,7 +196,7 @@ class EncountersTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('No available elements to place the encounter.');
 
-        new Encounters($map, $plan);
+        new MapBasedEncounters($map, $plan);
     }
 
     /** @group EncountersResolve */
@@ -211,7 +211,7 @@ class EncountersTest extends TestCase
         $enemy = new Enemy(5, 50, 'Bebok', DiceStack::fromString('4d6'), 13, DiceStack::fromString('1d8'));
         $encounter = new Encounter(EncounterDifficulty::MEDIUM, [$enemy]);
 
-        $sut = new Encounters($map, new EncountersPlan([$encounter]));
+        $sut = new MapBasedEncounters($map, new EncountersPlan([$encounter]));
 
         $sut->resolve($coordinates, 'all_slain');
 
