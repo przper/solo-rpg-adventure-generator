@@ -36,12 +36,4 @@ final class Encounter
     {
         return $this->enemies;
     }
-
-    /** @param Enemy[] $enemies */
-    public function setEnemies(array $enemies): self
-    {
-        $this->enemies = $enemies;
-
-        return $this;
-    }
 }

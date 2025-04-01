@@ -22,12 +22,9 @@ class EncounterGenerator
         $variants = [];
 
         for ($i = 0; $i < 50; $i++) {
-            $encounter = new Encounter($difficulty);
-
             $enemies = $this->generateEnemiesFittingDifficultyExperienceTreshold($difficulty, $teamChallengeRating);
-            $encounter->setEnemies($enemies);
 
-            $variants[] = $encounter;
+            $variants[] = new Encounter($difficulty, $enemies);
         }
 
         usort($variants, function (Encounter $a, Encounter $b) {
