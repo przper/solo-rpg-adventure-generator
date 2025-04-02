@@ -11,8 +11,8 @@ use App\EncountersPlanning\TeamChallengeRating;
 final readonly class EncountersPlanner implements EncountersPlannerInterface
 {
     public function __construct(
-        private EncounterGenerator $encounterGenerator
         private EnemyEncounterGenerator $enemyEncounterGenerator,
+        private ObstacleEncounterGenerator $obstacleEncounterGenerator,
     ) {
     }
 
@@ -21,8 +21,11 @@ final readonly class EncountersPlanner implements EncountersPlannerInterface
         $encounters = [];
 
         foreach ($this->generateEncounterDifficultyList($dungeonLength) as $difficulty) {
-            $encounters[] = $this->encounterGenerator->create($difficulty, $teamChallengeRating);
+            if (in_array($difficulty, [EncounterDifficulty::EASY, EncounterDifficulty::MEDIUM]) && rand(1, 100) < 33) {
+                $encounters[] = $this->obstacleEncounterGenerator->create($difficulty, $teamChallengeRating);
+            } else {
                 $encounters[] = $this->enemyEncounterGenerator->create($difficulty, $teamChallengeRating);
+            }
         }
 
         return new EncountersPlan($encounters);
