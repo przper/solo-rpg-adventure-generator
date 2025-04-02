@@ -12,6 +12,7 @@ final readonly class EncountersPlanner implements EncountersPlannerInterface
 {
     public function __construct(
         private EncounterGenerator $encounterGenerator
+        private EnemyEncounterGenerator $enemyEncounterGenerator,
     ) {
     }
 
@@ -21,6 +22,7 @@ final readonly class EncountersPlanner implements EncountersPlannerInterface
 
         foreach ($this->generateEncounterDifficultyList($dungeonLength) as $difficulty) {
             $encounters[] = $this->encounterGenerator->create($difficulty, $teamChallengeRating);
+                $encounters[] = $this->enemyEncounterGenerator->create($difficulty, $teamChallengeRating);
         }
 
         return new EncountersPlan($encounters);

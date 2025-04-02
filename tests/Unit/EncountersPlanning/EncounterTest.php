@@ -6,6 +6,7 @@ use App\Core\Helper\DiceStack;
 use App\EncountersPlanning\Encounter;
 use App\EncountersPlanning\EncounterDifficulty;
 use App\EncountersPlanning\Enemy;
+use App\EncountersPlanning\Obstacle;
 use PHPUnit\Framework\TestCase;
 
 class EncounterTest extends TestCase
@@ -17,23 +18,27 @@ class EncounterTest extends TestCase
 
         $encounter = new Encounter(EncounterDifficulty::MEDIUM, [$enemy1, $enemy2]);
 
+        $this->assertFalse($encounter->isResolved);
+
         $encounter->resolve('all_slain');
 
         $this->assertFalse($enemy1->isAlive());
         $this->assertFalse($enemy2->isAlive());
+        $this->assertTrue($encounter->isResolved);
     }
 
-    public function testResolveNoAction(): void
+    public function testResolveRemoveObstacle(): void
     {
-        $enemy1 = $this->createEnemy();
-        $enemy2 = $this->createEnemy();
+        $obstacle = new Obstacle('Spike Trap');
 
-        $encounter = new Encounter(EncounterDifficulty::MEDIUM, [$enemy1, $enemy2]);
+        $encounter = new Encounter(EncounterDifficulty::MEDIUM, obstacles: [$obstacle]);
 
-        $encounter->resolve('some_other_result');
+        $this->assertFalse($encounter->isResolved);
 
-        $this->assertTrue($enemy1->isAlive());
-        $this->assertTrue($enemy2->isAlive());
+        $encounter->resolve('obstacle_removed');
+
+        $this->assertTrue($encounter->isResolved);
+        $this->assertTrue($obstacle->isRemoved());
     }
 
     private function createEnemy(): Enemy

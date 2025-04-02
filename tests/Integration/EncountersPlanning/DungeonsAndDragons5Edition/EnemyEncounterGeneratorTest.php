@@ -3,20 +3,20 @@
 namespace App\Tests\Integration\EncountersPlanner\DungeonsAndDragons5Edition;
 
 use App\EncountersPlanning\DungeonsAndDragons5Edition\AdjustedExperienceFromEncounterCalculator;
-use App\EncountersPlanning\DungeonsAndDragons5Edition\EncounterGenerator;
+use App\EncountersPlanning\DungeonsAndDragons5Edition\EnemyEncounterGenerator;
 use App\EncountersPlanning\EncounterDifficulty;
 use App\EncountersPlanning\TeamChallengeRating;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class EncounterGeneratorTest extends KernelTestCase
+class EnemyEncounterGeneratorTest extends KernelTestCase
 {
-    private EncounterGenerator $generator;
+    private EnemyEncounterGenerator $generator;
 
     protected function setUp(): void
     {
         self::bootKernel();
 
-        $this->generator = self::getContainer()->get(EncounterGenerator::class);
+        $this->generator = self::getContainer()->get(EnemyEncounterGenerator::class);
     }
 
     /** @test */

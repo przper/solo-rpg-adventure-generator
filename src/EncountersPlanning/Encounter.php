@@ -4,10 +4,16 @@ namespace App\EncountersPlanning;
 
 final class Encounter
 {
-    /** @param Enemy[] $enemies */
+    public bool $isResolved = false;
+
+    /**
+     * @param Enemy[] $enemies
+     * @param Obstacle[] $obstacles
+     */
     public function __construct(
         private EncounterDifficulty $difficulty,
         private array $enemies = [],
+        private array $obstacles = [], //e.g. traps, blockages
     ) {
     }
 
@@ -18,6 +24,14 @@ final class Encounter
                 $enemy->slay();
             }
         }
+
+        if ($result === 'obstacle_removed') {
+            foreach ($this->obstacles as $obstacle) {
+                $obstacle->remove();
+            }
+        }
+
+        $this->isResolved = true;
     }
 
     public function getDifficulty(): EncounterDifficulty
@@ -35,5 +49,11 @@ final class Encounter
     public function getAllEnemies(): array
     {
         return $this->enemies;
+    }
+
+    /** @return Obstacle[] */
+    public function getObstacles(): array
+    {
+        return $this->obstacles;
     }
 }

@@ -17,9 +17,9 @@ class EnemyGenerator
             experiencePoints: $experiencePoints,
             name: $name,
             hitDice: $hitDice,
-            totalHitPoints: $hitPoints ?? $hitDice->roll(),
             armorClass: $armorClass,
             damage: $damage,
+            totalHitPoints: $hitPoints,
         );
     }
 

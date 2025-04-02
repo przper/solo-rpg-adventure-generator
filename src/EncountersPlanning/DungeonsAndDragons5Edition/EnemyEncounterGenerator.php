@@ -8,7 +8,7 @@ use App\EncountersPlanning\EncounterDifficulty;
 use App\EncountersPlanning\Enemy;
 use App\EncountersPlanning\TeamChallengeRating;
 
-class EncounterGenerator
+class EnemyEncounterGenerator
 {
     public function __construct(
         private EnemyGenerator $enemyGenerator,
