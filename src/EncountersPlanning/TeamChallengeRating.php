@@ -7,15 +7,24 @@ use Traversable;
 
 readonly class TeamChallengeRating implements IteratorAggregate
 {
-    /** @param int[] $teamLevels */
+    /** @param positive-int[] $teamLevels */
     final public function __construct(
-        protected array $teamLevels,
+        private array $teamLevels,
     ) {
     }
 
     public static function fromLevelsAsIntegers(...$levels): self
     {
         return new static($levels);
+    }
+
+    public function getAveragePlayerLevel(): int
+    {
+        if ($this->teamLevels === []) {
+            return 0;
+        }
+
+        return floor(array_sum($this->teamLevels) / count($this->teamLevels));
     }
 
     public function getIterator(): Traversable
