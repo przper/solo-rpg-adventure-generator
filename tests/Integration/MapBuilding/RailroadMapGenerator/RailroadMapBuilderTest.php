@@ -22,7 +22,7 @@ class RailroadMapBuilderTest extends KernelTestCase
     /** @test */
     public function it_builds_map()
     {
-        $map = $this->builder->create();
+        $map = $this->builder->build();
 
         $this->assertInstanceOf(Map::class, $map);
     }
@@ -30,7 +30,7 @@ class RailroadMapBuilderTest extends KernelTestCase
     /** @test */
     public function rooms_counter_can_be_set()
     {
-        $map = $this->builder->setMaxRoomsCount(5)->create();
+        $map = $this->builder->setMaxRoomsCount(5)->build();
 
         $this->assertEquals(5, count($map->getTilesByType(TileType::Room)));
     }
@@ -43,7 +43,7 @@ class RailroadMapBuilderTest extends KernelTestCase
             ->setMaxRoomsCount(2)
             ->setMinCorridorLength(2)
             ->setMaxCorridorLength(5)
-            ->create();
+            ->build();
 
         $this->assertGreaterThanOrEqual(2, count($map->getTilesByType(TileType::Corridor)));
         $this->assertLessThanOrEqual(5, count($map->getTilesByType(TileType::Corridor)));

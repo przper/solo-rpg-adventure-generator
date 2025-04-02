@@ -7,9 +7,9 @@ use App\Core\Map\Corridor;
 use App\Core\Map\Map;
 use App\Core\Map\Room;
 use App\Core\Map\TileType;
-use App\MapBuilding\MapGeneratorInterface;
+use App\MapBuilding\MapBuilderInterface;
 
-final class GridMapBuilder implements MapGeneratorInterface
+final class GridMapBuilder implements MapBuilderInterface
 {
     // Map configuration constants
     private const DEFAULT_GRID_WIDTH = 5;
@@ -50,7 +50,7 @@ final class GridMapBuilder implements MapGeneratorInterface
         return $this;
     }
 
-    public function create(): Map
+    public function build(): Map
     {
         $maxAttempts = 10;
 

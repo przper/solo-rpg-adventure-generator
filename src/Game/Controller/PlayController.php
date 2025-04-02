@@ -2,13 +2,11 @@
 
 namespace App\Game\Controller;
 
-use App\Enum\MovementDirection;
-use App\Service\Game\Game;
-use App\Service\Game\Movement;
 use App\Game\Game;
 use App\Game\Movement;
 use App\Game\MovementDirection;
 use App\MapRendering\MapRenderer;
+use App\Tests\DebugsMap;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class PlayController extends AbstractController
 {
+    use DebugsMap;
+
     public function __construct(
         private MapRenderer $mapRenderer,
     ) {
@@ -48,6 +48,10 @@ class PlayController extends AbstractController
         $map = $this->mapRenderer->render($game->getMap(), $game);
 
         $session->set('game', $game);
+
+//        dump($this->debugMap($game->getMap()));
+//        dump("Rooms: " . count($game->getMap()->getRooms()) . ", Corridors: " . count($game->getMap()->getCorridors()));
+//        dump(array_map(fn (Encounter $e) => $e->getDifficulty()->name, $game->getEncountersPlan()->getEncountersSortedByDifficulty()));
 
         return $this->render('play/index.html.twig', [
             'heading' => 'Survive, brave adventurer...',

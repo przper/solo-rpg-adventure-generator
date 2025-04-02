@@ -4,9 +4,9 @@ namespace App\MapBuilding\Railroad;
 
 use App\Core\Helper\Coordinates;
 use App\Core\Map\Map;
-use App\MapBuilding\MapGeneratorInterface;
+use App\MapBuilding\MapBuilderInterface;
 
-class RailroadMapBuilder implements MapGeneratorInterface
+class RailroadMapBuilder implements MapBuilderInterface
 {
     private int $maxRoomsCount = 2;
     private int $minCorridorLength = 1;
@@ -42,7 +42,7 @@ class RailroadMapBuilder implements MapGeneratorInterface
         return $this;
     }
 
-    public function create(): Map
+    public function build(): Map
     {
         $elements = [$this->roomGenerator->starter()];
 

@@ -29,7 +29,7 @@ class GridMapBuilderTest extends KernelTestCase
             ->setGridHeight(2)
             ->setRoomSize(1)
             ->setCorridorLength(2)
-            ->create();
+            ->build();
 
         /**
          * Expected result
@@ -59,7 +59,7 @@ class GridMapBuilderTest extends KernelTestCase
             ->setGridWidth(2)
             ->setRoomSize(3)
             ->setCorridorLength(1)
-            ->create();
+            ->build();
 
         /**
          * Expected result
@@ -116,7 +116,7 @@ class GridMapBuilderTest extends KernelTestCase
             ->setGridWidth(5)
             ->setRoomSize(3)
             ->setCorridorLength(4)
-            ->create();
+            ->build();
 
         $this->assertRoomsAreAccessible($map);
     }
@@ -138,7 +138,7 @@ class GridMapBuilderTest extends KernelTestCase
                 ->setGridWidth($gridWidth)
                 ->setRoomSize($roomSize)
                 ->setCorridorLength($corridorLength)
-                ->create();
+                ->build();
 
             $this->assertRoomsAreAccessible(
                 $map,
