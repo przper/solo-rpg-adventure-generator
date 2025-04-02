@@ -8,7 +8,8 @@ final class Obstacle
 
     public function __construct(
         public string $name,
-        public int $dcToSpot = 0,
+        public readonly int $dcToRemove,
+        public readonly int $dcToSpot = 0,
     ) {
     }
 

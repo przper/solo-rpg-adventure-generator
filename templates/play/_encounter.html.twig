@@ -55,7 +55,7 @@
                         <h4 class="flex items-center justify-center text-xl font-bold">{{ obstacle.name }}</h4>
                         {% if not obstacle.isRemoved %}
                             <p>DC to spot: {{ obstacle.dcToSpot }}</p>
-                            <p>DC to remove: TODO</p>
+                            <p>DC to remove: {{ obstacle.dcToRemove }}</p>
                         {% else %}
                             <p class="mt-4 flex items-center justify-center text-5xl">done</p>
                         {% endif %}
