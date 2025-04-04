@@ -6,11 +6,59 @@ use App\Core\Enum\DungeonLength;
 use App\EncountersPlanning\EncountersPlan;
 use App\EncountersPlanning\EncountersPlannerInterface;
 use App\EncountersPlanning\TeamChallengeRating;
+use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 class EncountersPlanner implements EncountersPlannerInterface
 {
+    /** @var array<string, EncounterStrategy> $encounterStrategies */
+    private array $encounterStrategies = [];
+
+    /**
+     * @param iterable<EncounterStrategy> $encounterStrategies
+     */
+    public function __construct(
+        #[TaggedIterator('encounters_planning.shadowdark.encounter')]
+        iterable $encounterStrategies,
+    ) {
+        foreach ($encounterStrategies as $encounterStrategy) {
+            $this->encounterStrategies[$encounterStrategy->getDungeonRoomType()->name] = $encounterStrategy;
+        }
+    }
+
     public function plan(DungeonLength $dungeonLength, TeamChallengeRating $teamChallengeRating): EncountersPlan
     {
-        return new EncountersPlan();
+        $maxEncounterCount = match ($dungeonLength) {
+            DungeonLength::SHORT => 5,
+            DungeonLength::MEDIUM => 8,
+            DungeonLength::LONG => 12,
+        };
+
+        $encounters = [];
+        $roomCountPerType = array_fill_keys(
+            array_map(fn(DungeonRoomType $r) => $r->name, DungeonRoomType::cases()),
+            0,
+        );
+
+        while (count($encounters) < $maxEncounterCount) {
+            $encounterType = DungeonRoomType::rollRoomType();
+
+            if ($encounterType === DungeonRoomType::NPC) {
+                continue; // not supported yet, just reroll
+            }
+
+            if ($encounterType === DungeonRoomType::Boss_Monster && $roomCountPerType[DungeonRoomType::Boss_Monster->name]) {
+                continue; // max 1 per dungeon, just reroll
+            }
+
+            if (!array_key_exists($encounterType->name, $this->encounterStrategies)) {
+                continue; // just reroll
+            }
+            $strategy = $this->encounterStrategies[$encounterType->name];
+
+            $encounters[] = $strategy->createEncounter();
+            $roomCountPerType[$encounterType->name]++;
+        }
+
+        return new EncountersPlan($encounters);
     }
 }

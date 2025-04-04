@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EncountersPlanning\DungeonsAndDragons5Edition;
+namespace App\EncountersPlanning\Shadowdark;
 
 use App\Core\Enum\DungeonLength;
 use App\Core\Enum\TTRPGSystem;
@@ -8,7 +8,7 @@ use App\EncountersPlanning\EncountersPlan;
 use App\EncountersPlanning\EncountersPlanningStrategy;
 use App\EncountersPlanning\TeamChallengeRating;
 
-class DungeonsAndDragons5EncountersPlanningStrategy implements EncountersPlanningStrategy
+class ShadowdarkEncountersPlanningStrategy implements EncountersPlanningStrategy
 {
     public function __construct(
         private EncountersPlanner $encountersPlanner,
@@ -17,13 +17,11 @@ class DungeonsAndDragons5EncountersPlanningStrategy implements EncountersPlannin
 
     public function supports(): TTRPGSystem
     {
-        return TTRPGSystem::DungeonAndDragons5Edition;
+        return TTRPGSystem::Shadowdark;
     }
 
     public function plan(DungeonLength $length, TeamChallengeRating $teamLevels): EncountersPlan
     {
-        return $this
-            ->encountersPlanner
-            ->plan($length, $teamLevels);
+        return $this->encountersPlanner->plan($length, $teamLevels);
     }
 }

@@ -11,5 +11,5 @@ interface EncountersPlanningStrategy
 {
     public function supports(): TTRPGSystem;
 
-    public function plan(DungeonLength $length, TeamChallengeRating $fromLevelsAsIntegers): EncountersPlan;
+    public function plan(DungeonLength $length, TeamChallengeRating $teamLevels): EncountersPlan;
 }
