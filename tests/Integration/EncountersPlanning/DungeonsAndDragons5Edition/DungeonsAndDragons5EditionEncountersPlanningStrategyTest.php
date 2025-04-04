@@ -2,20 +2,19 @@
 
 namespace App\Tests\Integration\EncountersPlanner\DungeonsAndDragons5Edition;
 
-use App\Core\Enum\DungeonLength;
-use App\EncountersPlanning\DungeonsAndDragons5Edition\EncountersPlanner;
-use App\EncountersPlanning\EncounterDifficulty;
+use App\Core\Encounter\EncounterDifficulty;
+use App\Core\Map\DungeonLength;
+use App\EncountersPlanning\DungeonsAndDragons5Edition\DungeonsAndDragons5EncountersPlanningStrategy;
 use App\EncountersPlanning\EncountersPlan;
 use App\EncountersPlanning\TeamChallengeRating;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class EncountersPlannerTest extends KernelTestCase
+class DungeonsAndDragons5EditionEncountersPlanningStrategyTest extends KernelTestCase
 {
     /** @test */
-    public function it_creates_EncounterPlan()
+    public function it_creates_EncounterPlan_with_correct_number_of_encounters(): void
     {
-        /** @var EncountersPlanner $planner */
-        $planner = static::getContainer()->get(EncountersPlanner::class);
+        $planner = static::getContainer()->get(DungeonsAndDragons5EncountersPlanningStrategy::class);
 
         for ($i = 0; $i < 50; $i++) {
             $encountersPlan = $planner->plan(DungeonLength::MEDIUM, TeamChallengeRating::fromLevelsAsIntegers(2, 2, 2, 2));

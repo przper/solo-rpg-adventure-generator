@@ -5,10 +5,8 @@ namespace App\EncountersPlanning\DungeonsAndDragons5Edition;
 use App\Core\Encounter\Encounter;
 use App\Core\Encounter\Enemy;
 use App\Core\Helper\MultipleEnemiesEncounterExperienceCountModifier;
-use App\EncountersPlanning\Encounter;
-use App\EncountersPlanning\Enemy;
 
-class AdjustedExperienceFromEncounterCalculator
+final class AdjustedExperienceFromEncounterCalculator
 {
     public function getExperienceSum(Encounter $encounter): int
     {

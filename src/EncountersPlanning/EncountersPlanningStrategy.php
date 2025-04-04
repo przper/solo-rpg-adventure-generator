@@ -2,8 +2,7 @@
 
 namespace App\EncountersPlanning;
 
-use App\Core\Enum\DungeonLength;
-use App\Core\Enum\TTRPGSystem;
+use App\Core\Map\DungeonLength;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
 #[AutoconfigureTag('encounters_planning.strategy')]

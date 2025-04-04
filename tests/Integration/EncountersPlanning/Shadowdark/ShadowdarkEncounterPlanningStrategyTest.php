@@ -2,18 +2,18 @@
 
 namespace App\Tests\Integration\EncountersPlanning\Shadowdark;
 
-use App\Core\Enum\DungeonLength;
-use App\EncountersPlanning\Shadowdark\EncountersPlanner;
+use App\Core\Map\DungeonLength;
+use App\EncountersPlanning\Shadowdark\ShadowdarkEncountersPlanningStrategy;
 use App\EncountersPlanning\TeamChallengeRating;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class EncounterPlannerTest extends KernelTestCase
+class ShadowdarkEncounterPlanningStrategyTest extends KernelTestCase
 {
-    private EncountersPlanner $sut;
+    private ShadowdarkEncountersPlanningStrategy $sut;
 
     protected function setUp(): void
     {
-        $this->sut = self::getContainer()->get(EncountersPlanner::class);
+        $this->sut = self::getContainer()->get(ShadowdarkEncountersPlanningStrategy::class);
     }
 
     public function test_it_differs_number_of_encounters_based_on_dungeon_length(): void

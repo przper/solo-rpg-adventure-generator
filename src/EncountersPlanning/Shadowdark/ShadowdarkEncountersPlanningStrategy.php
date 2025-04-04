@@ -2,17 +2,28 @@
 
 namespace App\EncountersPlanning\Shadowdark;
 
-use App\Core\Enum\DungeonLength;
-use App\Core\Enum\TTRPGSystem;
+use App\Core\Map\DungeonLength;
 use App\EncountersPlanning\EncountersPlan;
 use App\EncountersPlanning\EncountersPlanningStrategy;
 use App\EncountersPlanning\TeamChallengeRating;
+use App\EncountersPlanning\TTRPGSystem;
+use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
 
 class ShadowdarkEncountersPlanningStrategy implements EncountersPlanningStrategy
 {
+    /** @var array<string, EncounterStrategy> $encounterStrategies */
+    private array $encounterStrategies = [];
+
+    /**
+     * @param iterable<EncounterStrategy> $encounterStrategies
+     */
     public function __construct(
-        private EncountersPlanner $encountersPlanner,
+        #[TaggedIterator('encounters_planning.shadowdark.encounter')]
+        iterable $encounterStrategies,
     ) {
+        foreach ($encounterStrategies as $encounterStrategy) {
+            $this->encounterStrategies[$encounterStrategy->getDungeonRoomType()->name] = $encounterStrategy;
+        }
     }
 
     public function supports(): TTRPGSystem
@@ -22,6 +33,38 @@ class ShadowdarkEncountersPlanningStrategy implements EncountersPlanningStrategy
 
     public function plan(DungeonLength $length, TeamChallengeRating $teamLevels): EncountersPlan
     {
-        return $this->encountersPlanner->plan($length, $teamLevels);
+        $maxEncounterCount = match ($length) {
+            DungeonLength::SHORT => 5,
+            DungeonLength::MEDIUM => 8,
+            DungeonLength::LONG => 12,
+        };
+
+        $encounters = [];
+        $roomCountPerType = array_fill_keys(
+            array_map(fn(DungeonRoomType $r) => $r->name, DungeonRoomType::cases()),
+            0,
+        );
+
+        while (count($encounters) < $maxEncounterCount) {
+            $encounterType = DungeonRoomType::rollRoomType();
+
+            if ($encounterType === DungeonRoomType::NPC) {
+                continue; // not supported yet, just reroll
+            }
+
+            if ($encounterType === DungeonRoomType::Boss_Monster && $roomCountPerType[DungeonRoomType::Boss_Monster->name]) {
+                continue; // max 1 per dungeon, just reroll
+            }
+
+            if (!array_key_exists($encounterType->name, $this->encounterStrategies)) {
+                continue; // just reroll
+            }
+            $strategy = $this->encounterStrategies[$encounterType->name];
+
+            $encounters[] = $strategy->createEncounter();
+            $roomCountPerType[$encounterType->name]++;
+        }
+
+        return new EncountersPlan($encounters);
     }
 }

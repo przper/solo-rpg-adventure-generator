@@ -2,7 +2,7 @@
 
 namespace App\MapBuilding;
 
-use App\Core\Enum\DungeonLength;
+use App\Core\Map\DungeonLength;
 use App\Core\Map\Map;
 use App\Core\Map\MapType;
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
