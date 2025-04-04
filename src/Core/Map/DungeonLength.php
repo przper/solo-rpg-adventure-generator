@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Core\Enum;
+namespace App\Core\Map;
 
 enum DungeonLength: string
 {

@@ -2,7 +2,7 @@
 
 namespace App\MapBuilding\Grid;
 
-use App\Core\Enum\DungeonLength;
+use App\Core\Map\DungeonLength;
 use App\Core\Map\Map;
 use App\Core\Map\MapType;
 use App\MapBuilding\MapBuildingStrategy;
