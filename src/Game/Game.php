@@ -2,12 +2,9 @@
 
 namespace App\Game;
 
+use App\Core\Encounter\Encounter;
 use App\Core\Helper\Coordinates;
 use App\Core\Map\Map;
-use App\EncountersPlanning\Encounter;
-use App\EncountersPlanning\EncountersPlan;
-use App\Game\Encounters\MapBasedEncounters;
-use App\Game\FogOfWar\PersistentFogOfWar;
 
 class Game
 {

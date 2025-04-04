@@ -2,9 +2,9 @@
 
 namespace App\Tests\Integration\EncountersPlanner\DungeonsAndDragons5Edition;
 
+use App\Core\Encounter\EncounterDifficulty;
 use App\EncountersPlanning\DungeonsAndDragons5Edition\AdjustedExperienceFromEncounterCalculator;
 use App\EncountersPlanning\DungeonsAndDragons5Edition\EnemyEncounterGenerator;
-use App\EncountersPlanning\EncounterDifficulty;
 use App\EncountersPlanning\TeamChallengeRating;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

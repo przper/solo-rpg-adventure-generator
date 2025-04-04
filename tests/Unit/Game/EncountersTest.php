@@ -2,15 +2,15 @@
 
 namespace App\Tests\Unit\Game;
 
+use App\Core\Encounter\Encounter;
+use App\Core\Encounter\EncounterDifficulty;
+use App\Core\Encounter\Enemy;
 use App\Core\Helper\Coordinates;
 use App\Core\Helper\DiceStack;
 use App\Core\Map\Corridor;
 use App\Core\Map\Map;
 use App\Core\Map\Room;
-use App\EncountersPlanning\Encounter;
-use App\EncountersPlanning\EncounterDifficulty;
 use App\EncountersPlanning\EncountersPlan;
-use App\EncountersPlanning\Enemy;
 use App\Game\Encounters\MapBasedEncounters;
 use PHPUnit\Framework\TestCase;
 

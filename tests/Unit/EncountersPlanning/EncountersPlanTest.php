@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\EncountersPlanning;
 
-use App\EncountersPlanning\Encounter;
-use App\EncountersPlanning\EncounterDifficulty;
+use App\Core\Encounter\Encounter;
+use App\Core\Encounter\EncounterDifficulty;
 use App\EncountersPlanning\EncountersPlan;
 use PHPUnit\Framework\TestCase;
 

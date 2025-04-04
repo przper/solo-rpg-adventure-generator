@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EncountersPlanning;
+namespace App\Core\Encounter;
 
 final class Obstacle
 {

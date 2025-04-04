@@ -2,9 +2,9 @@
 
 namespace App\Game;
 
-use App\Core\Enum\DungeonLength;
-use App\Core\Enum\TTRPGSystem;
+use App\Core\Map\DungeonLength;
 use App\Core\Map\MapType;
+use App\EncountersPlanning\TTRPGSystem;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;

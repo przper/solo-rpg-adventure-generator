@@ -2,12 +2,12 @@
 
 namespace App\Tests\Unit\EncountersPlanning;
 
+use App\Core\Encounter\Encounter;
+use App\Core\Encounter\EncounterDifficulty;
+use App\Core\Encounter\Enemy;
+use App\Core\Encounter\Obstacle;
+use App\Core\Encounter\Treasure;
 use App\Core\Helper\DiceStack;
-use App\EncountersPlanning\Encounter;
-use App\EncountersPlanning\EncounterDifficulty;
-use App\EncountersPlanning\Enemy;
-use App\EncountersPlanning\Obstacle;
-use App\EncountersPlanning\Treasure;
 use PHPUnit\Framework\TestCase;
 
 class EncounterTest extends TestCase

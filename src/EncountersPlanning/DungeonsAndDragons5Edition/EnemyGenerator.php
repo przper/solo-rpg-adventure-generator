@@ -2,8 +2,8 @@
 
 namespace App\EncountersPlanning\DungeonsAndDragons5Edition;
 
+use App\Core\Encounter\Enemy;
 use App\Core\Helper\DiceStack;
-use App\EncountersPlanning\Enemy;
 
 class EnemyGenerator
 {

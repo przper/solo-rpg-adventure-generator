@@ -2,12 +2,11 @@
 
 namespace App\MapRendering;
 
+use App\Core\Encounter\Encounter;
 use App\Core\Helper\Coordinates;
 use App\Core\Map\Tile;
 use App\Core\Map\TileType;
-use App\EncountersPlanning\Encounter;
 use App\Game\Game;
-use App\Interface\TreasureInterface;
 
 class CellWrapper
 {

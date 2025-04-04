@@ -2,8 +2,8 @@
 
 namespace App\Tests\Fixtures\Dummies;
 
+use App\Core\Encounter\Encounter;
 use App\Core\Helper\Coordinates;
-use App\EncountersPlanning\Encounter;
 use App\Game\EncountersInterface;
 
 class DummyEncounters implements EncountersInterface

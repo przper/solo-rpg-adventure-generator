@@ -2,6 +2,8 @@
 
 namespace App\EncountersPlanning\DungeonsAndDragons5Edition;
 
+use App\Core\Encounter\Encounter;
+use App\Core\Encounter\Enemy;
 use App\Core\Helper\MultipleEnemiesEncounterExperienceCountModifier;
 use App\EncountersPlanning\Encounter;
 use App\EncountersPlanning\Enemy;

@@ -2,8 +2,8 @@
 
 namespace App\Game;
 
+use App\Core\Encounter\Encounter;
 use App\Core\Helper\Coordinates;
-use App\EncountersPlanning\Encounter;
 
 interface EncountersInterface
 {

@@ -2,9 +2,9 @@
 
 namespace App\EncountersPlanning\DungeonsAndDragons5Edition;
 
-use App\EncountersPlanning\Encounter;
-use App\EncountersPlanning\EncounterDifficulty;
-use App\EncountersPlanning\Obstacle;
+use App\Core\Encounter\Encounter;
+use App\Core\Encounter\EncounterDifficulty;
+use App\Core\Encounter\Obstacle;
 use App\EncountersPlanning\TeamChallengeRating;
 
 final class ObstacleEncounterGenerator

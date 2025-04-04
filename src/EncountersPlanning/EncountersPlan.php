@@ -2,6 +2,9 @@
 
 namespace App\EncountersPlanning;
 
+use App\Core\Encounter\Encounter;
+use App\Core\Encounter\EncounterDifficulty;
+
 final readonly class EncountersPlan
 {
     /**

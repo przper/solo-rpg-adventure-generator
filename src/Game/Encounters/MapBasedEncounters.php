@@ -2,12 +2,12 @@
 
 namespace App\Game\Encounters;
 
+use App\Core\Encounter\Encounter;
+use App\Core\Encounter\EncounterDifficulty;
 use App\Core\Helper\Coordinates;
 use App\Core\Map\Corridor;
 use App\Core\Map\Map;
 use App\Core\Map\Room;
-use App\EncountersPlanning\Encounter;
-use App\EncountersPlanning\EncounterDifficulty;
 use App\EncountersPlanning\EncountersPlan;
 use App\Game\EncountersInterface;
 use InvalidArgumentException;

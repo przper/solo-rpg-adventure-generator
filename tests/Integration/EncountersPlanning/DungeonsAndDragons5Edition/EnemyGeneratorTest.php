@@ -2,9 +2,9 @@
 
 namespace App\Tests\Integration\EncountersPlanner\DungeonsAndDragons5Edition;
 
+use App\Core\Encounter\Enemy;
 use App\Core\Helper\DiceStack;
 use App\EncountersPlanning\DungeonsAndDragons5Edition\EnemyGenerator;
-use App\EncountersPlanning\Enemy;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class EnemyGeneratorTest extends KernelTestCase
