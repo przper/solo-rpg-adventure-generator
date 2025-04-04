@@ -17,6 +17,9 @@
                         <h4 class="flex items-center justify-center text-xl font-bold">{{ enemy.name }}</h4>
                         {% if enemy.alive %}
                             <p>HP: {{ enemy.totalHitPoints }} AC: {{ enemy.armorClass }}</p>
+                            {% for attack in enemy.attacks %}
+                                <p>{{ attack }}</p>
+                            {% endfor %}
                         {% else %}
                             <p class="mt-4 flex items-center justify-center text-5xl">☠</p>
                         {% endif %}

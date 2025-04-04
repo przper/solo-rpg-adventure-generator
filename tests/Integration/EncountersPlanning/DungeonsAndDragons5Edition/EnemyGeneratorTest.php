@@ -32,6 +32,7 @@ class EnemyGeneratorTest extends KernelTestCase
         $this->assertGreaterThan(0, $enemy->getTotalHitPoints(), 'Hit points should be positive');
         $this->assertIsInt($enemy->getArmorClass(), 'Armor class should be an integer');
         $this->assertGreaterThan(0, $enemy->getArmorClass(), 'Armor class should be positive');
-        $this->assertInstanceOf(DiceStack::class, $enemy->getDamage(), 'Damage should be a DiceStack instance');
+        $this->assertGreaterThanOrEqual(1, $enemy->getAttacks());
+        $this->assertIsString($enemy->getAttacks()[0]);
     }
 }
