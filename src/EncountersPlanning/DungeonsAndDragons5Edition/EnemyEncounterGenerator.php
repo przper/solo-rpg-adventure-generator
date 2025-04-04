@@ -7,6 +7,7 @@ use App\EncountersPlanning\Encounter;
 use App\EncountersPlanning\EncounterDifficulty;
 use App\EncountersPlanning\Enemy;
 use App\EncountersPlanning\TeamChallengeRating;
+use App\EncountersPlanning\Treasure;
 
 class EnemyEncounterGenerator
 {
@@ -23,8 +24,19 @@ class EnemyEncounterGenerator
 
         for ($i = 0; $i < 50; $i++) {
             $enemies = $this->generateEnemiesFittingDifficultyExperienceTreshold($difficulty, $teamChallengeRating);
+            $treasureValue = 0;
+            $treasureModifier = match ($difficulty) {
+                EncounterDifficulty::EASY => 0.5,
+                EncounterDifficulty::MEDIUM => 1,
+                EncounterDifficulty::HARD => 2.0,
+                EncounterDifficulty::DEADLY => 4.0,
+            };
 
-            $variants[] = new Encounter($difficulty, $enemies);
+            foreach ($enemies as $enemy) {
+                $treasureValue += (int) ceil($enemy->getChallengeRating() * rand(1, 6) * $treasureModifier);
+            }
+
+            $variants[] = new Encounter($difficulty, $enemies, treasures: [new Treasure("$treasureValue gp")]);
         }
 
         usort($variants, function (Encounter $a, Encounter $b) {

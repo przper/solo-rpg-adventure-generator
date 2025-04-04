@@ -7,6 +7,7 @@ use App\EncountersPlanning\Encounter;
 use App\EncountersPlanning\EncounterDifficulty;
 use App\EncountersPlanning\Enemy;
 use App\EncountersPlanning\Obstacle;
+use App\EncountersPlanning\Treasure;
 use PHPUnit\Framework\TestCase;
 
 class EncounterTest extends TestCase
@@ -18,27 +19,45 @@ class EncounterTest extends TestCase
 
         $encounter = new Encounter(EncounterDifficulty::MEDIUM, [$enemy1, $enemy2]);
 
-        $this->assertFalse($encounter->isResolved);
+        $this->assertFalse($encounter->isResolved());
 
         $encounter->resolve('all_slain');
 
         $this->assertFalse($enemy1->isAlive());
         $this->assertFalse($enemy2->isAlive());
-        $this->assertTrue($encounter->isResolved);
+        $this->assertTrue($encounter->isResolved());
     }
 
     public function testResolveRemoveObstacle(): void
     {
-        $obstacle = new Obstacle('Spike Trap');
+        $obstacle = new Obstacle('Spike Trap', 12);
 
         $encounter = new Encounter(EncounterDifficulty::MEDIUM, obstacles: [$obstacle]);
 
-        $this->assertFalse($encounter->isResolved);
+        $this->assertFalse($encounter->isResolved());
 
         $encounter->resolve('obstacle_removed');
 
-        $this->assertTrue($encounter->isResolved);
+        $this->assertTrue($encounter->isResolved());
         $this->assertTrue($obstacle->isRemoved());
+    }
+
+    public function testResolvePickUpTreasure(): void
+    {
+        $gold = new Treasure('Gold Coins');
+        $gems = new Treasure('Gems');
+
+        $encounter = new Encounter(EncounterDifficulty::EASY, treasures: [$gold, $gems]);
+
+        $this->assertFalse($gold->isPickedUp());
+        $this->assertFalse($gems->isPickedUp());
+        $this->assertFalse($encounter->isResolved());
+
+        $encounter->resolve('treasure_picked_up:0');
+
+        $this->assertTrue($gold->isPickedUp());
+        $this->assertFalse($gems->isPickedUp());
+        $this->assertFalse($encounter->isResolved());
     }
 
     private function createEnemy(): Enemy

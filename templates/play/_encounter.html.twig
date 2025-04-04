@@ -1,6 +1,6 @@
 {% set enemies = encounter.allEnemies %}
 {% set obstacles = encounter.obstacles %}
-
+{% set treasures = encounter.treasures %}
 
 <div class="p-4 rounded-xl shadow-sm bg-white">
     <div class="mb-4">
@@ -41,6 +41,27 @@
                     </li>
                     <li><span class="font-bold">Run you fools!</span> (Try to run. Use movement buttons to came back)</li>
                 </ul>
+            </div>
+        {% else %}
+            <div class="mt-4">
+                <h3 class="text-3xl mb-2">Treasures</h3>
+
+                <div class="grid grid-cols-3 gap-4">
+                    {% for treasure in treasures %}
+                        <div class="p-4 border border-black rounded-md">
+                            <h4 class="flex items-center justify-center text-xl font-bold">{{ treasure.name }}</h4>
+                            {% if not treasure.pickedUp %}
+                                <form action="/play" method="post">
+                                    <input hidden name="action" value="encounter">
+                                    <input hidden name="result" value="treasure_picked_up:{{ loop.index0 }}">
+                                    <button type="submit" class="p-1 bg-gray-300"><span class="font-bold">Pick up</span></button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <p>Nothing to pick up<p>
+                    {% endfor %}
+                </div>
             </div>
         {% endif %}
     {% endif %}
