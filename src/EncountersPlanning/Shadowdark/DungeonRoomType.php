@@ -6,7 +6,7 @@ use App\Core\Helper\DiceStack;
 
 enum DungeonRoomType
 {
-    case Obstacle;
+    case Empty;
     case Trap;
     case Minor_Hazard;
     case Solo_Monster;
@@ -19,7 +19,7 @@ enum DungeonRoomType
     public static function rollRoomType(): self
     {
         return match (DiceStack::fromString('1d10')->roll()) {
-            1, 2 => self::Obstacle,
+            1, 2 => self::Empty,
             3 => self::Trap,
             4 => self::Minor_Hazard,
             5 => self::Solo_Monster,

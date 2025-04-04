@@ -48,6 +48,10 @@ class ShadowdarkEncountersPlanningStrategy implements EncountersPlanningStrategy
         while (count($encounters) < $maxEncounterCount) {
             $encounterType = DungeonRoomType::rollRoomType();
 
+            if (!array_key_exists($encounterType->name, $this->encounterStrategies)) {
+                continue; // just reroll if not recognized
+            }
+
             if ($encounterType === DungeonRoomType::NPC) {
                 continue; // not supported yet, just reroll
             }
@@ -56,9 +60,12 @@ class ShadowdarkEncountersPlanningStrategy implements EncountersPlanningStrategy
                 continue; // max 1 per dungeon, just reroll
             }
 
-            if (!array_key_exists($encounterType->name, $this->encounterStrategies)) {
-                continue; // just reroll
+            if (
+                $encounterType === DungeonRoomType::Empty
+            ) {
+                continue; // intentional, reroll to have more "fun"
             }
+
             $strategy = $this->encounterStrategies[$encounterType->name];
 
             $encounters[] = $strategy->createEncounter();
