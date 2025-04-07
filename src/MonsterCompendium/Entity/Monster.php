@@ -4,6 +4,7 @@ namespace App\MonsterCompendium\Entity;
 
 use App\Core\Helper\DiceStack;
 use App\MonsterCompendium\Doctrine\Type\DiceStackType;
+use App\MonsterCompendium\Doctrine\Type\VectorEmbeddingType;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
@@ -36,6 +37,12 @@ abstract class Monster
     #[ORM\Column(type: Types::SIMPLE_ARRAY)]
     private array $attacks;
 
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description;
+
+    #[ORM\Column(type: VectorEmbeddingType::NAME, nullable: true)]
+    private ?VectorEmbeddingType $vectorEmbedding = null;
+
     /** @param string[] $attacks */
     public function __construct(
         int|float $challengeRating,
@@ -44,6 +51,7 @@ abstract class Monster
         DiceStack $hitDice,
         int $armorClass = 10,
         array $attacks = [],
+        ?string $description = null,
     ) {
         $this->challengeRating = (float) $challengeRating;
         $this->experiencePoints = $experiencePoints;
@@ -51,6 +59,7 @@ abstract class Monster
         $this->hitDice = $hitDice;
         $this->armorClass = $armorClass;
         $this->attacks = $attacks;
+        $this->description = $description;
     }
 
     public function getId(): ?Uuid
@@ -121,5 +130,27 @@ abstract class Monster
         $this->attacks = $attacks;
 
         return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getVectorEmbedding(): ?VectorEmbeddingType
+    {
+        return $this->vectorEmbedding;
+    }
+
+    public function setVectorEmbedding(?VectorEmbeddingType $vectorEmbedding): void
+    {
+        $this->vectorEmbedding = $vectorEmbedding;
     }
 }
