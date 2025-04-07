@@ -9,6 +9,11 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20250407101551 extends AbstractMigration
 {
+    public function getDescription(): string
+    {
+        return 'Add vector support for similarity search to `monster_shadowdark` table.';
+    }
+
     public function up(Schema $schema): void
     {
         $this->addSql('CREATE EXTENSION IF NOT EXISTS vector');

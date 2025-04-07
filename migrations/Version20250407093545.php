@@ -7,28 +7,26 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20250407093545 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Create `monster_shadowdark` table.';
     }
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
             CREATE TABLE monster_shadowdark (
             id UUID NOT NULL,
             name VARCHAR(255) NOT NULL,
-            challenge_rating NUMERIC(10, 0) NOT NULL,
+            challenge_rating NUMERIC(10, 3) NOT NULL,
             experience_points INT NOT NULL,
             hit_dice VARCHAR(255) NOT NULL,
-            armor_class INT NOT NULL,
-            attacks TEXT NOT NULL,
+            armor_class INT NOT NULL DEFAULT 10,
+            attributes JSON NOT NULL DEFAULT '[]'::json,
+            attacks TEXT NOT NULL DEFAULT '[]',
+            specials TEXT NOT NULL DEFAULT '[]',
             PRIMARY KEY(id)
         )
         SQL);
@@ -45,7 +43,6 @@ final class Version20250407093545 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql(<<<'SQL'
             CREATE SCHEMA public
         SQL);

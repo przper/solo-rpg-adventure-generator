@@ -28,14 +28,20 @@ abstract class Monster
     #[ORM\Column(type: Types::INTEGER, nullable: false)]
     private int $experiencePoints;
 
-    #[ORM\Column(type: DiceStackType::NAME)]
+    #[ORM\Column(type: DiceStackType::NAME, nullable: false)]
     private DiceStack $hitDice;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::INTEGER, nullable: false, options: ['default' => 10])]
     private int $armorClass;
 
-    #[ORM\Column(type: Types::SIMPLE_ARRAY)]
+    #[ORM\Column(type: Types::JSON, nullable: false)]
+    private array $attributes;
+
+    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: false)]
     private array $attacks;
+
+    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: false)]
+    private array $specials;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description;
@@ -50,7 +56,9 @@ abstract class Monster
         string $name,
         DiceStack $hitDice,
         int $armorClass = 10,
+        array $attributes = [],
         array $attacks = [],
+        array $special = [],
         ?string $description = null,
     ) {
         $this->challengeRating = (float) $challengeRating;
@@ -58,7 +66,9 @@ abstract class Monster
         $this->name = $name;
         $this->hitDice = $hitDice;
         $this->armorClass = $armorClass;
+        $this->attributes = $attributes;
         $this->attacks = $attacks;
+        $this->specials = $special;
         $this->description = $description;
     }
 
@@ -120,6 +130,18 @@ abstract class Monster
         return $this;
     }
 
+    public function getAttributes(): array
+    {
+        return $this->attributes;
+    }
+
+    public function setAttributes(array $attributes): static
+    {
+        $this->attributes = $attributes;
+
+        return $this;
+    }
+
     public function getAttacks(): array
     {
         return $this->attacks;
@@ -130,6 +152,16 @@ abstract class Monster
         $this->attacks = $attacks;
 
         return $this;
+    }
+
+    public function getSpecials(): array
+    {
+        return $this->specials;
+    }
+
+    public function setSpecials(array $specials): void
+    {
+        $this->specials = $specials;
     }
 
     public function getDescription(): ?string
