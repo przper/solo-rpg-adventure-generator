@@ -5,8 +5,8 @@ services:
       target: web
     environment:
       APP_ENV: dev
-      XDEBUG_ENABLED: 1
-      DATABASE_URL: mysqli://user:password@db:3306/rpg?serverVersion=mariadb-10.6.17
+      XDEBUG_ENABLED: 0
+      DATABASE_URL: postgresql://user:password@db:5432/solo_rpg?serverVersion=17&charset=utf8
     volumes:
       - ./:/var/www/html:rw,cached
       - ./docker/php/php.dev.ini:/usr/local/etc/php/conf.d/php.dev.ini:rw,cached
