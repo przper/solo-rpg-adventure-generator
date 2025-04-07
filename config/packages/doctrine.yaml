@@ -5,6 +5,7 @@ doctrine:
         use_savepoints: true
         types:
             dice_stack: App\MonsterCompendium\Doctrine\Type\DiceStackType
+            vector_embedding: App\MonsterCompendium\Doctrine\Type\VectorEmbeddingType
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
