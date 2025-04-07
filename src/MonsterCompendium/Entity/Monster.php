@@ -19,17 +19,20 @@ abstract class Monster
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     private ?Uuid $id = null;
 
-    #[ORM\Column(type: Types::STRING, length: 255, nullable: false)]
-    private string $name;
-
     #[ORM\Column(type: Types::DECIMAL, nullable: false)]
     private string $challengeRating;
 
     #[ORM\Column(type: Types::INTEGER, nullable: false)]
     private int $experiencePoints;
 
-    #[ORM\Column(type: DiceStackType::NAME, nullable: false)]
-    private DiceStack $hitDice;
+    #[ORM\Column(type: Types::STRING, length: 255, nullable: false)]
+    private string $name;
+
+    #[ORM\Column(type: DiceStackType::NAME, nullable: true)]
+    private ?DiceStack $hitDice = null;
+
+    #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private ?int $totalHitPoints = null;
 
     #[ORM\Column(type: Types::INTEGER, nullable: false, options: ['default' => 10])]
     private int $armorClass;
@@ -54,17 +57,23 @@ abstract class Monster
         int|float $challengeRating,
         int $experiencePoints,
         string $name,
-        DiceStack $hitDice,
         int $armorClass = 10,
         array $attributes = [],
         array $attacks = [],
         array $special = [],
+        ?int $totalHitPoints = null,
+        ?DiceStack $hitDice = null,
         ?string $description = null,
     ) {
+        if ($hitDice === null && $totalHitPoints === null) {
+            throw new \InvalidArgumentException('Either HitDice or TotalHitPoints must be set.');
+        }
+
         $this->challengeRating = (float) $challengeRating;
         $this->experiencePoints = $experiencePoints;
         $this->name = $name;
         $this->hitDice = $hitDice;
+        $this->totalHitPoints = $totalHitPoints ?? $this->hitDice->roll();
         $this->armorClass = $armorClass;
         $this->attributes = $attributes;
         $this->attacks = $attacks;
@@ -116,6 +125,16 @@ abstract class Monster
         $this->hitDice = $hitDice;
 
         return $this;
+    }
+
+    public function getTotalHitPoints(): ?int
+    {
+        return $this->totalHitPoints;
+    }
+
+    public function setTotalHitPoints(?int $totalHitPoints): void
+    {
+        $this->totalHitPoints = $totalHitPoints;
     }
 
     public function getArmorClass(): int
