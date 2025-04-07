@@ -23,7 +23,7 @@ abstract class Monster
     private string $name;
 
     #[ORM\Column(type: Types::DECIMAL, nullable: false)]
-    private float $challengeRating;
+    private string $challengeRating;
 
     #[ORM\Column(type: Types::INTEGER, nullable: false)]
     private int $experiencePoints;
