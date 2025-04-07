@@ -1,0 +1,19 @@
+<?php
+
+namespace App\MonsterCompendium\Service;
+
+use App\MonsterCompendium\EmbeddingService;
+
+final class DummyEmbeddingService implements EmbeddingService
+{
+    public function generateEmbedding(string $phrase): array
+    {
+        $vector = [];
+
+        for ($i = 0; $i < 1536; $i++) {
+            $vector[] = random_int(-1000, 1000) * 0.01;
+        }
+
+        return $vector;
+    }
+}
