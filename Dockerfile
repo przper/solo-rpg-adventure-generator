@@ -1,17 +1,19 @@
-FROM composer:2.7.7 as composer-install
+FROM composer:2.7.7 AS composer-install
 WORKDIR /var/www/html
 COPY composer.json composer.lock symfony.lock ./
 RUN composer install --no-dev --no-scripts
 
-FROM php:8.3-apache as web
+FROM php:8.3-apache AS web
 RUN apt-get update && apt-get install -y \
     # needed for intl php module
-    libicu-dev
+    libicu-dev \
+    # needed for PostgreSQL
+    libpq-dev
 RUN docker-php-ext-install \
     bcmath \
     intl \
-    mysqli \
-    opcache
+    opcache \
+    pdo_pgsql
 RUN a2enmod rewrite && a2enmod headers && a2enmod expires
 COPY docker/apache/000-default.conf /etc/apache2/sites-enabled/000-default.conf
 COPY docker/apache/apache.conf /etc/apache2/conf-enabled/apache.conf
