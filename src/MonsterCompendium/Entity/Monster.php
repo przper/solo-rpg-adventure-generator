@@ -37,30 +37,39 @@ abstract class Monster
     #[ORM\Column(type: Types::INTEGER, nullable: false, options: ['default' => 10])]
     private int $armorClass;
 
+    /** @var array<string, string|int> $attributes */
     #[ORM\Column(type: Types::JSON, nullable: false)]
     private array $attributes;
 
-    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: false)]
+    /** @var string[] $attacks */
+    #[ORM\Column(type: Types::JSON, nullable: false)]
     private array $attacks;
 
-    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: false)]
+    /** @var string[] $specials */
+    #[ORM\Column(type: Types::JSON, nullable: false)]
     private array $specials;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description;
 
+    /** @var null|int[] */
     #[ORM\Column(type: VectorEmbeddingType::NAME, nullable: true)]
-    private ?VectorEmbeddingType $vectorEmbedding = null;
+    private ?array $vectorEmbedding = null;
 
-    /** @param string[] $attacks */
+    /**
+     * @param numeric-string $challengeRating
+     * @param array<string, string|int> $attributes
+     * @param string[] $attacks
+     * @param string[] $specials
+     */
     public function __construct(
-        int|float $challengeRating,
+        string $challengeRating,
         int $experiencePoints,
         string $name,
         int $armorClass = 10,
         array $attributes = [],
         array $attacks = [],
-        array $special = [],
+        array $specials = [],
         ?int $totalHitPoints = null,
         ?DiceStack $hitDice = null,
         ?string $description = null,
@@ -69,7 +78,7 @@ abstract class Monster
             throw new \InvalidArgumentException('Either HitDice or TotalHitPoints must be set.');
         }
 
-        $this->challengeRating = (float) $challengeRating;
+        $this->challengeRating = $challengeRating;
         $this->experiencePoints = $experiencePoints;
         $this->name = $name;
         $this->hitDice = $hitDice;
@@ -77,7 +86,7 @@ abstract class Monster
         $this->armorClass = $armorClass;
         $this->attributes = $attributes;
         $this->attacks = $attacks;
-        $this->specials = $special;
+        $this->specials = $specials;
         $this->description = $description;
     }
 
@@ -91,16 +100,9 @@ abstract class Monster
         return $this->name;
     }
 
-    public function getChallengeRating(): float
+    public function getChallengeRating(): string
     {
         return $this->challengeRating;
-    }
-
-    public function setChallengeRating(float $challengeRating): static
-    {
-        $this->challengeRating = $challengeRating;
-
-        return $this;
     }
 
     public function getExperiencePoints(): int
@@ -108,23 +110,9 @@ abstract class Monster
         return $this->experiencePoints;
     }
 
-    public function setExperiencePoints(int $experiencePoints): static
-    {
-        $this->experiencePoints = $experiencePoints;
-
-        return $this;
-    }
-
     public function getHitDice(): DiceStack
     {
         return $this->hitDice;
-    }
-
-    public function setHitDice(DiceStack $hitDice): static
-    {
-        $this->hitDice = $hitDice;
-
-        return $this;
     }
 
     public function getTotalHitPoints(): ?int
@@ -132,21 +120,9 @@ abstract class Monster
         return $this->totalHitPoints;
     }
 
-    public function setTotalHitPoints(?int $totalHitPoints): void
-    {
-        $this->totalHitPoints = $totalHitPoints;
-    }
-
     public function getArmorClass(): int
     {
         return $this->armorClass;
-    }
-
-    public function setArmorClass(int $armorClass): static
-    {
-        $this->armorClass = $armorClass;
-
-        return $this;
     }
 
     public function getAttributes(): array
@@ -154,23 +130,9 @@ abstract class Monster
         return $this->attributes;
     }
 
-    public function setAttributes(array $attributes): static
-    {
-        $this->attributes = $attributes;
-
-        return $this;
-    }
-
     public function getAttacks(): array
     {
         return $this->attacks;
-    }
-
-    public function setAttacks(array $attacks): static
-    {
-        $this->attacks = $attacks;
-
-        return $this;
     }
 
     public function getSpecials(): array
@@ -178,30 +140,22 @@ abstract class Monster
         return $this->specials;
     }
 
-    public function setSpecials(array $specials): void
-    {
-        $this->specials = $specials;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): static
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    public function getVectorEmbedding(): ?VectorEmbeddingType
+    /** @return null|int[] */
+    public function getVectorEmbedding(): ?array
     {
         return $this->vectorEmbedding;
     }
 
-    public function setVectorEmbedding(?VectorEmbeddingType $vectorEmbedding): void
+    /** @param null|int[] $vectorEmbedding */
+    public function setVectorEmbedding(?array $vectorEmbedding): static
     {
         $this->vectorEmbedding = $vectorEmbedding;
+
+        return $this;
     }
 }

@@ -26,8 +26,8 @@ final class Version20250407093545 extends AbstractMigration
             total_hit_points INT DEFAULT NULL,
             armor_class INT NOT NULL DEFAULT 10,
             attributes JSON NOT NULL DEFAULT '[]'::json,
-            attacks TEXT NOT NULL DEFAULT '[]',
-            specials TEXT NOT NULL DEFAULT '[]',
+            attacks JSON NOT NULL DEFAULT '[]'::json,
+            specials JSON NOT NULL DEFAULT '[]'::json,
             PRIMARY KEY(id)
         )
         SQL);
