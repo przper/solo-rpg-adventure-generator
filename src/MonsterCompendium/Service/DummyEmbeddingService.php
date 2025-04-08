@@ -11,7 +11,7 @@ final class DummyEmbeddingService implements EmbeddingService
         $vector = [];
 
         for ($i = 0; $i < 1536; $i++) {
-            $vector[] = random_int(-1000, 1000) * 0.01;
+            $vector[] = random_int(-1000000, 1000000) * 0.00001;
         }
 
         return $vector;
