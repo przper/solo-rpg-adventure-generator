@@ -2,30 +2,24 @@
 
 namespace App\MonsterCompendium\Command\GenerateMonsterVectorEmbedding;
 
+use App\EncountersPlanning\TTRPGSystem;
 use App\MonsterCompendium\EmbeddingService;
 use App\MonsterCompendium\Entity\Monster;
+use App\MonsterCompendium\Entity\ShadowdarkMonster;
 use App\MonsterCompendium\MonsterRepository;
-use Symfony\Component\DependencyInjection\Attribute\TaggedIterator;
+use Doctrine\ORM\EntityManagerInterface;
 
 final class GenerateMonsterVectorEmbeddingHandler
 {
-    /** @var array<string, MonsterRepository> $monsterRepositories */
-    private array $monsterRepositories;
-
-    /** @param iterable<MonsterRepository> $monsterRepositories */
     public function __construct(
-        #[TaggedIterator('monster_compendium.repository')]
-        iterable $monsterRepositories,
+        private EntityManagerInterface $entityManager,
         private EmbeddingService $embeddingService,
     ) {
-        foreach ($monsterRepositories as $repository) {
-            $this->monsterRepositories[$repository->supports()->name] = $repository;
-        }
     }
 
     public function __invoke(GenerateMonsterVectorEmbeddingCommand $command): void
     {
-        $repository = $this->monsterRepositories[$command->system->name];
+        $repository = $this->entityManager->getRepository($this->getEntityForTTRPGSystem($command->system));
 
         if (!$repository instanceof MonsterRepository) {
             throw new \InvalidArgumentException("No repository for: ".$command->system->name);
@@ -59,5 +53,14 @@ final class GenerateMonsterVectorEmbeddingHandler
         $parts[] = "Description: " . $monster->getDescription() . " " . $monster->getDescription();
 
         return implode("\n\n", $parts);
+    }
+
+    /** @return class-string */
+    private function getEntityForTTRPGSystem(TTRPGSystem $system): string
+    {
+        return match ($system) {
+            TTRPGSystem::Shadowdark => ShadowdarkMonster::class,
+            default => throw new \InvalidArgumentException("No repository for: ".$system->name),
+        };
     }
 }

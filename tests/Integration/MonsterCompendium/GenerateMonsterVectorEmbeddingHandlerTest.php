@@ -6,19 +6,21 @@ use App\EncountersPlanning\TTRPGSystem;
 use App\MonsterCompendium\Command\GenerateMonsterVectorEmbedding\GenerateMonsterVectorEmbeddingCommand;
 use App\MonsterCompendium\Command\GenerateMonsterVectorEmbedding\GenerateMonsterVectorEmbeddingHandler;
 use App\MonsterCompendium\Entity\ShadowdarkMonster;
-use App\MonsterCompendium\ShadowdarkMonsterRepository;
+use App\MonsterCompendium\MonsterRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class GenerateMonsterVectorEmbeddingHandlerTest extends KernelTestCase
 {
     private GenerateMonsterVectorEmbeddingHandler $sut;
 
-    private ShadowdarkMonsterRepository $monsterRepository;
+    private MonsterRepository $monsterRepository;
 
     protected function setUp(): void
     {
+        self::bootKernel();
         $this->sut = self::getContainer()->get(GenerateMonsterVectorEmbeddingHandler::class);
-        $this->monsterRepository = self::getContainer()->get(ShadowdarkMonsterRepository::class);
+        $this->monsterRepository = self::getContainer()->get(EntityManagerInterface::class)->getRepository(ShadowdarkMonster::class);
     }
 
     public function test_it_sets_embedding_for_given_record(): void
