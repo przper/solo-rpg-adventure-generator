@@ -11,6 +11,8 @@ interface MonsterRepository
 {
     public function supports(): TTRPGSystem;
 
+    public function persist(Monster $monster): void;
+
     /** @return Monster[] */
     public function getMatchingByPhrase(string $phrase): array;
 }

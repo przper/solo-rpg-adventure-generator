@@ -30,6 +30,19 @@ class ShadowdarkMonsterRepository extends ServiceEntityRepository implements Mon
         return TTRPGSystem::Shadowdark;
     }
 
+    public function persist(Monster $monster): void
+    {
+        if (!$monster instanceof ShadowdarkMonster) {
+            return;
+        }
+
+        if ($monster->getId() === null) {
+            $this->getEntityManager()->persist($monster);
+        }
+
+        $this->getEntityManager()->flush();
+    }
+
     public function getMatchingByPhrase(string $phrase): array
     {
         $phraseAsVector = $this->embeddingService->generateEmbedding($phrase);
