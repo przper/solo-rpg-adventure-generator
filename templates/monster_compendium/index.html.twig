@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container mx-auto w-2/3">
+    <ul class="grid grid-cols-2 gap-4">
+        {% for monster in monsters %}
+            <li class="bg-white rounded-lg shadow-lg pb-2">
+                <h2 class="p-2 mb-2 rounded-lg rounded-b-none bg-black text-white"><span class="text-xl font-bold">{{ monster.name }}</span>, CR: {{ monster.challengeRating }}</h2>
+
+                <p class="ml-4 mb-2 text-sm">{{ monster.description }}</p>
+
+                <p class="ml-4 mb-2">
+                    <strong>HP:</strong> {{ monster.totalHitPoints }}
+                    <strong>AC:</strong> {{ monster.armorClass }}
+                </p>
+
+{#                <h3 class="text-lg font-semibold mt-4">Attributes:</h3>#}
+{#                <ul class="list-disc pl-6 mb-4">#}
+{#                    {% for key, value in monster.attributes %}#}
+{#                        <li><strong>{{ key|capitalize }}:</strong> {{ value }}</li>#}
+{#                    {% endfor %}#}
+{#                </ul>#}
+
+                {% if monster.attacks is not empty %}
+                    <h3 class="ml-4 mt-2 font-semibold">Attacks:</h3>
+                    <ul class="pl-6 ml-4 mb-2 list-disc">
+                        {% for attack in monster.attacks %}
+                            <li class="text-sm">{{ attack }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                {% if monster.specials is not empty %}
+                    <h3 class="ml-4 mt-2 font-semibold">Specials:</h3>
+                    <ul class="pl-6 ml-4 list-disc">
+                        {% for special in monster.specials %}
+                            <li class="text-sm">{{ special }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

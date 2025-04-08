@@ -9,3 +9,9 @@ game:
         path: ../src/Game/Controller/
         namespace: App\Game\Controller
     type: attribute
+    
+monster_compendium:
+    resource:
+        path: ../src/MonsterCompendium/Controller/
+        namespace: App\MonsterCompendium\Controller
+    type: attribute
