@@ -5,7 +5,7 @@
     <ul class="grid grid-cols-2 gap-4">
         {% for monster in monsters %}
             <li class="bg-white rounded-lg shadow-lg pb-2">
-                <h2 class="p-2 mb-2 rounded-lg rounded-b-none bg-black text-white"><span class="text-xl font-bold">{{ monster.name }}</span>, CR: {{ monster.challengeRating }}</h2>
+                <h2 class="p-2 mb-2 rounded-lg rounded-b-none bg-black text-white"><span class="text-xl font-bold">{{ monster.name }}</span>, CR: {{ monster.challengeRating|format_number }}</h2>
 
                 <p class="ml-4 mb-2 text-sm">{{ monster.description }}</p>
 
