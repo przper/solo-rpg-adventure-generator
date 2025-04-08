@@ -11,7 +11,7 @@ vendor: composer.lock
 ## Refresh project
 .PHONY: clean
 clean:
-	rm -rf vendor
+	rm -rf vendor var/log
 
 # Testing application
 .PHONY: test

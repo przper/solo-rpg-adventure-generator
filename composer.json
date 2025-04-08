@@ -20,6 +20,7 @@
         "symfony/flex": "^2",
         "symfony/form": "6.2.*",
         "symfony/framework-bundle": "6.2.*",
+        "symfony/monolog-bundle": "^3.10",
         "symfony/runtime": "6.2.*",
         "symfony/twig-bundle": "6.2.*",
         "symfony/uid": "6.2.*",
@@ -32,9 +33,10 @@
     },
     "config": {
         "allow-plugins": {
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true,
             "symfony/flex": true,
-            "symfony/runtime": true,
-            "phpstan/extension-installer": true
+            "symfony/runtime": true
         },
         "sort-packages": true
     },
