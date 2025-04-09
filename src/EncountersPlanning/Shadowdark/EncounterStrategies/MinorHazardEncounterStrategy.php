@@ -7,6 +7,7 @@ use App\Core\Encounter\EncounterDifficulty;
 use App\Core\Encounter\Obstacle;
 use App\EncountersPlanning\Shadowdark\DungeonRoomType;
 use App\EncountersPlanning\Shadowdark\EncounterStrategy;
+use App\EncountersPlanning\TeamChallengeRating;
 
 class MinorHazardEncounterStrategy implements EncounterStrategy
 {
@@ -15,7 +16,7 @@ class MinorHazardEncounterStrategy implements EncounterStrategy
         return DungeonRoomType::Minor_Hazard;
     }
 
-    public function createEncounter(): Encounter
+    public function createEncounter(TeamChallengeRating $playerLevel): Encounter
     {
         $difficulty = [EncounterDifficulty::EASY, EncounterDifficulty::MEDIUM][random_int(0, 1)];
 

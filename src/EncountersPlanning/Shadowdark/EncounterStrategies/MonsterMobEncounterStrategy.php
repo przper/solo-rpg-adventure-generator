@@ -9,6 +9,7 @@ use App\Core\Encounter\Treasure;
 use App\Core\Helper\DiceStack;
 use App\EncountersPlanning\Shadowdark\DungeonRoomType;
 use App\EncountersPlanning\Shadowdark\EncounterStrategy;
+use App\EncountersPlanning\TeamChallengeRating;
 
 class MonsterMobEncounterStrategy implements EncounterStrategy
 {
@@ -17,7 +18,7 @@ class MonsterMobEncounterStrategy implements EncounterStrategy
         return DungeonRoomType::Monster_Mob;
     }
 
-    public function createEncounter(): Encounter
+    public function createEncounter(TeamChallengeRating $playerLevel): Encounter
     {
         $difficulty = [EncounterDifficulty::EASY, EncounterDifficulty::MEDIUM][random_int(0, 1)];
 
