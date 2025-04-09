@@ -10,7 +10,7 @@ doctrine:
         use_savepoints: true
         types:
             dice_stack: App\MonsterCompendium\Doctrine\Type\DiceStackType
-            vector_embedding: App\MonsterCompendium\Doctrine\Type\VectorEmbeddingType
+            vector: Partitech\DoctrinePgVector\Type\VectorType
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
@@ -29,6 +29,11 @@ doctrine:
                 alias: MonsterCompendium
         controller_resolver:
             auto_mapping: false
+        dql:
+            string_functions:
+                distance: Partitech\DoctrinePgVector\Query\Distance
+                inner_product: Partitech\DoctrinePgVector\Query\InnerProduct
+                cosine_similarity: Partitech\DoctrinePgVector\Query\CosineSimilarity
 
 #when@test:
 #    doctrine:

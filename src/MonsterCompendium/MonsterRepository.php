@@ -36,19 +36,13 @@ abstract class MonsterRepository extends ServiceEntityRepository
     public function getMatchingByPhrase(string $phrase): array
     {
         $phraseAsVector = $this->embeddingService->generateEmbedding($phrase);
-        $stringifiedPhraseVector = "[" . implode(',', $phraseAsVector) . "]";
 
-        $queryForMatchingIds = <<<SQL
-            SELECT m.id, (m.vector_embedding <=> :vector) as vector_distance
-            FROM {$this->getClassMetadata()->getTableName()} m
-            ORDER BY vector_distance ASC -- Lower distance means higher similarity
-            LIMIT 10;
-        SQL;
-
-        $ids = $this->getEntityManager()->getConnection()->executeQuery($queryForMatchingIds, [
-            'vector' => $stringifiedPhraseVector,
-        ])->fetchAllAssociative();
-
-        return $this->findBy(['id' => array_column($ids, 'id')]);
+        return $this
+            ->createQueryBuilder('m')
+            ->orderBy('distance(m.vectorEmbedding, :vector)')
+            ->setParameter('vector', $phraseAsVector, 'vector')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
     }
 }

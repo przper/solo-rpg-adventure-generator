@@ -4,9 +4,9 @@ namespace App\MonsterCompendium\Entity;
 
 use App\Core\Helper\DiceStack;
 use App\MonsterCompendium\Doctrine\Type\DiceStackType;
-use App\MonsterCompendium\Doctrine\Type\VectorEmbeddingType;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Partitech\DoctrinePgVector\Type\VectorType;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
@@ -53,7 +53,7 @@ abstract class Monster
     private ?string $description;
 
     /** @var null|int[] */
-    #[ORM\Column(type: VectorEmbeddingType::NAME, nullable: true)]
+    #[ORM\Column(type: VectorType::NAME, length: 1536, nullable: true)]
     private ?array $vectorEmbedding = null;
 
     /**
