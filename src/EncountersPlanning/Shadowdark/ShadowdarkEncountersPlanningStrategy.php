@@ -68,8 +68,20 @@ class ShadowdarkEncountersPlanningStrategy implements EncountersPlanningStrategy
 
             $strategy = $this->encounterStrategies[$encounterType->name];
 
-            $encounters[] = $strategy->createEncounter();
+            $encounters[] = $strategy->createEncounter($teamLevels);
             $roomCountPerType[$encounterType->name]++;
+        }
+
+        // ensure dungeon have some treasure in it
+        if (
+            0 === $roomCountPerType[DungeonRoomType::Solo_Monster->name]
+            + $roomCountPerType[DungeonRoomType::Monster_Mob->name]
+            + $roomCountPerType[DungeonRoomType::Treasure->name]
+            + $roomCountPerType[DungeonRoomType::Boss_Monster->name]
+        ) {
+            $encounters[0] = random_int(1, 100) < 50
+                ? $this->encounterStrategies[DungeonRoomType::Treasure->name]->createEncounter($teamLevels)
+                : $this->encounterStrategies[DungeonRoomType::Boss_Monster->name]->createEncounter($teamLevels);
         }
 
         return new EncountersPlan($encounters);
