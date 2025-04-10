@@ -36,6 +36,10 @@ class NewGameType extends AbstractType
                     'html5' => true,
                     'required' => false,
                     'label' => false,
+                    'attr' => [
+                        'min' => 1,
+                        'max' => 3,
+                    ],
                 ],
                 'allow_add' => true,
                 'allow_delete' => true,

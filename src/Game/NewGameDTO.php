@@ -13,11 +13,12 @@ class NewGameDTO
     public function __construct(
         public DungeonLength $length = DungeonLength::SHORT,
         public MapType $mapType = MapType::Railroad,
-        public TTRPGSystem $system = TTRPGSystem::DungeonAndDragons5Edition,
-        #[Assert\All(
+        public TTRPGSystem $system = TTRPGSystem::Shadowdark,
+        #[Assert\All([
             new Assert\Positive(),
-        )]
-        public array $playerLevels = [1, 1, 1, 1],
+            new Assert\LessThanOrEqual(3),
+        ])]
+        public array $playerLevels = [1, 1],
     ) {
     }
 }
