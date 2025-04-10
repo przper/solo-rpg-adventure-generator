@@ -5,7 +5,6 @@ namespace App\EncountersPlanning\Shadowdark\EncounterStrategies;
 use App\Core\Encounter\Encounter;
 use App\Core\Encounter\EncounterDifficulty;
 use App\Core\Encounter\Enemy;
-use App\Core\Helper\DiceStack;
 use App\EncountersPlanning\Shadowdark\DungeonRoomType;
 use App\EncountersPlanning\Shadowdark\EncounterStrategy;
 use App\EncountersPlanning\Shadowdark\TreasureGenerator;
@@ -28,7 +27,7 @@ class BossMonsterEncounterStrategy implements EncounterStrategy
         return new Encounter(
             EncounterDifficulty::DEADLY,
             [
-                new Enemy(10, 10, 'Boss Bebok', DiceStack::fromString('10d6'), 14, ["Greatclub: 1x 1d12+2"]),
+                new Enemy(10, 10, 'Boss Bebok', 11, 14, ["Greatclub: 1x 1d12+2"]),
             ],
             treasures: [
                 $this->treasureGenerator->getRandomTreasure($playerLevel->getAveragePlayerLevel()),

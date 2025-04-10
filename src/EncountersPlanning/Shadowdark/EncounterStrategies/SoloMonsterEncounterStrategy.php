@@ -30,7 +30,7 @@ class SoloMonsterEncounterStrategy implements EncounterStrategy
         return new Encounter(
             $difficulty,
             enemies: [
-                new Enemy(5, 5, 'Bebok Warrior', DiceStack::fromString('5d6'), 13, ["Spear: 2x 1d6"] ),
+                new Enemy(5, 5, 'Bebok Warrior', 7, 13, ["Spear: 2x 1d6"] ),
             ],
             treasures: [
                 $this->treasureGenerator->getRandomTreasure($playerLevel->getAveragePlayerLevel()),

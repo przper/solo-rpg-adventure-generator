@@ -2,24 +2,19 @@
 
 namespace App\Core\Encounter;
 
-use App\Core\Helper\DiceStack;
-
 final class Enemy
 {
     private EnemyStatus $status = EnemyStatus::Alive;
-    private int $totalHitPoints;
 
     /** @param string[] $attacks */
     public function __construct(
         private float $challengeRating,
         private int $experiencePoints,
         private string $name,
-        private DiceStack $hitDice,
+        private int $totalHitPoints,
         private int $armorClass = 10,
         private array $attacks = [],
-        ?int $totalHitPoints = null,
     ) {
-        $this->totalHitPoints = $totalHitPoints ?? $this->hitDice->roll();
     }
 
     public function slay(): void
@@ -47,11 +42,6 @@ final class Enemy
         return $this->name;
     }
 
-    public function getHitDice(): DiceStack
-    {
-        return $this->hitDice;
-    }
-
     public function getTotalHitPoints(): int
     {
         return $this->totalHitPoints;
@@ -74,7 +64,6 @@ final class Enemy
             'challenge_rating' => $this->challengeRating,
             'experience_points' => $this->experiencePoints,
             'name' => $this->getName(),
-            'hit_dice' => (string) $this->getHitDice(),
             'hit_points' => $this->getTotalHitPoints(),
             'armor_class' => $this->getArmorClass(),
             'damage' => $this->getAttacks(),
