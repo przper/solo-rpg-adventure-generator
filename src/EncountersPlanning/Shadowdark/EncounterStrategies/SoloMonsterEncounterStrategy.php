@@ -5,14 +5,19 @@ namespace App\EncountersPlanning\Shadowdark\EncounterStrategies;
 use App\Core\Encounter\Encounter;
 use App\Core\Encounter\EncounterDifficulty;
 use App\Core\Encounter\Enemy;
-use App\Core\Encounter\Treasure;
 use App\Core\Helper\DiceStack;
 use App\EncountersPlanning\Shadowdark\DungeonRoomType;
 use App\EncountersPlanning\Shadowdark\EncounterStrategy;
+use App\EncountersPlanning\Shadowdark\TreasureGenerator;
 use App\EncountersPlanning\TeamChallengeRating;
 
 class SoloMonsterEncounterStrategy implements EncounterStrategy
 {
+    public function __construct(
+        private TreasureGenerator $treasureGenerator,
+    ) {
+    }
+
     public function getDungeonRoomType(): DungeonRoomType
     {
         return DungeonRoomType::Solo_Monster;
@@ -28,7 +33,7 @@ class SoloMonsterEncounterStrategy implements EncounterStrategy
                 new Enemy(5, 5, 'Bebok Warrior', DiceStack::fromString('5d6'), 13, ["Spear: 2x 1d6"] ),
             ],
             treasures: [
-                new Treasure('Bag of gold coints (' . random_int(10, 20) . ')'),
+                $this->treasureGenerator->getRandomTreasure($playerLevel->getAveragePlayerLevel()),
             ],
         );
     }
