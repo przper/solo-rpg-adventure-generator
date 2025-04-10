@@ -31,4 +31,9 @@ readonly class TeamChallengeRating implements IteratorAggregate
     {
         return new \ArrayIterator(array_values($this->teamLevels));
     }
+
+    public function toArray(): array
+    {
+        return $this->teamLevels;
+    }
 }

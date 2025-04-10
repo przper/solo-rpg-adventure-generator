@@ -2,6 +2,7 @@
 
 namespace App\MonsterCompendium\Entity;
 
+use App\Core\Encounter\Enemy;
 use App\Core\Helper\DiceStack;
 use App\MonsterCompendium\Doctrine\Type\DiceStackType;
 use Doctrine\DBAL\Types\Types;
@@ -82,12 +83,26 @@ abstract class Monster
         $this->experiencePoints = $experiencePoints;
         $this->name = $name;
         $this->hitDice = $hitDice;
-        $this->totalHitPoints = $totalHitPoints ?? $this->hitDice->roll();
+        $this->totalHitPoints = $totalHitPoints;
         $this->armorClass = $armorClass;
         $this->attributes = $attributes;
         $this->attacks = $attacks;
         $this->specials = $specials;
         $this->description = $description;
+    }
+
+    public function toEnemy(): Enemy
+    {
+        $totalHitPoints = $this->totalHitPoints ?? $this->hitDice->roll();
+
+        return new Enemy(
+            challengeRating: $this->challengeRating,
+            experiencePoints: $this->experiencePoints,
+            name: $this->name,
+            totalHitPoints: $totalHitPoints,
+            armorClass: $this->armorClass,
+            attacks: $this->attacks,
+        );
     }
 
     public function getId(): ?Uuid
