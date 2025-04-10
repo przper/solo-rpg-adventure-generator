@@ -31,7 +31,7 @@ final class MonsterQuery
         $repository = $this->entityManager->getRepository($entityClassName);
 
         if ($params->phrase != null) {
-            return $repository->getMatchingByPhrase($params->phrase);
+            return $repository->get(phrase: $params->phrase);
         }
 
         return $repository->findAll();

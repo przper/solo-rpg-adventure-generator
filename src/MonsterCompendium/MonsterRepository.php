@@ -33,14 +33,36 @@ abstract class MonsterRepository extends ServiceEntityRepository
         $this->getEntityManager()->flush();
     }
 
-    public function getMatchingByPhrase(string $phrase): array
-    {
-        $phraseAsVector = $this->embeddingService->generateEmbedding($phrase);
+    /**
+     * @return Monster[]
+     */
+    public function get(
+        ?float $minChallengeRating = null,
+        ?float $maxChallengeRating = null,
+        ?string $phrase = null,
+    ): array {
+        $query = $this->createQueryBuilder('m');
 
-        return $this
-            ->createQueryBuilder('m')
-            ->orderBy('distance(m.vectorEmbedding, :vector)')
-            ->setParameter('vector', $phraseAsVector, 'vector')
+        if ($minChallengeRating !== null) {
+            $query
+                ->andWhere('m.challengeRating >= :minChallengeRating')
+                ->setParameter('minChallengeRating', $minChallengeRating);
+        }
+
+        if ($maxChallengeRating !== null) {
+            $query
+                ->andWhere('m.challengeRating <= :maxChallengeRating')
+                ->setParameter('maxChallengeRating', $maxChallengeRating) ;
+        }
+
+        if (is_string($phrase)) {
+            $phraseAsVector = $this->embeddingService->generateEmbedding($phrase);
+            $query
+                ->setParameter('vector', $phraseAsVector, 'vector')
+                ->orderBy('distance(m.vectorEmbedding, :vector)');
+        }
+
+        return $query
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
