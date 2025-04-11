@@ -25,7 +25,10 @@ final class Version20250407101551 extends AbstractMigration
             ALTER TABLE monster_shadowdark ADD vector_embedding vector(1536) DEFAULT NULL
         SQL);
         $this->addSql(<<<'SQL'
-            COMMENT ON COLUMN monster_shadowdark.vector_embedding IS '(DC2Type:vector_embedding)'
+            COMMENT ON COLUMN monster_shadowdark.vector_embedding IS '(DC2Type:vector)'
+        SQL);
+        $this->addSql(<<<'SQL'
+            CREATE INDEX vector_embedding_idx ON monster_shadowdark USING hnsw (vector_embedding vector_l2_ops)
         SQL);
     }
 
@@ -33,6 +36,9 @@ final class Version20250407101551 extends AbstractMigration
     {
         $this->addSql(<<<'SQL'
             CREATE SCHEMA public
+        SQL);
+        $this->addSql(<<<'SQL'
+            DROP INDEX vector_embedding_idx
         SQL);
         $this->addSql(<<<'SQL'
             ALTER TABLE monster_shadowdark DROP description

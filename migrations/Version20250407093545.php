@@ -37,9 +37,6 @@ final class Version20250407093545 extends AbstractMigration
         $this->addSql(<<<'SQL'
             COMMENT ON COLUMN monster_shadowdark.hit_dice IS '(DC2Type:dice_stack)'
         SQL);
-        $this->addSql(<<<'SQL'
-            COMMENT ON COLUMN monster_shadowdark.attacks IS '(DC2Type:simple_array)'
-        SQL);
     }
 
     public function down(Schema $schema): void

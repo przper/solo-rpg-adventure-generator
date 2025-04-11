@@ -20,7 +20,7 @@ abstract class Monster
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
     private ?Uuid $id = null;
 
-    #[ORM\Column(type: Types::DECIMAL, nullable: false)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 3, nullable: false)]
     private string $challengeRating;
 
     #[ORM\Column(type: Types::INTEGER, nullable: false)]
@@ -39,15 +39,15 @@ abstract class Monster
     private int $armorClass;
 
     /** @var array<string, string|int> $attributes */
-    #[ORM\Column(type: Types::JSON, nullable: false)]
+    #[ORM\Column(type: Types::JSON, nullable: false, options: ['default' => '[]'])]
     private array $attributes;
 
     /** @var string[] $attacks */
-    #[ORM\Column(type: Types::JSON, nullable: false)]
+    #[ORM\Column(type: Types::JSON, nullable: false, options: ['default' => '[]'])]
     private array $attacks;
 
     /** @var string[] $specials */
-    #[ORM\Column(type: Types::JSON, nullable: false)]
+    #[ORM\Column(type: Types::JSON, nullable: false, options: ['default' => '[]'])]
     private array $specials;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
