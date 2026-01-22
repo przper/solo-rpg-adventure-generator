@@ -16,10 +16,9 @@ class EnemyGenerator
             challengeRating: $challengeRating,
             experiencePoints: $experiencePoints,
             name: $name,
-            hitDice: $hitDice,
+            totalHitPoints: $hitPoints,
             armorClass: $armorClass,
             attacks: $damage,
-            totalHitPoints: $hitPoints,
         );
     }
 

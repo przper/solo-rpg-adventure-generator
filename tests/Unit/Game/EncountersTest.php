@@ -6,7 +6,6 @@ use App\Core\Encounter\Encounter;
 use App\Core\Encounter\EncounterDifficulty;
 use App\Core\Encounter\Enemy;
 use App\Core\Helper\Coordinates;
-use App\Core\Helper\DiceStack;
 use App\Core\Map\Corridor;
 use App\Core\Map\Map;
 use App\Core\Map\Room;
@@ -58,13 +57,13 @@ class EncountersTest extends TestCase
 
         $plan = new EncountersPlan([
             new Encounter(EncounterDifficulty::EASY, [
-                new Enemy(1, 10, 'MiniBebok', DiceStack::fromString('1d6'), 11, DiceStack::fromString('1d4')),
+                new Enemy(1, 10, 'MiniBebok', 6, 11, ['Dagger: 1x 1d4']),
             ]),
             new Encounter(EncounterDifficulty::MEDIUM, [
-                new Enemy(5, 50, 'Bebok', DiceStack::fromString('4d6'), 13, DiceStack::fromString('1d8')),
+                new Enemy(5, 50, 'Bebok', 14, 13, ['Club: 1x 1d8']),
             ]),
             new Encounter(EncounterDifficulty::DEADLY, [
-                new Enemy(10, 500, 'MegaBebok', DiceStack::fromString('24d8'), 16, DiceStack::fromString('2d8')),
+                new Enemy(10, 500, 'MegaBebok', 108, 16, ['Greataxe: 2x 1d12']),
             ]),
         ]);
 
@@ -208,7 +207,7 @@ class EncountersTest extends TestCase
             Room::create([$coordinates]),
         ]);
 
-        $enemy = new Enemy(5, 50, 'Bebok', DiceStack::fromString('4d6'), 13, DiceStack::fromString('1d8'));
+        $enemy = new Enemy(5, 50, 'Bebok', 14, 13, ['Club: 1x 1d8']);
         $encounter = new Encounter(EncounterDifficulty::MEDIUM, [$enemy]);
 
         $sut = new MapBasedEncounters($map, new EncountersPlan([$encounter]));

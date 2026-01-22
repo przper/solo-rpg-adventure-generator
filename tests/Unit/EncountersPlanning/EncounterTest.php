@@ -7,7 +7,6 @@ use App\Core\Encounter\EncounterDifficulty;
 use App\Core\Encounter\Enemy;
 use App\Core\Encounter\Obstacle;
 use App\Core\Encounter\Treasure;
-use App\Core\Helper\DiceStack;
 use PHPUnit\Framework\TestCase;
 
 class EncounterTest extends TestCase
@@ -62,6 +61,6 @@ class EncounterTest extends TestCase
 
     private function createEnemy(): Enemy
     {
-        return new Enemy(1.0, 100, 'Baziak', DiceStack::fromString('1d12'), 10, DiceStack::fromString('1d6'));
+        return new Enemy(1.0, 100, 'Baziak', 7, 10, ['Dagger: 1x 1d6']);
     }
 }
