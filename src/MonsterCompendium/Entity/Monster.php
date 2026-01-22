@@ -125,7 +125,7 @@ abstract class Monster
         return $this->experiencePoints;
     }
 
-    public function getHitDice(): DiceStack
+    public function getHitDice(): ?DiceStack
     {
         return $this->hitDice;
     }
