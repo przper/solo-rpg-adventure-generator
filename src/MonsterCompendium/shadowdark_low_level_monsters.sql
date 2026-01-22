@@ -10,6 +10,21 @@ INSERT INTO monster_shadowdark (
     description,
     attributes
 ) VALUES
+-- Aboleth
+(
+    gen_random_uuid(),
+    'Aboleth',
+    8.0,
+    0,
+    '39',
+    16,
+    json_build_array('2 tentacle (near) +5 (1d8 + curse)', '1 tail +5 (3d6)'),
+    json_build_array('Curse: DC 15 CON or target gains a magical curse, turning into a deep one over 2d10 days', 
+                     'Enslave: In place of attacks, one creature within far DC 15 WIS or aboleth controls for 1d4 rounds', 
+                     'Telepathic: Read the thoughts of all creatures within far'),
+    'Enormous, antediluvian catfish covered in slime and tentacles. They hate all intelligent beings.',
+    '{"strength": 4, "dexterity": -1, "constitution": 3, "intelligence": 4, "wisdom": 2, "charisma": 2, "alignment": "C", "movement": "near (swim)"}'
+),
 
 -- Ankheg
 (
