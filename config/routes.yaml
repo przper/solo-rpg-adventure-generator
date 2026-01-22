@@ -15,3 +15,9 @@ monster_compendium:
         path: ../src/MonsterCompendium/Controller/
         namespace: App\MonsterCompendium\Controller
     type: attribute
+    
+authentication:
+    resource:
+        path: ../src/Authentication/Controller/
+        namespace: App\Authentication\Controller
+    type: attribute
