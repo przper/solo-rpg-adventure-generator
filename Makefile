@@ -1,4 +1,5 @@
 # Prepare project
+DOCKER_EXEC = docker compose exec web
 
 ## Main target
 .PHONY: all
@@ -6,25 +7,30 @@ all: vendor
 
 ## Back end
 vendor: composer.lock
-	composer install
+	$(DOCKER_EXEC) composer install
 
 ## Refresh project
 .PHONY: clean
 clean:
-	rm -rf vendor var/log
+	rm -rf vendor var
+
+## Run arbitrary command in container
+.PHONY: exec
+exec:
+	$(DOCKER_EXEC) $(COMMAND)
 
 # Testing application
 .PHONY: test
 test: lint unit-tests integration-tests application-tests
 
 lint: vendor
-	vendor/bin/phpstan analyse -c phpstan.neon
+	$(DOCKER_EXEC) vendor/bin/phpstan analyse -c phpstan.neon
 
 unit-tests: vendor
-	vendor/bin/phpunit --testsuite=unit
+	$(DOCKER_EXEC) vendor/bin/phpunit --testsuite=unit
 
 integration-tests: vendor
-	vendor/bin/phpunit --testsuite=integration
+	$(DOCKER_EXEC) vendor/bin/phpunit --testsuite=integration
 
 application-tests: vendor
-	vendor/bin/phpunit --testsuite=application
+	$(DOCKER_EXEC) vendor/bin/phpunit --testsuite=application
