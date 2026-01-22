@@ -25,3 +25,8 @@ RUN mkdir -p var/cache var/log
 ENV APP_ENV=prod
 RUN bin/console assets:install
 RUN chown --recursive www-data:www-data var/
+
+FROM web AS dev
+RUN apt-get update && apt-get install -y git unzip
+COPY --from=composer:2.7.7 /usr/bin/composer /usr/bin/composer
+ENV APP_ENV=dev
