@@ -3,6 +3,7 @@ services:
     build:
       context: .
       target: dev
+    hostname: rpg
     environment:
       APP_ENV: dev
       XDEBUG_ENABLED: 0
