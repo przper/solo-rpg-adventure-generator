@@ -5,6 +5,9 @@ namespace App\EncountersPlanning;
 use IteratorAggregate;
 use Traversable;
 
+/**
+ * @implements IteratorAggregate<int, positive-int>
+ */
 readonly class TeamChallengeRating implements IteratorAggregate
 {
     /** @param positive-int[] $teamLevels */
