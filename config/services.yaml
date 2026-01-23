@@ -25,11 +25,7 @@ services:
 
     App\MonsterCompendium\EmbeddingService:
         class: App\MonsterCompendium\Service\OpenAiEmbeddingService
-        
-    app.custom_jwt_authenticator:
-        class: App\Authentication\Security\JWTAuthenticator
-        parent: lexik_jwt_authentication.security.jwt_authenticator
-        
+
 when@test:
     services:
         App\MonsterCompendium\EmbeddingService:

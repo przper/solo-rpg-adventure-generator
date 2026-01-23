@@ -5,11 +5,4 @@
         <li class="mr-4"><a href="{{ path('game.new') }}">New Game</a></li>
         <li class=""><a href="{{ path('monster_compendium.index') }}">Monsters</a></li>
     </ul>
-    <div class="w-min p-2">
-        {% if app.user %}
-            {{ app.user }}
-        {% else %}
-            <div class="w-12"><a href="{{ path('login') }}">Log in</a></div>
-        {% endif %}
-    </div>
 </div>
