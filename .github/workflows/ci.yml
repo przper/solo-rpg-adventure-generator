@@ -41,6 +41,9 @@ jobs:
       - name: Setup database schema
         run: bin/console doctrine:migrations:migrate --no-interaction
 
+      - name: Load test data
+        run: psql $DATABASE_URL -f src/MonsterCompendium/shadowdark_low_level_monsters.sql
+
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse -c phpstan.neon
 

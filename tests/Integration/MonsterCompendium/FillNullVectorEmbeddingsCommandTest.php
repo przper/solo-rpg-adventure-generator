@@ -86,9 +86,7 @@ class FillNullVectorEmbeddingsCommandTest extends KernelTestCase
         $processedCount = $this->entityManager->createQueryBuilder()
             ->select('COUNT(m)')
             ->from(ShadowdarkMonster::class, 'm')
-            ->where('m.name LIKE :pattern')
             ->andWhere('m.vectorEmbedding IS NOT NULL')
-            ->setParameter('pattern', 'Limited Test Monster%')
             ->getQuery()
             ->getSingleScalarResult();
 
